@@ -6,7 +6,7 @@
 
 Machines Easy/Medium classiques, Sherlocks et Challenges
 
-Résumé des machines
+## Résumé des machines
 
 Vue d'ensemble des machines classiques HTB résolues (hors Starting
 Point), avec le service et la vulnérabilité principale exploitée pour
@@ -18,7 +18,7 @@ chacune.
 | Cap         | FTP + SSH + Web (Flask)                     | 21, 22, 80         | IDOR + capability cap_setuid                    |
 | Orion       | SSH + HTTP (CraftCMS 5.6.16) + Telnet local | 22, 80 (+23 local) | CVE-2025-32432 (RCE) + CVE-2026-24061 (telnetd) |
 
-Table des matières
+## Table des matières
 
 Résumé des machines 2
 
@@ -26,11 +26,11 @@ Machine 1 — CAP 4
 
 Machine 2 — Orion 7
 
-Machine 1 — CAP
+# Machine 1 — CAP
 
 **IDOR sur PCAP + capabilities Linux (cap_setuid) — Easy Linux**
 
-Concept
+## Concept
 
 Un dashboard web Flask/Gunicorn permet de lancer un "Security Snapshot"
 (capture réseau) et de la télécharger via un ID incrémental. Une IDOR
@@ -51,7 +51,7 @@ flowchart LR
     H --> I["os.setuid(0)<br/>→ root"]
 ```
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sC -sV 10.129.x.x
 >
@@ -116,7 +116,7 @@ Méthodologie — commandes complètes
 >
 > \# → e7f342183e8016c7e5786586752b50d1
 
-Flags
+## Flags
 
 |          |                                  |
 |----------|----------------------------------|
@@ -124,7 +124,7 @@ Flags
 | User     | 61b0186a70164919f0be2de0139cc03f |
 | Root     | e7f342183e8016c7e5786586752b50d1 |
 
-Réponses aux questions HTB
+## Réponses aux questions HTB
 
 |                                                 |             |
 |-------------------------------------------------|-------------|
@@ -136,7 +136,7 @@ Réponses aux questions HTB
 | Application layer protocol with sensitive data  | **ftp**     |
 | Other service where the password works          | **ssh**     |
 
-Points clés
+## Points clés
 
 - Une IDOR sur un ID de ressource incrémental (/data/\<id\>) permet
   souvent d'accéder aux données d'autres utilisateurs simplement en
@@ -159,7 +159,7 @@ Points clés
   changement d'UID direct vers 0 depuis un script one-liner, sans
   exploit complexe.
 
-Leçon retenue
+## Leçon retenue
 
 *Une simple IDOR sur un numéro d'identifiant, combinée à une capture
 réseau contenant des identifiants en clair et une capability Linux mal
@@ -167,9 +167,9 @@ restreinte, suffit à obtenir un accès root complet. Les capabilities
 Linux méritent la même attention que les binaires SUID lors de toute
 énumération de privesc.*
 
-Conclusion générale
+# Conclusion générale
 
-Ce que ces machines enseignent, dans l'ordre
+## Ce que ces machines enseignent, dans l'ordre
 
 - Toujours tester les IDOR sur des identifiants numériques incrémentaux
   exposés dans une URL.
@@ -181,12 +181,12 @@ Ce que ces machines enseignent, dans l'ordre
 - getcap -r / est aussi important que find / -perm -4000 pour
   l'énumération de privesc Linux moderne.
 
-**Machine 2 — Orion**
+# Machine 2 — Orion
 
 *CraftCMS 5.6.16 pre-auth RCE (CVE-2025-32432) + telnetd auth bypass
 (CVE-2026-24061) — Easy Linux*
 
-**Concept**
+## Concept
 
 Site web CraftCMS 5.6.16 exposé sur orion.htb. La version est vulnérable
 à une RCE pré-authentifiée (CVE-2025-32432) via l’endpoint d’image
@@ -211,7 +211,7 @@ flowchart LR
     J --> K["Shell root"]
 ```
 
-**Méthodologie — commandes complètes**
+## Méthodologie — commandes complètes
 
 echo "10.129.x.x orion.htb" \| sudo tee -a /etc/hosts
 
@@ -303,14 +303,14 @@ USER="-f root" telnet -a 127.0.0.1
 
 cat /root/root.txt
 
-**Flags**
+## Flags
 
 | **Flag** | **Valeur**                                  |
 |----------|---------------------------------------------|
 | User     | (unique à l’instance — /home/adam/user.txt) |
 | Root     | (unique à l’instance — /root/root.txt)      |
 
-**Réponses aux questions HTB**
+## Réponses aux questions HTB
 
 | **Question**                                                         | **Réponse** |
 |----------------------------------------------------------------------|-------------|
@@ -322,7 +322,7 @@ cat /root/root.txt
 | Which service, unrelated to CraftCMS, is open only locally on Orion? | telnet      |
 | What is the version of the service found?                            | 2.7         |
 
-**Points clés**
+## Points clés
 
 • Toujours identifier la version exacte d’un CMS (footer, /admin/login,
 headers, composer.lock) — elle détermine directement les CVE
@@ -345,7 +345,7 @@ après avoir un shell.
 • CVE-2026-24061 (GNU inetutils telnetd ≤ 2.7) : authentication bypass
 trivial via USER="-f root". Un one-liner donne root.
 
-**Leçon retenue**
+## Leçon retenue
 
 *Une RCE pre-auth sur un CMS mal patché, combinée à des credentials en
 clair dans un .env et à un service legacy local (telnetd) vulnérable à
@@ -353,7 +353,7 @@ un bypass trivial, suffit à passer de zéro à root en quelques étapes.
 Toujours vérifier les services locaux et les fichiers de configuration
 d’application après un premier shell.*
 
-**Ce que ces machines enseignent (suite)**
+## Ce que ces machines enseignent (suite)
 
 • Toujours fingerprint la version exacte d’un CMS / framework — elle
 conditionne les CVE exploitables.

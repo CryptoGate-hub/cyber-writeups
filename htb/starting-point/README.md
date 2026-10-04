@@ -10,7 +10,7 @@ Tier 1 : Meow · Fawn · Dancing · Redeemer · Appointment · Sequel · Oasis
 
 Tier 2 : Three · Vaccine · Oopsie · Archetype · Unified
 
-Résumé des machines
+## Résumé des machines
 
 Vue d'ensemble des 11 machines Starting Point résolues, avec le service
 et la vulnérabilité principale exploitée pour chacune.
@@ -32,7 +32,32 @@ et la vulnérabilité principale exploitée pour chacune.
 | Archetype   | SMB + MSSQL + WinRM (Win) | 445, 1433, 5985      | Credentials en clair + xp_cmdshell  |
 | Unified     | UniFi + MongoDB           | 22, 6789, 8080, 8443 | Log4Shell (CVE-2021-44228)          |
 
-Table des matières
+
+```mermaid
+flowchart TD
+    subgraph Tier1["Tier 1"]
+    direction LR
+    M1[Meow<br/>Telnet root]
+    M2[Fawn<br/>FTP anon]
+    M3[Dancing<br/>SMB nul]
+    M4[Redeemer<br/>Redis]
+    M5[Appointment<br/>SQLi]
+    M6[Sequel<br/>MySQL root]
+    M7[Oasis<br/>Creds leak]
+    M8[Responder<br/>RFI+NTLM]
+    end
+    subgraph Tier2["Tier 2"]
+    direction LR
+    M9[Three<br/>S3 sync]
+    M10[Vaccine<br/>SQLi+sudo]
+    M11[Oopsie<br/>SUID PATH]
+    M12[Archetype<br/>xp_cmdshell]
+    M13[Unified<br/>Log4Shell]
+    end
+    Tier1 --> Tier2
+```
+
+## Table des matières
 
 Résumé des machines 2
 
@@ -64,17 +89,17 @@ Machine 13 — UNIFIED 22
 
 Conclusion générale 24
 
-Machine 1 — MEOW
+# Machine 1 — MEOW
 
 **Telnet non sécurisé — Port 23**
 
-Concept
+## Concept
 
 Comprendre pourquoi un protocole non chiffré (Telnet) combiné à une
 mauvaise configuration (compte root sans mot de passe) mène à une
 compromission totale et immédiate.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -88,7 +113,7 @@ Méthodologie — commandes complètes
 >
 > cat /root/flag.txt
 
-Points clés
+## Points clés
 
 - Telnet transmet identifiants et données en clair, sans aucun
   chiffrement.
@@ -99,21 +124,21 @@ Points clés
 - Toujours tester une connexion basique avant de chercher des
   vulnérabilités complexes.
 
-Leçon retenue
+## Leçon retenue
 
 *Désactiver Telnet au profit de SSH, et ne jamais laisser un compte
 administrateur sans authentification.*
 
-Machine 2 — FAWN
+# Machine 2 — FAWN
 
 **FTP anonyme — Port 21**
 
-Concept
+## Concept
 
 Illustrer le risque d'un service FTP autorisant les connexions anonymes
 en lecture.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -133,7 +158,7 @@ Méthodologie — commandes complètes
 >
 > cat flag.txt
 
-Points clés
+## Points clés
 
 - Le FTP anonyme permet un accès en lecture sans authentification
   réelle.
@@ -141,21 +166,21 @@ Points clés
 - Toujours tester "anonymous" comme identifiant en premier sur un
   service FTP.
 
-Leçon retenue
+## Leçon retenue
 
 *Désactiver l'accès anonyme sur les serveurs FTP de production, ou le
 restreindre à un répertoire public strictement contrôlé.*
 
-Machine 3 — DANCING
+# Machine 3 — DANCING
 
 **Partages SMB non protégés — Port 445**
 
-Concept
+## Concept
 
 Découvrir et exploiter une session SMB nulle (sans identifiants) pour
 accéder à des partages réseau.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -177,7 +202,7 @@ Méthodologie — commandes complètes
 >
 > cat flag.txt
 
-Points clés
+## Points clés
 
 - Une session SMB nulle donne accès aux partages mal configurés, sans
   identifiants.
@@ -185,21 +210,21 @@ Points clés
 - Toujours énumérer tous les partages disponibles avant de conclure à un
   accès refusé.
 
-Leçon retenue
+## Leçon retenue
 
 *Restreindre l'accès anonyme aux partages SMB et exiger systématiquement
 une authentification.*
 
-Machine 4 — REDEEMER
+# Machine 4 — REDEEMER
 
 **Redis sans authentification — Port 6379**
 
-Concept
+## Concept
 
 Montrer qu'une base de données en mémoire exposée sans mot de passe
 donne un accès direct à toutes les données stockées.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -211,7 +236,7 @@ Méthodologie — commandes complètes
 >
 > GET flag
 
-Points clés
+## Points clés
 
 - Redis sans mot de passe (requirepass non défini) expose directement
   toutes les clés.
@@ -219,21 +244,21 @@ Points clés
 - La commande KEYS \* permet d'énumérer l'intégralité des données
   stockées.
 
-Leçon retenue
+## Leçon retenue
 
 *Toujours activer requirepass sur Redis et restreindre son accès réseau
 (bind 127.0.0.1 ou pare-feu strict).*
 
-Machine 5 — APPOINTMENT
+# Machine 5 — APPOINTMENT
 
 **Injection SQL sur formulaire web — Port 80**
 
-Concept
+## Concept
 
 Contourner une authentification web via une injection SQL classique dans
 le champ nom d'utilisateur.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -247,7 +272,7 @@ Méthodologie — commandes complètes
 >
 > \# → authentification contournée, accès à la page confirmant le flag
 
-Points clés
+## Points clés
 
 - Une requête SQL construite par concaténation directe (sans requêtes
   préparées) est vulnérable à l'injection.
@@ -255,21 +280,21 @@ Points clés
 - admin' -- commente le reste de la clause WHERE, validant la connexion
   sans connaître le vrai mot de passe.
 
-Leçon retenue
+## Leçon retenue
 
 *Toujours utiliser des requêtes préparées (prepared statements /
 requêtes paramétrées) pour empêcher l'injection SQL.*
 
-Machine 6 — SEQUEL
+# Machine 6 — SEQUEL
 
 **MySQL root exposé sans mot de passe — Port 3306**
 
-Concept
+## Concept
 
 Se connecter directement à un serveur MySQL exposé, sans couche
 applicative intermédiaire.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -288,7 +313,7 @@ Méthodologie — commandes complètes
 >
 > SELECT \* FROM config;
 
-Points clés
+## Points clés
 
 - Un compte root MySQL exposé sans mot de passe est une faille critique
   et immédiate.
@@ -296,21 +321,21 @@ Points clés
 - --ssl=0 est parfois nécessaire face à des serveurs anciens mal
   configurés côté TLS.
 
-Leçon retenue
+## Leçon retenue
 
 *Ne jamais exposer un service de base de données directement sur un
 réseau non maîtrisé, et toujours exiger un mot de passe fort.*
 
-Machine 7 — OASIS
+# Machine 7 — OASIS
 
 **Fuite de credentials via FTP → Web — Ports 21, 80**
 
-Concept
+## Concept
 
 Illustrer comment une fuite d'identifiants sur un service annexe (FTP)
 permet de compromettre un service principal (application web).
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -329,7 +354,7 @@ Méthodologie — commandes complètes
 >
 > \# → accès à la zone protégée contenant le flag
 
-Points clés
+## Points clés
 
 - Une fuite de credentials via un service secondaire (FTP) compromet
   souvent un service principal (web).
@@ -337,21 +362,21 @@ Points clés
 - Toujours croiser les informations trouvées entre les différents
   services ouverts sur une même cible.
 
-Leçon retenue
+## Leçon retenue
 
 *Ne jamais stocker d'identifiants en clair dans des fichiers
 accessibles, même sur des services jugés secondaires.*
 
-Machine 8 — RESPONDER
+# Machine 8 — RESPONDER
 
 **RFI → capture NTLM → WinRM (Windows) — Ports 80, 5985**
 
-Concept
+## Concept
 
 Chaîner une inclusion de fichier distant (RFI) avec la capture de hashs
 d'authentification NTLM pour obtenir un accès Windows via WinRM.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -374,7 +399,7 @@ Méthodologie — commandes complètes
 >
 > type C:\Users\mike\Desktop\flag.txt
 
-Points clés
+## Points clés
 
 - Une RFI force la cible à contacter une ressource distante contrôlée
   par l'attaquant.
@@ -385,23 +410,23 @@ Points clés
 - evil-winrm fournit un shell interactif sur Windows via le protocole
   WinRM.
 
-Leçon retenue
+## Leçon retenue
 
 *Restreindre strictement l'inclusion de fichiers distants côté
 applicatif, et désactiver l'authentification NTLM sortante non
 nécessaire.*
 
-Machine 9 — THREE
+# Machine 9 — THREE
 
 **Stockage S3-compatible synchronisé au webroot — Ports 22, 80**
 
-Concept
+## Concept
 
 Un sous-domaine expose un service compatible Amazon S3, synchronisé avec
 le webroot Apache : un simple upload de fichier suffit à obtenir
 l'exécution de code.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sV -sC 10.129.x.x
 >
@@ -456,7 +481,7 @@ style="width:4.79167in;height:2.1875in" />
 
 *Site "The Toppers" (port 80) affiché à gauche, terminal Nmap à droite.*
 
-Points clés
+## Points clés
 
 - Un service S3-compatible peut être exposé comme sous-domaine plutôt
   que via un port dédié : toujours penser à l'énumération de
@@ -468,24 +493,24 @@ Points clés
 - Un bucket synchronisé avec le webroot transforme un simple droit
   d'écriture en exécution de code distante (RCE).
 
-Leçon retenue
+## Leçon retenue
 
 *Ne jamais synchroniser un espace de stockage public avec un répertoire
 web exécutable, et toujours restreindre les droits d'écriture sur les
 buckets.*
 
-Machine 10 — VACCINE
+# Machine 10 — VACCINE
 
 **FTP → SQLi PostgreSQL → sudo vi détourné — Ports 21, 22, 80**
 
-Concept
+## Concept
 
 Backup FTP protégé par mot de passe zip, hash MD5 admin trouvé dans le
 code, injection SQL PostgreSQL authentifiée exploitée via sqlmap, puis
 détournement d'un droit sudo restreint sur vi (GTFOBins) pour obtenir un
 shell root.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sC -sV 10.129.x.x
 >
@@ -598,7 +623,7 @@ style="width:4.375in;height:2.20833in" />
 *Les commandes vi tapées par erreur directement dans le texte du fichier
 de configuration.*
 
-Points clés
+## Points clés
 
 - Un backup ZIP en accès FTP anonyme est une fuite classique : toujours
   le récupérer et le cracker (fcrackzip ou zip2john + john).
@@ -622,25 +647,25 @@ Points clés
   d'appuyer sur Échap avant de taper ":", ce qui évite les soucis
   d'émulation de terminal.
 
-Leçon retenue
+## Leçon retenue
 
 *Une chaîne de petites erreurs (backup exposé, hash faible, mot de passe
 DB en clair, réutilisation de mot de passe, règle sudo mal choisie)
 suffit à donner un accès root complet — d'où l'importance de la défense
 en profondeur.*
 
-Machine 11 — OOPSIE
+# Machine 11 — OOPSIE
 
 **Contrôle d'accès cassé + détournement SUID via \$PATH — Ports 22, 80**
 
-Concept
+## Concept
 
 Chaîne de petites failles web (répertoire caché, contrôle d'accès basé
 sur un simple cookie, fuite d'ID) menant à un upload de fichier
 arbitraire, puis escalade via un binaire SUID vulnérable au détournement
 de \$PATH.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sC -sV 10.129.x.x
 >
@@ -734,7 +759,7 @@ style="width:4.79167in;height:2.55208in" />
 *Modification du cookie de session dans les DevTools : role=admin,
 user=34322.*
 
-Points clés
+## Points clés
 
 - Un spider passif (Burp) révèle des chemins jamais liés visiblement sur
   le site — toujours cartographier avant de bruteforcer aveuglément.
@@ -755,18 +780,18 @@ Points clés
 - Un binaire SUID root appelant un exécutable externe sans chemin absolu
   (cat au lieu de /bin/cat) permet un détournement via \$PATH.
 
-Leçon retenue
+## Leçon retenue
 
 *Aucune des failles individuelles n'est critique en soi. C'est leur
 chaînage qui permet de passer d'un visiteur anonyme à un accès root
 complet — illustration parfaite du principe de defense in depth.*
 
-Machine 12 — ARCHETYPE
+# Machine 12 — ARCHETYPE
 
 **MSSQL + xp_cmdshell + credentials réutilisés — Ports 445, 1433, 5985
 (Windows)**
 
-Concept
+## Concept
 
 Première machine Windows de la série. Un partage SMB anonyme expose un
 fichier de configuration contenant un mot de passe en clair, permettant
@@ -775,7 +800,7 @@ l'exécution de commandes, qui révèle à son tour (via l'historique
 PowerShell) le mot de passe Administrator, réutilisé pour un accès
 complet via WinRM.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > sudo nmap -sC -sV 10.129.x.x
 >
@@ -834,7 +859,7 @@ Méthodologie — commandes complètes
 >
 > type C:\Users\Administrator\Desktop\root.txt
 
-Points clés
+## Points clés
 
 - Un partage SMB accessible en session anonyme (-N) peut contenir des
   fichiers de configuration avec des identifiants en clair.
@@ -860,7 +885,7 @@ Points clés
 - WinRM (port 5985) est le pendant Windows de SSH pour l'administration
   à distance ; evil-winrm en est le client offensif de référence.
 
-Leçon retenue
+## Leçon retenue
 
 *La chaîne complète (partage SMB ouvert → fichier de config avec mot de
 passe → accès SQL → xp_cmdshell → historique PowerShell → mot de passe
@@ -868,18 +893,18 @@ admin) montre que sur Windows, l'énumération de fichiers de
 configuration et d'historiques de commandes est aussi cruciale que
 l'exploitation technique pure.*
 
-Machine 13 — UNIFIED
+# Machine 13 — UNIFIED
 
 **Log4Shell + MongoDB — Ports 22, 6789, 8080, 8443**
 
-Concept
+## Concept
 
 Exploitation de la vulnérabilité Log4Shell (CVE-2021-44228) sur UniFi
 Network 6.4.54, puis escalade via manipulation de la base MongoDB locale
 (port 27117) pour obtenir les identifiants root en clair depuis le
 panneau d'administration.
 
-Méthodologie — commandes complètes
+## Méthodologie — commandes complètes
 
 > nmap -sC -sV -p- 10.129.x.x
 >
@@ -978,7 +1003,7 @@ Méthodologie — commandes complètes
 >
 > \# → e50bc93c75b634e4b272d2f771c33681
 
-Points clés
+## Points clés
 
 - Log4Shell (CVE-2021-44228) permet une RCE via injection JNDI (LDAP)
   dans le champ "remember" du login, et non dans le champ username.
@@ -1006,7 +1031,7 @@ Points clés
   que de tenter de craquer le hash existant : c'est bien plus rapide
   pour prendre le contrôle d'un compte applicatif.
 
-Leçon retenue
+## Leçon retenue
 
 *Une application de gestion réseau (UniFi) non patchée + une base
 MongoDB locale sans authentification + des credentials root stockés en
@@ -1014,7 +1039,7 @@ clair dans le panneau = compromission totale. Toujours patcher Log4j et
 ne jamais stocker de mots de passe root en clair dans une interface
 web.*
 
-Conclusion générale
+# Conclusion générale
 
 Ce que ces machines enseignent, dans l'ordre
 

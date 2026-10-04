@@ -133,4 +133,5 @@ Modification du cookie dans les outils de développement
 
 **Flag :** `FLAG{cookie_fb40d975b2a9}`
 
-
+<img src="media/image10.png"
+style="width:5.42547in;height:4.30871in" />
