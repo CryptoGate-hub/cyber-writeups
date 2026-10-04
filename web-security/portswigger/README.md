@@ -1,4 +1,4 @@
-[🏠 Accueil du repo](../../README.md)
+﻿[🏠 Accueil du repo](../../README.md)
 
 # Notes PortSwigger — Web Security Academy
 
@@ -522,7 +522,7 @@ Il y a deux façons de faire :
 
 ![Résultat gobuster](media/image1.png)
 
-R�sultat gobuster
+R�sultat gobuster
 
 Cette commande trouve tous les endpoints accessibles après l’URL du
 site.
