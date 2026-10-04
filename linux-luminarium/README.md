@@ -1,351 +1,10 @@
-🐧
+[🏠 Accueil du repo](../README.md)
 
-**MANUEL TECHNIQUE LINUX**
+# 🐧 Manuel technique Linux — Linux Luminarium
 
-*Synthèse complète — organisée comme le Linux Luminarium de pwn.college*
+Synthèse complète organisée comme le Linux Luminarium de [pwn.college](https://pwn.college/linux-luminarium) : architecture des flux, variables, processus, permissions et commandes.
 
-Architecture des flux, variables, processus, permissions et commandes
-
-Source officielle du plan : pwn.college/linux-luminarium
-
-# Sommaire
-
-*(clic droit sur la table ci-dessous → « Mettre à jour les champs » pour
-afficher les numéros de page)*
-
-[Sommaire [1](#sommaire)](#sommaire)
-
-[Les 16 modules du Linux Luminarium
-[1](#les-16-modules-du-linux-luminarium)](#les-16-modules-du-linux-luminarium)
-
-[Module 1 — Pondering Paths
-[1](#module-1-pondering-paths)](#module-1-pondering-paths)
-
-[Labo 1 — Chemins absolus
-[1](#labo-1-chemins-absolus)](#labo-1-chemins-absolus)
-
-[Labo 2 — Le répertoire de travail courant (cd)
-[1](#labo-2-le-répertoire-de-travail-courant-cd)](#labo-2-le-répertoire-de-travail-courant-cd)
-
-[Labo 3 — Chemins relatifs
-[1](#labo-3-chemins-relatifs)](#labo-3-chemins-relatifs)
-
-[Labo 4 — Le raccourci ~ (home)
-[1](#labo-4-le-raccourci-home)](#labo-4-le-raccourci-home)
-
-[Module 2 — Comprehending Commands
-[1](#module-2-comprehending-commands)](#module-2-comprehending-commands)
-
-[Labo 1 — Recherche d'inodes (find)
-[1](#labo-1-recherche-dinodes-find)](#labo-1-recherche-dinodes-find)
-
-[Labo 2 — Liens symboliques (ln -s)
-[1](#labo-2-liens-symboliques-ln--s)](#labo-2-liens-symboliques-ln--s)
-
-[Module 3 — Digesting Documentation
-[1](#module-3-digesting-documentation)](#module-3-digesting-documentation)
-
-[Labo 1 — Arguments et commutateurs
-[1](#labo-1-arguments-et-commutateurs)](#labo-1-arguments-et-commutateurs)
-
-[Labo 2 — Pages de manuel (man)
-[1](#labo-2-pages-de-manuel-man)](#labo-2-pages-de-manuel-man)
-
-[Labo 3 — Recherche par mot-clé (man -k / apropos)
-[1](#labo-3-recherche-par-mot-clé-man--k-apropos)](#labo-3-recherche-par-mot-clé-man--k-apropos)
-
-[Module 4 — File Globbing
-[1](#module-4-file-globbing)](#module-4-file-globbing)
-
-[Labo 1 — Le joker \* (multi-caractères)
-[1](#labo-1-le-joker-multi-caractères)](#labo-1-le-joker-multi-caractères)
-
-[Labo 2 — Le joker ? (caractère unique)
-[1](#labo-2-le-joker-caractère-unique)](#labo-2-le-joker-caractère-unique)
-
-[Labo 3 — Classes de caractères (\[...\])
-[1](#labo-3-classes-de-caractères-...)](#labo-3-classes-de-caractères-...)
-
-[Labo 4 — Globbing intégré au chemin
-[1](#labo-4-globbing-intégré-au-chemin)](#labo-4-globbing-intégré-au-chemin)
-
-[Labo 5 — Négation de classe (\[^...\])
-[1](#labo-5-négation-de-classe-...)](#labo-5-négation-de-classe-...)
-
-[Labo 6 — Astuce complémentaire — Complétion (Tab)
-[1](#labo-6-astuce-complémentaire-complétion-tab)](#labo-6-astuce-complémentaire-complétion-tab)
-
-[Module 5 — Practicing Piping
-[1](#module-5-practicing-piping)](#module-5-practicing-piping)
-
-[Labo 1 — Redirection de sortie (\>)
-[1](#labo-1-redirection-de-sortie)](#labo-1-redirection-de-sortie)
-
-[Labo 2 — Multiplexage par descripteur (1\> et 2\>)
-[1](#labo-2-multiplexage-par-descripteur-1-et-2)](#labo-2-multiplexage-par-descripteur-1-et-2)
-
-[Labo 3 — Redirection d'entrée (\<)
-[1](#labo-3-redirection-dentrée)](#labo-3-redirection-dentrée)
-
-[Labo 4 — Le pipe (\|) [1](#labo-4-le-pipe)](#labo-4-le-pipe)
-
-[Labo 5 — Filtrage inversé (grep -v)
-[1](#labo-5-filtrage-inversé-grep--v)](#labo-5-filtrage-inversé-grep--v)
-
-[Labo 6 — Édition de flux (sed)
-[1](#labo-6-édition-de-flux-sed)](#labo-6-édition-de-flux-sed)
-
-[Labo 7 — Duplication de flux (tee)
-[1](#labo-7-duplication-de-flux-tee)](#labo-7-duplication-de-flux-tee)
-
-[Labo 8 — Fusion stderr → stdout (2\>&1)
-[1](#labo-8-fusion-stderr-stdout-21)](#labo-8-fusion-stderr-stdout-21)
-
-[Labo 9 — Substitution de processus en lecture (\<())
-[1](#labo-9-substitution-de-processus-en-lecture)](#labo-9-substitution-de-processus-en-lecture)
-
-[Labo 10 — Substitution de processus en écriture (\>())
-[1](#labo-10-substitution-de-processus-en-écriture)](#labo-10-substitution-de-processus-en-écriture)
-
-[Labo 11 — Routage simultané des flux (2\> \>() \|)
-[1](#labo-11-routage-simultané-des-flux-2)](#labo-11-routage-simultané-des-flux-2)
-
-[Labo 12 — Tubes nommés persistants (FIFO / mkfifo)
-[1](#labo-12-tubes-nommés-persistants-fifo-mkfifo)](#labo-12-tubes-nommés-persistants-fifo-mkfifo)
-
-[Module 6 — Data Manipulation
-[1](#module-6-data-manipulation)](#module-6-data-manipulation)
-
-[Labo 1 — Traduction de caractères (tr)
-[1](#labo-1-traduction-de-caractères-tr)](#labo-1-traduction-de-caractères-tr)
-
-[Labo 2 — Suppression de caractères (tr -d)
-[1](#labo-2-suppression-de-caractères-tr--d)](#labo-2-suppression-de-caractères-tr--d)
-
-[Labo 3 — Suppression de délimiteurs (tr -d "\n")
-[1](#labo-3-suppression-de-délimiteurs-tr--d-n)](#labo-3-suppression-de-délimiteurs-tr--d-n)
-
-[Labo 4 — Tronquage de flux (head -n)
-[1](#labo-4-tronquage-de-flux-head--n)](#labo-4-tronquage-de-flux-head--n)
-
-[Labo 5 — Extraction de colonnes (cut)
-[1](#labo-5-extraction-de-colonnes-cut)](#labo-5-extraction-de-colonnes-cut)
-
-[Labo 6 — Tri de flux (sort)
-[1](#labo-6-tri-de-flux-sort)](#labo-6-tri-de-flux-sort)
-
-[Module 7 — Shell Variables
-[1](#module-7-shell-variables)](#module-7-shell-variables)
-
-[Labo 1 — Évaluation d'une variable (\$)
-[1](#labo-1-évaluation-dune-variable)](#labo-1-évaluation-dune-variable)
-
-[Labo 2 — Affectation (=) [1](#labo-2-affectation)](#labo-2-affectation)
-
-[Labo 3 — Protection par guillemets (Quoting)
-[1](#labo-3-protection-par-guillemets-quoting)](#labo-3-protection-par-guillemets-quoting)
-
-[Labo 4 — Exportation (export)
-[1](#labo-4-exportation-export)](#labo-4-exportation-export)
-
-[Labo 5 — Inspection de l'environnement (env)
-[1](#labo-5-inspection-de-lenvironnement-env)](#labo-5-inspection-de-lenvironnement-env)
-
-[Labo 6 — Substitution de commande (\$())
-[1](#labo-6-substitution-de-commande)](#labo-6-substitution-de-commande)
-
-[Labo 7 — Capture interactive (read)
-[1](#labo-7-capture-interactive-read)](#labo-7-capture-interactive-read)
-
-[Labo 8 — Lecture directe d'un fichier (read \<)
-[1](#labo-8-lecture-directe-dun-fichier-read)](#labo-8-lecture-directe-dun-fichier-read)
-
-[Module 8 — Processes and Jobs
-[1](#module-8-processes-and-jobs)](#module-8-processes-and-jobs)
-
-[Labo 1 — Instantané des processus (ps)
-[1](#labo-1-instantané-des-processus-ps)](#labo-1-instantané-des-processus-ps)
-
-[Labo 2 — Signal de terminaison (kill / kill -9)
-[1](#labo-2-signal-de-terminaison-kill-kill--9)](#labo-2-signal-de-terminaison-kill-kill--9)
-
-[Labo 3 — Interruption clavier (Ctrl+C / SIGINT)
-[1](#labo-3-interruption-clavier-ctrlc-sigint)](#labo-3-interruption-clavier-ctrlc-sigint)
-
-[Labo 4 — Suspension (Ctrl+Z / SIGTSTP)
-[1](#labo-4-suspension-ctrlz-sigtstp)](#labo-4-suspension-ctrlz-sigtstp)
-
-[Labo 5 — Reprise au premier plan (fg)
-[1](#labo-5-reprise-au-premier-plan-fg)](#labo-5-reprise-au-premier-plan-fg)
-
-[Labo 6 — Reprise en arrière-plan (bg) et états (ps -o stat)
-[1](#labo-6-reprise-en-arrière-plan-bg-et-états-ps--o-stat)](#labo-6-reprise-en-arrière-plan-bg-et-états-ps--o-stat)
-
-[Labo 7 — Lancement direct en arrière-plan (&)
-[1](#labo-7-lancement-direct-en-arrière-plan)](#labo-7-lancement-direct-en-arrière-plan)
-
-[Labo 8 — Code de sortie (\$?)
-[1](#labo-8-code-de-sortie)](#labo-8-code-de-sortie)
-
-[Module 9 — Untangling Users
-[1](#module-9-untangling-users)](#module-9-untangling-users)
-
-[Labo 1 — Élévation par substitution d'utilisateur (su)
-[1](#labo-1-élévation-par-substitution-dutilisateur-su)](#labo-1-élévation-par-substitution-dutilisateur-su)
-
-[Labo 2 — Cassage de hachages (/etc/shadow + john)
-[1](#labo-2-cassage-de-hachages-etcshadow-john)](#labo-2-cassage-de-hachages-etcshadow-john)
-
-[Labo 3 — Délégation de privilèges (sudo)
-[1](#labo-3-délégation-de-privilèges-sudo)](#labo-3-délégation-de-privilèges-sudo)
-
-[Labo 4 — Audit d'identité (id)
-[1](#labo-4-audit-didentité-id)](#labo-4-audit-didentité-id)
-
-[Module 10 — Perceiving Permissions
-[1](#module-10-perceiving-permissions)](#module-10-perceiving-permissions)
-
-[Labo 1 — Propriété d'un fichier (chown)
-[1](#labo-1-propriété-dun-fichier-chown)](#labo-1-propriété-dun-fichier-chown)
-
-[Labo 2 — Groupe propriétaire (chgrp)
-[1](#labo-2-groupe-propriétaire-chgrp)](#labo-2-groupe-propriétaire-chgrp)
-
-[Labo 3 — Permissions relatives (chmod +/-)
-[1](#labo-3-permissions-relatives-chmod--)](#labo-3-permissions-relatives-chmod--)
-
-[Labo 4 — Bit d'exécution (chmod +x)
-[1](#labo-4-bit-dexécution-chmod-x)](#labo-4-bit-dexécution-chmod-x)
-
-[Labo 5 — Modifications cumulées (chmod mode,mode)
-[1](#labo-5-modifications-cumulées-chmod-modemode)](#labo-5-modifications-cumulées-chmod-modemode)
-
-[Labo 6 — Assignation absolue (chmod u=rw...)
-[1](#labo-6-assignation-absolue-chmod-urw...)](#labo-6-assignation-absolue-chmod-urw...)
-
-[Labo 7 — Le bit SUID (chmod u+s)
-[1](#labo-7-le-bit-suid-chmod-us)](#labo-7-le-bit-suid-chmod-us)
-
-[Module 11 — Chaining Commands
-[1](#module-11-chaining-commands)](#module-11-chaining-commands)
-
-[Labo 1 — Séquence inconditionnelle (;)
-[1](#labo-1-séquence-inconditionnelle)](#labo-1-séquence-inconditionnelle)
-
-[Labo 2 — Enchaînement sur succès (&&)
-[1](#labo-2-enchaînement-sur-succès)](#labo-2-enchaînement-sur-succès)
-
-[Labo 3 — Enchaînement sur échec (\|\|)
-[1](#labo-3-enchaînement-sur-échec)](#labo-3-enchaînement-sur-échec)
-
-[Labo 4 — Exécution par lot d'un script (bash script.sh)
-[1](#labo-4-exécution-par-lot-dun-script-bash-script.sh)](#labo-4-exécution-par-lot-dun-script-bash-script.sh)
-
-[Labo 5 — Redirection depuis un script
-[1](#labo-5-redirection-depuis-un-script)](#labo-5-redirection-depuis-un-script)
-
-[Labo 6 — Script exécutable (./script.sh)
-[1](#labo-6-script-exécutable-.script.sh)](#labo-6-script-exécutable-.script.sh)
-
-[Labo 7 — Le Shebang (#!) [1](#labo-7-le-shebang)](#labo-7-le-shebang)
-
-[Labo 8 — Arguments positionnels (\$1, \$2, ...)
-[1](#labo-8-arguments-positionnels-1-2-...)](#labo-8-arguments-positionnels-1-2-...)
-
-[Labo 9 — Condition if \[ == \]
-[1](#labo-9-condition-if)](#labo-9-condition-if)
-
-[Labo 10 — Branchement alternatif (else)
-[1](#labo-10-branchement-alternatif-else)](#labo-10-branchement-alternatif-else)
-
-[Labo 11 — Conditions multiples (elif)
-[1](#labo-11-conditions-multiples-elif)](#labo-11-conditions-multiples-elif)
-
-[Labo 12 — Lecture rétro-active d'un script (cat / read)
-[1](#labo-12-lecture-rétro-active-dun-script-cat-read)](#labo-12-lecture-rétro-active-dun-script-cat-read)
-
-[Module 12 — Terminal Multiplexing
-[1](#module-12-terminal-multiplexing)](#module-12-terminal-multiplexing)
-
-[Labo 1 — Sessions virtuelles (screen)
-[1](#labo-1-sessions-virtuelles-screen)](#labo-1-sessions-virtuelles-screen)
-
-[Labo 2 — Détacher / rattacher (Ctrl+A, d puis screen -r)
-[1](#labo-2-détacher-rattacher-ctrla-d-puis-screen--r)](#labo-2-détacher-rattacher-ctrla-d-puis-screen--r)
-
-[Labo 3 — Lister les sessions (screen -ls)
-[1](#labo-3-lister-les-sessions-screen--ls)](#labo-3-lister-les-sessions-screen--ls)
-
-[Labo 4 — Fenêtres screen (Ctrl+A c/n/p/0-9)
-[1](#labo-4-fenêtres-screen-ctrla-cnp0-9)](#labo-4-fenêtres-screen-ctrla-cnp0-9)
-
-[Labo 5 — tmux, l'alternative moderne
-[1](#labo-5-tmux-lalternative-moderne)](#labo-5-tmux-lalternative-moderne)
-
-[Labo 6 — Fenêtres tmux (Ctrl+B c/0-9/w)
-[1](#labo-6-fenêtres-tmux-ctrlb-c0-9w)](#labo-6-fenêtres-tmux-ctrlb-c0-9w)
-
-[Module 13 — Pondering PATH
-[1](#module-13-pondering-path)](#module-13-pondering-path)
-
-[Labo 1 — Vider PATH (PATH="")
-[1](#labo-1-vider-path-path)](#labo-1-vider-path-path)
-
-[Labo 2 — Redéfinir PATH
-[1](#labo-2-redéfinir-path)](#labo-2-redéfinir-path)
-
-[Labo 3 — Localiser un binaire (which)
-[1](#labo-3-localiser-un-binaire-which)](#labo-3-localiser-un-binaire-which)
-
-[Labo 4 — Ajouter une commande via PATH
-[1](#labo-4-ajouter-une-commande-via-path)](#labo-4-ajouter-une-commande-via-path)
-
-[Labo 5 — Détournement d'utilitaires (PATH hijacking)
-[1](#labo-5-détournement-dutilitaires-path-hijacking)](#labo-5-détournement-dutilitaires-path-hijacking)
-
-[Module 14 — Silly Shenanigans
-[1](#module-14-silly-shenanigans)](#module-14-silly-shenanigans)
-
-[Labo 1 — Injection dans .bashrc
-[1](#labo-1-injection-dans-.bashrc)](#labo-1-injection-dans-.bashrc)
-
-[Labo 2 — PATH + .bashrc combinés
-[1](#labo-2-path-.bashrc-combinés)](#labo-2-path-.bashrc-combinés)
-
-[Labo 3 — Répertoire parent inscriptible (rm + recréation)
-[1](#labo-3-répertoire-parent-inscriptible-rm-recréation)](#labo-3-répertoire-parent-inscriptible-rm-recréation)
-
-[Labo 4 — Détournement par lien symbolique & sticky bit
-[1](#labo-4-détournement-par-lien-symbolique-sticky-bit)](#labo-4-détournement-par-lien-symbolique-sticky-bit)
-
-[Labo 5 — Fuite d'arguments de processus (ps aux)
-[1](#labo-5-fuite-darguments-de-processus-ps-aux)](#labo-5-fuite-darguments-de-processus-ps-aux)
-
-[Labo 6 — Fuite par lecture globale (.bashrc)
-[1](#labo-6-fuite-par-lecture-globale-.bashrc)](#labo-6-fuite-par-lecture-globale-.bashrc)
-
-[Module 15 — Daring Destruction
-[1](#module-15-daring-destruction)](#module-15-daring-destruction)
-
-[Labo 1 — Fork bomb ( :(){ :\|:& };: )
-[1](#labo-1-fork-bomb)](#labo-1-fork-bomb)
-
-[Labo 2 — Saturation disque (yes \> fichier)
-[1](#labo-2-saturation-disque-yes-fichier)](#labo-2-saturation-disque-yes-fichier)
-
-[Labo 3 — Purge totale du système (rm -rf --no-preserve-root /)
-[1](#labo-3-purge-totale-du-système-rm--rf---no-preserve-root)](#labo-3-purge-totale-du-système-rm--rf---no-preserve-root)
-
-[Labo 4 — Lire un fichier sans binaires disque (read / echo)
-[1](#labo-4-lire-un-fichier-sans-binaires-disque-read-echo)](#labo-4-lire-un-fichier-sans-binaires-disque-read-echo)
-
-[Labo 5 — Lister sans ls (echo \*)
-[1](#labo-5-lister-sans-ls-echo)](#labo-5-lister-sans-ls-echo)
-
-[Souvenir — Classement Linux Luminarium
-[1](#souvenir-classement-linux-luminarium)](#souvenir-classement-linux-luminarium)
-
-# Les 16 modules du Linux Luminarium
+## Les 16 modules du Linux Luminarium
 
 pwn.college organise son dojo « Linux Luminarium » en 16 modules, pour
 un total de 128 labos. Ce document reprend cette structure officielle
@@ -355,24 +14,27 @@ sont couverts par vos notes.
 |        |                                                         |                    |
 |--------|---------------------------------------------------------|--------------------|
 | **\#** | **Module**                                              | **Labos couverts** |
-| 1      | Pondering Paths — Explorer les chemins                  | 4 / 8              |
-| 2      | Comprehending Commands — Comprendre les commandes       | 2 / 15             |
-| 3      | Digesting Documentation — Lire la documentation         | 3 / 7              |
-| 4      | File Globbing — Le globbing (jokers du shell)           | 6 / 10             |
-| 5      | Practicing Piping — Tuyauterie et redirections          | 12 / 15            |
-| 6      | Data Manipulation — Manipulation de données             | 6 / 6              |
-| 7      | Shell Variables — Variables du shell                    | 8 / 8              |
-| 8      | Processes and Jobs — Processus et contrôle des tâches   | 8 / 10             |
-| 9      | Untangling Users — Comprendre les utilisateurs          | 4 / 4              |
-| 10     | Perceiving Permissions — Comprendre les permissions     | 7 / 8              |
-| 11     | Chaining Commands — Enchaîner les commandes et scripter | 12 / 12            |
-| 12     | Terminal Multiplexing — Multiplexage de terminaux       | 6 / 6              |
-| 13     | Pondering PATH — Comprendre la variable PATH            | 5 / 5              |
-| 14     | Silly Shenanigans — Petites bêtises system              | 6 / 6              |
-| 15     | Daring Destruction — Destruction osée                   | 5 / 5              |
+| [1](#module-1--pondering-paths) | Pondering Paths — Explorer les chemins                  | 4 / 8              |
+| [2](#module-2--comprehending-commands) | Comprehending Commands — Comprendre les commandes       | 2 / 15             |
+| [3](#module-3--digesting-documentation) | Digesting Documentation — Lire la documentation         | 3 / 7              |
+| [4](#module-4--file-globbing) | File Globbing — Le globbing (jokers du shell)           | 6 / 10             |
+| [5](#module-5--practicing-piping) | Practicing Piping — Tuyauterie et redirections          | 12 / 15            |
+| [6](#module-6--data-manipulation) | Data Manipulation — Manipulation de données             | 6 / 6              |
+| [7](#module-7--shell-variables) | Shell Variables — Variables du shell                    | 8 / 8              |
+| [8](#module-8--processes-and-jobs) | Processes and Jobs — Processus et contrôle des tâches   | 8 / 10             |
+| [9](#module-9--untangling-users) | Untangling Users — Comprendre les utilisateurs          | 4 / 4              |
+| [10](#module-10--perceiving-permissions) | Perceiving Permissions — Comprendre les permissions     | 7 / 8              |
+| [11](#module-11--chaining-commands) | Chaining Commands — Enchaîner les commandes et scripter | 12 / 12            |
+| [12](#module-12--terminal-multiplexing) | Terminal Multiplexing — Multiplexage de terminaux       | 6 / 6              |
+| [13](#module-13--pondering-path) | Pondering PATH — Comprendre la variable PATH            | 5 / 5              |
+| [14](#module-14--silly-shenanigans) | Silly Shenanigans — Petites bêtises system              | 6 / 6              |
+| [15](#module-15--daring-destruction) | Daring Destruction — Destruction osée                   | 5 / 5              |
 
-*Les modules « Hello Hackers » (introduction) n'apparaissent pas
-ci-dessus : vos notes ne couvrent pas encore ce module d'accueil.*
+*Le module « Hello Hackers » (introduction) n'est pas couvert par ces notes.*
+
+➡ [Voir le classement pwn.college](#souvenir--classement-linux-luminarium)
+
+---
 
 # Module 1 — Pondering Paths
 
@@ -431,6 +93,8 @@ par le chemin absolu du répertoire personnel de l'utilisateur
 |---------------|
 | ~/nom_fichier |
 
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
+
 # Module 2 — Comprehending Commands
 
 *Comprendre les commandes · 2 / 15 labos couverts dans ces notes*
@@ -463,6 +127,8 @@ d'un accès, le noyau résout automatiquement cette indirection.
 |                                                 |
 |-------------------------------------------------|
 | ln -s /chemin/fichier_reel /chemin/lien_virtuel |
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 3 — Digesting Documentation
 
@@ -506,6 +172,8 @@ concorde avec le mot-clé soumis.
 |                 |
 |-----------------|
 | man -k mot_clef |
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 4 — File Globbing
 
@@ -586,6 +254,8 @@ d'ambiguïté (double appui).
 |                            |
 |----------------------------|
 | commande_ou_fichier\[Tab\] |
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 5 — Practicing Piping
 
@@ -748,6 +418,8 @@ processus jumeau ne s'est pas connecté.
 </tbody>
 </table>
 
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
+
 # Module 6 — Data Manipulation
 
 *Manipulation de données · 6 / 6 labos couverts dans ces notes*
@@ -826,6 +498,8 @@ numériquement, -r inverse, -u filtre les doublons.
 |                             |
 |-----------------------------|
 | sort /chemin/fichier_source |
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 7 — Shell Variables
 
@@ -929,6 +603,8 @@ d'affichage tiers comme cat.
 |                                             |
 |---------------------------------------------|
 | read NOM_VARIABLE \< /chemin/fichier_source |
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 8 — Processes and Jobs
 
@@ -1076,6 +752,8 @@ appelé code de sortie : 0 signale un succès, un code non nul signale un
 </tbody>
 </table>
 
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
+
 # Module 9 — Untangling Users
 
 *Comprendre les utilisateurs · 4 / 4 labos couverts dans ces notes*
@@ -1140,6 +818,8 @@ secondaires du compte courant.
 |     |
 |-----|
 | id  |
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 10 — Perceiving Permissions
 
@@ -1263,6 +943,8 @@ programme l'exécute avec les privilèges du propriétaire du fichier
 </tr>
 </tbody>
 </table>
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 11 — Chaining Commands
 
@@ -1507,6 +1189,8 @@ pipe.
 </tbody>
 </table>
 
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
+
 # Module 12 — Terminal Multiplexing
 
 *Multiplexage de terminaux · 6 / 6 labos couverts dans ces notes*
@@ -1639,6 +1323,8 @@ l'arborescence des canaux actifs.
 </tbody>
 </table>
 
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
+
 # Module 13 — Pondering PATH
 
 *Comprendre la variable PATH · 5 / 5 labos couverts dans ces notes*
@@ -1744,6 +1430,8 @@ hérite de ses droits.
 </tr>
 </tbody>
 </table>
+
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
 # Module 14 — Silly Shenanigans
 
@@ -1866,6 +1554,8 @@ other), n'importe quel co-utilisateur peut les ouvrir pour les extraire.
 |-------------------------------------|
 | cat /home/utilisateur_cible/.bashrc |
 
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
+
 # Module 15 — Daring Destruction
 
 *Destruction osée · 5 / 5 labos couverts dans ces notes*
@@ -1953,15 +1643,14 @@ correspondantes.
 |----------|
 | echo /\* |
 
+[⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
+
 # Souvenir — Classement Linux Luminarium
 
-Capture d’écran du classement pwn.college au moment de la rédaction de
-ces notes : **\#443 sur 5788 participants**, avec le score maximal de
-128/128 sur le dojo Linux Luminarium (rang à suivre au fil de la
-progression dans les autres dojos).
+Capture du scoreboard **All-Time** de pwn.college : **#4637 sur 48 363 participants**, avec le score maximal de **128/128** sur le dojo Linux Luminarium (≈ top 10 %).
 
-**\#Top 8%**
+![Scoreboard All-Time pwn.college — CryptoGate #4637, score 128](media/scoreboard-pwncollege.png)
 
-<img src="media/image1.png" style="width:6in;height:2.95in" />
+---
 
-*Rang \#443/5788 — clin d’œil au port 443 (HTTPS)*
+[⬆ Retour en haut](#-manuel-technique-linux--linux-luminarium) · [🏠 Accueil du repo](../README.md)

@@ -1,3 +1,5 @@
+[⬅ Retour à Challenges](README.md) · [🏠 Accueil du repo](../../README.md)
+
 # SpookyPass — Reverse Engineering (Very Easy)
 
 | | |
@@ -92,3 +94,7 @@ HTB{un0bfu5c4t3d_5tr1ng5}
 ## Leçon retenue
 
 Un excellent premier challenge de reverse engineering : familiarisation avec les outils de base (`file`, `strings`, `chmod`) et compréhension du flux d'un programme de vérification de mot de passe.
+
+---
+
+[⬆ Index Challenges](README.md)

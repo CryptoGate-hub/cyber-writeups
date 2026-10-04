@@ -1,9 +1,33 @@
-# Table of Contents
-
-[Notes PortSwigger — Web Security Academy
-[1](#notes-portswigger-web-security-academy)](#notes-portswigger-web-security-academy)
+[🏠 Accueil du repo](../../README.md) 
 
 # Notes PortSwigger — Web Security Academy
+
+Labs résolus de la Web Security Academy : access control, authentification, SSRF, upload, SQLi, XSS…
+
+## Sommaire
+
+- [Lab 1 — Path traversal](#lab-1--path-traversal)
+- [Lab 2 — Unprotected admin functionality](#lab-2--unprotected-admin-functionality)
+- [Lab 3 — Unprotected admin panel with unpredictable URL](#lab-3--unprotected-admin-panel-with-unpredictable-url)
+- [Lab 4 — User role controlled by a request parameter](#lab-4--user-role-controlled-by-a-request-parameter)
+- [Lab 5 — User ID controlled by request parameter, with unpredictable user IDs](#lab-5--user-id-controlled-by-request-parameter-with-unpredictable-user-ids)
+- [Lab 6 — User ID controlled by request parameter with password disclosure](#lab-6--user-id-controlled-by-request-parameter-with-password-disclosure)
+- [Lab 7 — Username enumeration via different responses](#lab-7--username-enumeration-via-different-responses)
+- [Lab 8 — 2FA simple bypass](#lab-8--2fa-simple-bypass)
+- [Lab 9 — Basic SSRF against the local server](#lab-9--basic-ssrf-against-the-local-server)
+- [Lab 10 — Basic SSRF against another back-end system](#lab-10--basic-ssrf-against-another-back-end-system)
+- [Lab 11 — Remote code execution via web shell upload](#lab-11--remote-code-execution-via-web-shell-upload)
+- [Lab 12 — Web shell upload via Content-Type restriction bypass](#lab-12--web-shell-upload-via-content-type-restriction-bypass)
+- [Lab 13 — SQL injection vulnerability in WHERE clause allowing retrieval of hidden data](#lab-13--sql-injection-vulnerability-in-where-clause-allowing-retrieval-of-hidden-data)
+- [Lab 14 — OS command injection, simple case](#lab-14--os-command-injection-simple-case)
+- [Lab 15 — SQL injection vulnerability allowing login bypass](#lab-15--sql-injection-vulnerability-allowing-login-bypass)
+- [Lab 16 — Reflected XSS into HTML context with nothing encoded](#lab-16--reflected-xss-into-html-context-with-nothing-encoded)
+- [Lab 17 — SQL injection attack, querying the database type and version on Oracle](#lab-17--sql-injection-attack-querying-the-database-type-and-version-on-oracle)
+- [Lab 18 — Basic password reset poisoning](#lab-18--basic-password-reset-poisoning)
+
+---
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 1 — Path traversal
 
@@ -33,6 +57,8 @@ Le `../` permet de remonter de répertoire en répertoire jusqu’au
 répertoire racine où se trouve `/``etc``/``passwd`. On transmet ensuite
 la requête, et on obtient l’accès à toutes les informations sensibles
 contenues dans le fichier `/``etc``/``passwd`.
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 2 — Unprotected admin functionality
 
@@ -79,6 +105,8 @@ ensuite à :
 
 Et on peut supprimer l’utilisateur carlos.
 
+[⬆ Sommaire](#sommaire)
+
 ## Lab 3 — Unprotected admin panel with unpredictable URL
 
 **Catégorie :** Access Control
@@ -112,6 +140,8 @@ Code source révélant l’URL admin
 Puis on accède directement à :
 
     https://0af900b403dbf3788137116100ae00fb.web-security-academy.net/admin-bfs2d3
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 4 — User role controlled by a request parameter
 
@@ -149,6 +179,8 @@ Et on ajoute le href pour supprimer carlos :
 
     https://0ae200a4049f1e3380888a7f00e2000e.web-security-academy.net/admin/delete?username=carlos
 
+[⬆ Sommaire](#sommaire)
+
 ## Lab 5 — User ID controlled by request parameter, with unpredictable user IDs
 
 **Catégorie :** Access Control (IDOR)
@@ -176,6 +208,8 @@ carlos. On va dans Burp Suite et on récupère son id. Après connexion
 avec `wiener:peter`, on change simplement l’URL en ajoutant l’id de
 carlos. On obtient alors son API key.
 
+[⬆ Sommaire](#sommaire)
+
 ## Lab 6 — User ID controlled by request parameter with password disclosure
 
 **Catégorie :** Access Control (IDOR)
@@ -193,6 +227,8 @@ En se connectant avec ses identifiants, on voit dans l’URL un
 `id=``wiener`. On change cet id en `administrator` ou `carlos`. On peut
 ainsi voler le mot de passe de l’admin, se connecter avec son compte, et
 aller dans le panel admin pour supprimer carlos.
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 7 — Username enumeration via different responses
 
@@ -218,6 +254,8 @@ différente pour ce cas précis. On remplace ensuite `$``wiener``$` par le
 username correct (ex. alabama), puis on répète la même méthode pour
 trouver le mot de passe.
 
+[⬆ Sommaire](#sommaire)
+
 ## Lab 8 — 2FA simple bypass
 
 **Catégorie :** Authentication
@@ -236,6 +274,8 @@ validation, on change l’URL pour revenir à la page principale — en
 cliquant à nouveau sur “my account”, on peut sauter le code à 4 chiffres
 demandé, car le site pense qu’on est déjà connecté. On répète la même
 méthode pour carlos.
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 9 — Basic SSRF against the local server
 
@@ -257,6 +297,8 @@ La réponse révèle une ligne : `/admin/``delete?username``=``carlos`. Il
 suffit de remplacer à nouveau la clé stockApi par :
 
     http://localhost/admin/delete?username=carlos
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 10 — Basic SSRF against another back-end system
 
@@ -291,6 +333,8 @@ effectivement quelque chose. Dans cet exemple, `192.168.0.135` est la
 bonne adresse IP stockApi. Dans le Repeater, la réponse donne :
 `/``delete?username``=``carlos`. On ajoute ça à la clé stockApi pour
 supprimer carlos.
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 11 — Remote code execution via web shell upload
 
@@ -337,6 +381,8 @@ dans l’URL :
 
 ⚠️ **Attention :** l’echo est fait deux fois, donc il faut ne soumettre
 qu’un seul segment comme solution valide.
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 12 — Web shell upload via Content-Type restriction bypass
 
@@ -394,6 +440,8 @@ Dans ce lien, on ajoute :
     ?command=ls /home/carlos/
     ?command=cat /home/carlos/secret
 
+[⬆ Sommaire](#sommaire)
+
 ## Lab 13 — SQL injection vulnerability in WHERE clause allowing retrieval of hidden data
 
 **Catégorie :** SQL Injection
@@ -421,6 +469,8 @@ Exemple :
 
     https://0a3b006e047c98d78092f87b0080000a.web-security-academy.net/filter?category=Lifestyle' or 1=1---
 
+[⬆ Sommaire](#sommaire)
+
 ## Lab 14 — OS command injection, simple case
 
 **Catégorie :** OS Command Injection
@@ -444,6 +494,8 @@ Après :
 
     productId=18&storeId=2;cat /etc/passwd
 
+[⬆ Sommaire](#sommaire)
+
 ## Lab 15 — SQL injection vulnerability allowing login bypass
 
 **Catégorie :** SQL Injection
@@ -458,6 +510,8 @@ Lab facile — il suffit de se connecter avec :
 
     Username : administrator'--
     Password : (n'importe quoi)
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 16 — Reflected XSS into HTML context with nothing encoded
 
@@ -474,6 +528,8 @@ réponse, sans aucun encodage. Il suffit donc d’injecter directement une
 balise script dans le champ de recherche :
 
     <script>alert()</script>
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 17 — SQL injection attack, querying the database type and version on Oracle
 
@@ -515,6 +571,8 @@ On remplace un des `NULL` par la requête qui donne la version :
 
 `v$version` est une table système Oracle qui contient la chaîne de
 version complète de la base (nom + numéro de version).
+
+[⬆ Sommaire](#sommaire)
 
 ## Lab 18 — Basic password reset poisoning
 
@@ -582,3 +640,4 @@ given post, whose title is passed via the location.hash property.
 
 To solve the lab, deliver an exploit to the victim that calls the
 print() function in their browser.
+
