@@ -2,6 +2,11 @@
 
 # Hack The Box — Challenges
 
+> **Disclaimer**  
+> Tous les writeups de ce dossier concernent des challenges **Very Easy / Easy** ou issus d’événements terminés.  
+> Ils sont publiés à des fins purement éducatives.  
+> Respectez toujours le [Terms of Service](https://www.hackthebox.com/tos) de Hack The Box : ne publiez jamais de writeup complet d’une machine encore **active** dans le lab compétitif.
+
 | Challenge | Catégorie | Difficulté | Technique |
 |---|---|---|---|
 | [SpookyPass](spookypass.md) | Reverse Engineering | Very Easy | `strings` sur un binaire ELF |
