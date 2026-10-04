@@ -6,9 +6,7 @@
 
 **Catégorie :** System / Linux
 
-<img src="media/image1.png"
-style="width:4.10084in;height:4.91597in"
-alt="Capture d’énoncé du challenge" />
+![Capture d’énoncé du challenge](media/image1.png)
 
 Capture d’énoncé du challenge
 
@@ -26,9 +24,7 @@ Mot de passe : `password123`
 
 Ensuite :
 
-<img src="media/image2.png"
-style="width:5.83333in;height:1.3206in"
-alt="Résultat de la commande de listing" />
+![Résultat de la commande de listing](media/image2.png)
 
 Résultat de la commande de listing
 
@@ -47,9 +43,7 @@ Résultat de la commande de listing
 - `2>/dev/null` = cache les messages d’erreur du type “permission
   denied” pour que l’affichage reste lisible
 
-<img src="media/image3.png"
-style="width:5.83333in;height:5.49517in"
-alt="Résultat de la recherche du flag" />
+![Résultat de la recherche du flag](media/image3.png)
 
 Résultat de la recherche du flag
 
@@ -62,14 +56,11 @@ du bruit système sans intérêt, à ignorer.
 
     cat /opt/it-staff/.confidential/.flag.txt
 
-<img src="media/image4.png"
-style="width:5.7479in;height:0.32773in"
-alt="Commande d’affichage du flag" />
+![Commande d’affichage du flag](media/image4.png)
 
 Commande d’affichage du flag
 
-<img src="media/image5.png"
-style="width:4.09244in;height:4.7563in" alt="Résultat final" />
+![Résultat final](media/image5.png)
 
 Résultat final
 
@@ -77,8 +68,7 @@ Résultat final
 
 **Catégorie :** Web / IDOR
 
-<img src="media/image6.png"
-style="width:5.2605in;height:7in" alt="Capture de la page profil" />
+![Capture de la page profil](media/image6.png)
 
 Capture de la page profil
 
@@ -100,9 +90,7 @@ Puis, pour réaliser l’attaque IDOR :
 
     http://38.242.206.53:30000/?id=1001
 
-<img src="media/image7.png"
-style="width:5.05042in;height:6.94958in"
-alt="Résultat de l’attaque IDOR" />
+![Résultat de l’attaque IDOR](media/image7.png)
 
 Résultat de l’attaque IDOR
 
@@ -112,8 +100,7 @@ Résultat de l’attaque IDOR
 
 **Catégorie :** Web / Broken Access Control
 
-<img src="media/image8.png"
-style="width:5.52101in;height:4.01681in" alt="Capture du site cible" />
+![Capture du site cible](media/image8.png)
 
 Capture du site cible
 
@@ -123,9 +110,7 @@ Capture du site cible
 2.  Inspecter la page et aller dans le stockage (cookies)
 3.  Changer la valeur du cookie en `admin`
 
-<img src="media/image9.png"
-style="width:5.83333in;height:1.87633in"
-alt="Modification du cookie dans les outils de développement" />
+![Modification du cookie dans les outils de développement](media/image9.png)
 
 Modification du cookie dans les outils de développement
 
@@ -133,5 +118,4 @@ Modification du cookie dans les outils de développement
 
 **Flag :** `FLAG{cookie_fb40d975b2a9}`
 
-<img src="media/image10.png"
-style="width:5.42547in;height:4.30871in" />
+![Capture du flag obtenu](media/image10.png)

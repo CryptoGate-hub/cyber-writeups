@@ -65,8 +65,7 @@ Il y a deux façons de faire :
 
     gobuster dir -u https://0a1200ef04844933828bfbab000100eb.web-security-academy.net/ -w /usr/share/wordlists/dirb/common.txt
 
-<img src="media/image1.png"
-style="width:5.83333in;height:3.66354in" alt="Résultat gobuster" />
+![Résultat gobuster](media/image1.png)
 
 Résultat gobuster
 
@@ -106,9 +105,7 @@ l’utilisateur.
 On cherche le code source de la page ou la réponse de la page dans Burp
 Suite :
 
-<img src="media/image2.png"
-style="width:4.71428in;height:1.57983in"
-alt="Code source révélant l’URL admin" />
+![Code source révélant l’URL admin](media/image2.png)
 
 Code source révélant l’URL admin
 
@@ -328,9 +325,7 @@ Sur le site, on peut parcourir un avatar — on choisit le fichier
 été mis à jour, mais accéder directement à cet endpoint renvoie “not
 found”.
 
-<img src="media/image3.png"
-style="width:2.36975in;height:1.62185in"
-alt="Fichier uploadé non trouvé au premier endpoint" />
+![Fichier uploadé non trouvé au premier endpoint](media/image3.png)
 
 Fichier uploadé non trouvé au premier endpoint
 
@@ -363,9 +358,7 @@ Avec le même `shell.php` :
 
 On se connecte avec `wiener:peter` :
 
-<img src="media/image4.png"
-style="width:5.83333in;height:4.36897in"
-alt="Page de compte après connexion" />
+![Page de compte après connexion](media/image4.png)
 
 Page de compte après connexion
 
@@ -376,31 +369,23 @@ En essayant d’uploader `shell.php` directement, le site refuse :
 
 Dans Burp Suite, on renvoie la requête au Repeater (`Ctrl+R`) :
 
-<img src="media/image5.png"
-style="width:5.83333in;height:0.22269in"
-alt="Requête envoyée au Repeater" />
+![Requête envoyée au Repeater](media/image5.png)
 
 Requête envoyée au Repeater
 
 On change le `Content-Type` en `image/jpeg` et on renvoie :
 
-<img src="media/image6.png"
-style="width:1.93277in;height:1.64706in"
-alt="Modification du Content-Type" />
+![Modification du Content-Type](media/image6.png)
 
 Modification du Content-Type
 
-<img src="media/image3.png"
-style="width:2.36975in;height:1.62185in"
-alt="Fichier accepté après modification" />
+![Fichier accepté après modification](media/image3.png)
 
 Fichier accepté après modification
 
 Une fois envoyé, on copie le lien de l’image :
 
-<img src="media/image7.png"
-style="width:2.07563in;height:2.5042in"
-alt="Lien de l’image uploadée" />
+![Lien de l’image uploadée](media/image7.png)
 
 Lien de l’image uploadée
 
@@ -550,8 +535,7 @@ comment functionality.
 To solve this lab, submit a comment that calls the alert function when
 the blog post is viewed.
 
-<img src="media/image8.png"
-style="width:6.53194in;height:5.68611in" />
+![Capture du lab résolu](media/image8.png)
 
 **Lab: DOM XSS in document.write sink using source location.search**
 
