@@ -10,3 +10,4 @@
 | [Social Media Investigation Hub](social-media-investigation-hub.md) | OSINT | Very Easy | Cross-platform username investigation |
 | [WebVault Time Machine](webvault-time-machine.md) | OSINT | Easy | Archive web (Wayback-style) |
 | [The Puppet Master](the-puppet-master.md) | OSINT | Very Easy | Reverse image search + vehicle specs |
+| [Low Logic](low-logic.md) | Hardware | Very Easy | Analyse de circuit transistor + logique AND/OR |
