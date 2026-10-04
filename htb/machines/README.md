@@ -39,6 +39,18 @@ autres utilisateurs, révélant des identifiants FTP en clair dans un
 pcap. La privesc exploite ensuite une capability Linux (cap_setuid)
 posée sur l'interpréteur Python.
 
+```mermaid
+flowchart LR
+    A["nmap -sC -sV"] --> B["Port 80: dashboard web<br/>Security Snapshot"]
+    B --> C["IDOR sur /data/id<br/>id = 0"]
+    C --> D["Télécharge le PCAP<br/>d'un autre utilisateur"]
+    D --> E["Wireshark: filtre ftp<br/>creds en clair"]
+    E --> F["nathan : Buck3tH4TF0RM3!"]
+    F --> G["SSH avec les mêmes creds<br/>réutilisation FTP → SSH"]
+    G --> H["getcap -r /<br/>python3.8 = cap_setuid+eip"]
+    H --> I["os.setuid(0)<br/>→ root"]
+```
+
 Méthodologie — commandes complètes
 
 > nmap -sC -sV 10.129.x.x
@@ -184,6 +196,20 @@ MySQL. Le hash bcrypt de l’utilisateur adam est cracké (darkangel) et
 réutilisé pour SSH. La privesc exploite un telnetd GNU inetutils 2.7
 local (127.0.0.1:23) vulnérable à un authentication bypass via la
 variable d’environnement USER (CVE-2026-24061).
+
+```mermaid
+flowchart LR
+    A["nmap -sC -sV"] --> B["CraftCMS 5.6.16<br/>sur orion.htb"]
+    B --> C["CVE-2025-32432<br/>RCE pre-auth Yii2"]
+    C --> D["Shell www-data"]
+    D --> E["Lecture .env<br/>credentials MySQL"]
+    E --> F["Dump table users<br/>hash bcrypt adam"]
+    F --> G["hashcat -m 3200<br/>→ darkangel"]
+    G --> H["SSH adam@orion.htb"]
+    H --> I["ss -tulnp<br/>telnetd sur 127.0.0.1:23"]
+    I --> J["CVE-2026-24061<br/>USER='-f root'"]
+    J --> K["Shell root"]
+```
 
 **Méthodologie — commandes complètes**
 
