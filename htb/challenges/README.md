@@ -16,3 +16,4 @@
 | [WebVault Time Machine](webvault-time-machine.md) | OSINT | Easy | Archive web (Wayback-style) |
 | [The Puppet Master](the-puppet-master.md) | OSINT | Very Easy | Reverse image search + vehicle specs |
 | [Low Logic](low-logic.md) | Hardware | Very Easy | Analyse de circuit transistor + logique AND/OR |
+| [First Contact](first-contact.md) | Misc | Very Easy | Calcul orbital (skyfield) + automatisation TCP pour fenêtres de visibilité satellite |
