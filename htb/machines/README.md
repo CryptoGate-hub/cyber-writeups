@@ -1,4 +1,4 @@
-﻿[🏠 Accueil du repo](../../README.md) · [HTB](../)
+[🏠 Accueil du repo](../../README.md) · [HTB](../)
 
 # Hack The Box — Machines classiques
 
@@ -16,6 +16,7 @@ chacune.
 | [Cap](cap.md)         | FTP + SSH + Web (Flask)                     | 21, 22, 80         | IDOR + capability cap_setuid                    |
 | [Orion](orion.md)       | SSH + HTTP (CraftCMS 5.6.16) + Telnet local | 22, 80 (+23 local) | CVE-2025-32432 (RCE) + CVE-2026-24061 (telnetd) |
 | [Nexus](nexus.md)       | SSH + HTTP (Gitea + Krayin CRM)             | 22, 80             | Credential leak (commit history) + CVE-2026-38526 (file upload RCE) + Directory Traversal via `os.path.join()` |
+| [Reactor](reactor.md)   | SSH + HTTP (Next.js 15 / React 19)          | 22, 3000           | CVE-2025-55182 (React2Shell RCE) + MD5 crack SQLite + Node.js `--inspect` privesc |
 
 
 ## Conclusion générale
@@ -38,3 +39,10 @@ chacune.
 - `os.path.join()` ne sanitise pas les séquences `..` — tout script
   qui construit des chemins à partir de données non-fiables (objets git,
   input utilisateur) est potentiellement vulnérable au path traversal.
+
+- Le flag `--inspect` de Node.js ouvre un débogueur V8 via WebSocket —
+  si un service root l'expose en local, un tunnel SSH suffit pour exécuter
+  du code arbitraire en tant que root via `Runtime.evaluate`.
+
+- MD5 sans sel dans une base SQLite = crack quasi immédiat avec rockyou.txt.
+  Toujours chercher des fichiers `.db` dans les répertoires d'application.
