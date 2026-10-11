@@ -1,4 +1,4 @@
-[🏠 Accueil du repo](../../README.md) · [HTB](../)
+﻿[🏠 Accueil du repo](../../README.md) · [HTB](../)
 
 # Hack The Box — Machines classiques
 
@@ -15,6 +15,7 @@ chacune.
 | **Machine** | **Service(s)**                              | **Port(s)**        | **Vulnérabilité principale**                    |
 | [Cap](cap.md)         | FTP + SSH + Web (Flask)                     | 21, 22, 80         | IDOR + capability cap_setuid                    |
 | [Orion](orion.md)       | SSH + HTTP (CraftCMS 5.6.16) + Telnet local | 22, 80 (+23 local) | CVE-2025-32432 (RCE) + CVE-2026-24061 (telnetd) |
+| [Nexus](nexus.md)       | SSH + HTTP (Gitea + Krayin CRM)             | 22, 80             | Credential leak (commit history) + CVE-2026-38526 (file upload RCE) + Directory Traversal via `os.path.join()` |
 
 
 ## Conclusion générale
@@ -30,3 +31,10 @@ chacune.
 
 - getcap -r / est aussi important que find / -perm -4000 pour
   l'énumération de privesc Linux moderne.
+
+- Vérifier systématiquement l'historique des commits Git : des
+  credentials supprimés d'un fichier restent accessibles dans l'historique.
+
+- `os.path.join()` ne sanitise pas les séquences `..` — tout script
+  qui construit des chemins à partir de données non-fiables (objets git,
+  input utilisateur) est potentiellement vulnérable au path traversal.
