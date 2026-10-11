@@ -14,3 +14,4 @@
 | [Brutus](brutus.md) | DFIR | Very Easy | `auth.log`, `wtmp` | Brute-force SSH + analyse logs Linux |
 | [Unit42](unit42.md) | DFIR | Very Easy | Sysmon EVTX | Analyse Sysmon — UltraVNC backdoordé |
 | [Campfire-1](campfire-1.md) | DFIR | Very Easy | `SECURITY-DC.evtx`, `Powershell-Operational.evtx`, Prefetch | Kerberoasting — PowerView + Rubeus |
+| [Campfire-2](campfire-2.md) | DFIR | Very Easy | `Security.evtx` | AS-REP Roasting — EID 4768 PreAuthType=0 |
