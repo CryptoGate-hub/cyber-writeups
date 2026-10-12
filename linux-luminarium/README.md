@@ -13,7 +13,7 @@ sont couverts par vos notes.
 
 |        |                                                         |                    |
 |--------|---------------------------------------------------------|--------------------|
-| **\#** | **Module**                                              | **Labos couverts** |
+| **#** | **Module**                                              | **Labos couverts** |
 | [1](#module-1--pondering-paths) | Pondering Paths — Explorer les chemins                  | 4 / 8              |
 | [2](#module-2--comprehending-commands) | Comprehending Commands — Comprendre les commandes       | 2 / 15             |
 | [3](#module-3--digesting-documentation) | Digesting Documentation — Lire la documentation         | 3 / 7              |
@@ -107,14 +107,14 @@ symboliques.*
 
 **Définition.** L'utilitaire find parcourt l'arborescence pour localiser
 des fichiers selon des critères (nom, taille, droits). La redirection
-d'erreur 2\>/dev/null permet d'isoler les résultats valides en éliminant
+d'erreur 2>/dev/null permet d'isoler les résultats valides en éliminant
 les erreurs d'accès dues à l'absence de privilèges.
 
 ***Syntaxe :***
 
 |                                                       |
 |-------------------------------------------------------|
-| find /chemin_recherche -name "nom_cible" 2\>/dev/null |
+| find /chemin_recherche -name "nom_cible" 2>/dev/null |
 
 ## Labo 2 — Liens symboliques (ln -s)
 
@@ -182,9 +182,9 @@ concorde avec le mot-clé soumis.
 *Les métacaractères qui permettent au shell d'étendre automatiquement
 des motifs de noms de fichiers.*
 
-## Labo 1 — Le joker \* (multi-caractères)
+## Labo 1 — Le joker * (multi-caractères)
 
-**Définition.** Le caractère \* déclenche le globbing : le shell analyse
+**Définition.** Le caractère * déclenche le globbing : le shell analyse
 le répertoire local et remplace la chaîne par la liste exhaustive des
 fichiers dont le nom concorde avec le motif (hors séparateur /).
 
@@ -192,7 +192,7 @@ fichiers dont le nom concorde avec le motif (hors séparateur /).
 
 |                 |
 |-----------------|
-| cd /dossier\_\* |
+| cd /dossier_* |
 
 ## Labo 2 — Le joker ? (caractère unique)
 
@@ -206,7 +206,7 @@ position dans le nom du fichier.
 |-----------|
 | cd /?ha?? |
 
-## Labo 3 — Classes de caractères (\[...\])
+## Labo 3 — Classes de caractères ([...])
 
 **Définition.** Les crochets définissent un ensemble de caractères.
 L'expansion ne valide le fichier que si le caractère à cette position
@@ -216,7 +216,7 @@ correspond à l'un des éléments listés.
 
 |                            |
 |----------------------------|
-| programme fichier\_\[abc\] |
+| programme fichier_[abc] |
 
 ## Labo 4 — Globbing intégré au chemin
 
@@ -228,11 +228,11 @@ multiple sans déplacement préalable.
 
 |                                            |
 |--------------------------------------------|
-| programme /chemin/dossier/fichier\_\[abc\] |
+| programme /chemin/dossier/fichier_[abc] |
 
-## Labo 5 — Négation de classe (\[^...\])
+## Labo 5 — Négation de classe ([^...])
 
-**Définition.** Placer ^ (ou !) en première position dans \[\] inverse
+**Définition.** Placer ^ (ou !) en première position dans [] inverse
 la condition logique du filtre : le shell retient tous les fichiers dont
 le nom contient un caractère absent de la liste.
 
@@ -240,12 +240,12 @@ le nom contient un caractère absent de la liste.
 
 |                      |
 |----------------------|
-| programme \[^abc\]\* |
+| programme [^abc]* |
 
 ## Labo 6 — Astuce complémentaire — Complétion (Tab)
 
 **Définition.** Le shell intercepte l'appui sur Tab pour interroger le
-système de fichiers ou la variable \$PATH. Il complète automatiquement
+système de fichiers ou la variable $PATH. Il complète automatiquement
 si l'alternative est unique, ou liste les possibilités en cas
 d'ambiguïté (double appui).
 
@@ -253,7 +253,7 @@ d'ambiguïté (double appui).
 
 |                            |
 |----------------------------|
-| commande_ou_fichier\[Tab\] |
+| commande_ou_fichier[Tab] |
 
 [⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
@@ -264,9 +264,9 @@ d'ambiguïté (double appui).
 *Redirections de flux (stdin/stdout/stderr), pipes, substitution de
 processus et tubes nommés.*
 
-## Labo 1 — Redirection de sortie (\>)
+## Labo 1 — Redirection de sortie (>)
 
-**Définition.** L'opérateur \> ferme le descripteur de sortie standard
+**Définition.** L'opérateur > ferme le descripteur de sortie standard
 d'un processus et le réassocie à l'inode d'un fichier spécifié, en
 écrasant son contenu.
 
@@ -274,9 +274,9 @@ d'un processus et le réassocie à l'inode d'un fichier spécifié, en
 
 |                         |
 |-------------------------|
-| commande \> nom_fichier |
+| commande > nom_fichier |
 
-## Labo 2 — Multiplexage par descripteur (1\> et 2\>)
+## Labo 2 — Multiplexage par descripteur (1> et 2>)
 
 **Définition.** Linux identifie les canaux d'E/S par des entiers : 0
 (stdin), 1 (stdout), 2 (stderr). Préciser le numéro devant l'opérateur
@@ -286,11 +286,11 @@ isole le flux voulu vers une destination indépendante.
 
 |                                                  |
 |--------------------------------------------------|
-| commande 1\> fichier_donnees 2\> fichier_erreurs |
+| commande 1> fichier_donnees 2> fichier_erreurs |
 
-## Labo 3 — Redirection d'entrée (\<)
+## Labo 3 — Redirection d'entrée (<)
 
-**Définition.** L'opérateur \< modifie le descripteur d'entrée standard
+**Définition.** L'opérateur < modifie le descripteur d'entrée standard
 du processus pour l'alimenter avec le contenu d'un fichier statique
 plutôt qu'avec le clavier.
 
@@ -298,7 +298,7 @@ plutôt qu'avec le clavier.
 
 |                            |
 |----------------------------|
-| commande \< fichier_entree |
+| commande < fichier_entree |
 
 ## Labo 4 — Le pipe (\|)
 
@@ -348,21 +348,21 @@ processus suivant) et dans un ou plusieurs fichiers.
 |------------------------------------------------|
 | commande1 \| tee capture_flux.txt \| commande2 |
 
-## Labo 8 — Fusion stderr → stdout (2\>&1)
+## Labo 8 — Fusion stderr → stdout (2>&1)
 
 **Définition.** Cet opérateur duplique un descripteur vers un autre.
-2\>&1 envoie le flux d'erreur directement sur le canal de sortie
+2>&1 envoie le flux d'erreur directement sur le canal de sortie
 standard, permettant au pipe de traiter l'ensemble des messages.
 
 ***Syntaxe :***
 
 |                                     |
 |-------------------------------------|
-| commande 2\>&1 \| commande_suivante |
+| commande 2>&1 \| commande_suivante |
 
-## Labo 9 — Substitution de processus en lecture (\<())
+## Labo 9 — Substitution de processus en lecture (<())
 
-**Définition.** La notation \<(commande) instancie un tube virtuel
+**Définition.** La notation <(commande) instancie un tube virtuel
 éphémère : le shell exécute le programme en arrière-plan et le remplace
 par un chemin virtuel lisible (généralement sous /dev/fd/).
 
@@ -370,11 +370,11 @@ par un chemin virtuel lisible (généralement sous /dev/fd/).
 
 |                                  |
 |----------------------------------|
-| diff \<(commande1) \<(commande2) |
+| diff <(commande1) <(commande2) |
 
-## Labo 10 — Substitution de processus en écriture (\>())
+## Labo 10 — Substitution de processus en écriture (>())
 
-**Définition.** À l'inverse, \>(commande) génère un point d'entrée
+**Définition.** À l'inverse, >(commande) génère un point d'entrée
 virtuel : tout flux écrit dans ce chemin temporaire est immédiatement
 transmis à l'entrée standard du processus fils.
 
@@ -382,9 +382,9 @@ transmis à l'entrée standard du processus fils.
 
 |                                                                |
 |----------------------------------------------------------------|
-| commande_source \| tee \>(commande_cible1) \>(commande_cible2) |
+| commande_source \| tee >(commande_cible1) >(commande_cible2) |
 
-## Labo 11 — Routage simultané des flux (2\> \>() \|)
+## Labo 11 — Routage simultané des flux (2> >() \|)
 
 **Définition.** Technique avancée qui déroute spécifiquement stderr vers
 un sous-processus via une substitution en écriture, tout en traitant
@@ -394,7 +394,7 @@ stdout via le pipe classique — séparation hermétique complète des flux.
 
 |                                                    |
 |----------------------------------------------------|
-| commande_source 2\> \>(programme_A) \| programme_B |
+| commande_source 2> >(programme_A) \| programme_B |
 
 ## Labo 12 — Tubes nommés persistants (FIFO / mkfifo)
 
@@ -473,7 +473,7 @@ lignes à extraire depuis le premier octet reçu.
 
 |                                              |
 |----------------------------------------------|
-| commande_source \| head -n \[nombre_lignes\] |
+| commande_source \| head -n [nombre_lignes] |
 
 ## Labo 5 — Extraction de colonnes (cut)
 
@@ -485,7 +485,7 @@ l'index du champ à retenir.
 
 |                                                              |
 |--------------------------------------------------------------|
-| commande_source \| cut -d "separateur" -f \[numero_colonne\] |
+| commande_source \| cut -d "separateur" -f [numero_colonne] |
 
 ## Labo 6 — Tri de flux (sort)
 
@@ -508,17 +508,17 @@ numériquement, -r inverse, -u filtre les doublons.
 *Stockage, affectation, portée et capture de données textuelles en
 mémoire.*
 
-## Labo 1 — Évaluation d'une variable (\$)
+## Labo 1 — Évaluation d'une variable ($)
 
 **Définition.** Les variables du shell stockent des données textuelles
-en mémoire sous forme de paires clé-valeur. Le caractère \$ déclenche
+en mémoire sous forme de paires clé-valeur. Le caractère $ déclenche
 l'expansion : le shell remplace la clé par sa valeur associée.
 
 ***Syntaxe :***
 
 |                           |
 |---------------------------|
-| echo \$NOM_DE_LA_VARIABLE |
+| echo $NOM_DE_LA_VARIABLE |
 
 ## Labo 2 — Affectation (=)
 
@@ -568,7 +568,7 @@ paires clé-valeur exportées.
 |-----|
 | env |
 
-## Labo 6 — Substitution de commande (\$())
+## Labo 6 — Substitution de commande ($())
 
 **Définition.** La substitution de commande capture la sortie standard
 d'un sous-processus pour l'affecter dynamiquement en mémoire, en
@@ -578,7 +578,7 @@ retirant le saut de ligne final.
 
 |                                      |
 |--------------------------------------|
-| NOM_VARIABLE=\$(commande_a_executer) |
+| NOM_VARIABLE=$(commande_a_executer) |
 
 ## Labo 7 — Capture interactive (read)
 
@@ -592,9 +592,9 @@ affecté à la clé spécifiée.
 |-------------------|
 | read NOM_VARIABLE |
 
-## Labo 8 — Lecture directe d'un fichier (read \<)
+## Labo 8 — Lecture directe d'un fichier (read <)
 
-**Définition.** L'association de read avec \< permet d'affecter le
+**Définition.** L'association de read avec < permet d'affecter le
 contenu d'un fichier à une variable sans passer par un sous-processus
 d'affichage tiers comme cat.
 
@@ -602,7 +602,7 @@ d'affichage tiers comme cat.
 
 |                                             |
 |---------------------------------------------|
-| read NOM_VARIABLE \< /chemin/fichier_source |
+| read NOM_VARIABLE < /chemin/fichier_source |
 
 [⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 
@@ -666,7 +666,7 @@ plan pour lui demander d'arrêter.
 
 |                                                  |
 |--------------------------------------------------|
-| \[Pendant l'exécution au premier plan\] Ctrl + C |
+| [Pendant l'exécution au premier plan] Ctrl + C |
 
 ## Labo 4 — Suspension (Ctrl+Z / SIGTSTP)
 
@@ -678,7 +678,7 @@ immédiatement au shell.
 
 |                                                  |
 |--------------------------------------------------|
-| \[Pendant l'exécution au premier plan\] Ctrl + Z |
+| [Pendant l'exécution au premier plan] Ctrl + Z |
 
 ## Labo 5 — Reprise au premier plan (fg)
 
@@ -732,11 +732,11 @@ de commande à l'utilisateur.
 |----------------------|
 | /chemin/executable & |
 
-## Labo 8 — Code de sortie (\$?)
+## Labo 8 — Code de sortie ($?)
 
 **Définition.** À sa terminaison, chaque commande renvoie un entier
 appelé code de sortie : 0 signale un succès, un code non nul signale un
-échec. Le shell le stocke dans la variable spéciale \$?.
+échec. Le shell le stocke dans la variable spéciale $?.
 
 ***Syntaxe :***
 
@@ -805,7 +805,7 @@ s'appuyant sur la politique définie dans /etc/sudoers.
 
 |                                 |
 |---------------------------------|
-| sudo \[commande\] \[arguments\] |
+| sudo [commande] [arguments] |
 
 ## Labo 4 — Audit d'identité (id)
 
@@ -837,7 +837,7 @@ titulaire hérite des droits associés.
 
 |                                           |
 |-------------------------------------------|
-| chown \[nom_utilisateur\] /chemin/fichier |
+| chown [nom_utilisateur] /chemin/fichier |
 
 ## Labo 2 — Groupe propriétaire (chgrp)
 
@@ -849,7 +849,7 @@ d'un inode, donnant accès à tous ses membres.
 
 |                                         |
 |-----------------------------------------|
-| chgrp \[nom_du_groupe\] /chemin/fichier |
+| chgrp [nom_du_groupe] /chemin/fichier |
 
 ## Labo 3 — Permissions relatives (chmod +/-)
 
@@ -1015,7 +1015,7 @@ l'interpréteur (bash) force son exécution ligne par ligne.
 ## Labo 5 — Redirection depuis un script
 
 **Définition.** Un script interprété par lot se comporte comme un
-processus unique : les opérateurs de redirection (\>, \>\>, 2\>, \<) et
+processus unique : les opérateurs de redirection (>, >>, 2>, <) et
 de tuyauterie (\|) s'appliquent globalement à son invocation.
 
 ***Syntaxe :***
@@ -1057,7 +1057,7 @@ courant.
 
 **Définition.** Le noyau n'analyse jamais l'extension d'un fichier pour
 savoir comment le traiter : il inspecte les premiers octets. La séquence
-\#! (Shebang), en toute première ligne, désigne l'interpréteur à
+#! (Shebang), en toute première ligne, désigne l'interpréteur à
 charger.
 
 ***Syntaxe :***
@@ -1074,11 +1074,11 @@ charger.
 </tbody>
 </table>
 
-## Labo 8 — Arguments positionnels (\$1, \$2, ...)
+## Labo 8 — Arguments positionnels ($1, $2, ...)
 
 **Définition.** Le shell stocke chaque jeton d'argument passé au script
-dans des variables positionnelles dédiées : \$1 pour le premier
-argument, \$2 pour le second, etc.
+dans des variables positionnelles dédiées : $1 pour le premier
+argument, $2 pour le second, etc.
 
 ***Syntaxe :***
 
@@ -1094,7 +1094,7 @@ argument, \$2 pour le second, etc.
 </tbody>
 </table>
 
-## Labo 9 — Condition if \[ == \]
+## Labo 9 — Condition if [ == ]
 
 **Définition.** Les scripts intègrent des structures if. L'opérateur ==
 valide l'égalité textuelle entre deux chaînes ; le bloc then s'exécute
@@ -1375,19 +1375,19 @@ leur nom court sans préciser leur chemin.
 ## Labo 3 — Localiser un binaire (which)
 
 **Définition.** which reproduit la recherche séquentielle du shell dans
-\$PATH et affiche le chemin absolu du premier exécutable trouvé
+$PATH et affiche le chemin absolu du premier exécutable trouvé
 correspondant à l'argument soumis.
 
 ***Syntaxe :***
 
 |                              |
 |------------------------------|
-| which \[nom_de_la_commande\] |
+| which [nom_de_la_commande] |
 
 ## Labo 4 — Ajouter une commande via PATH
 
 **Définition.** Le système ne distingue pas un binaire officiel d'un
-script personnalisé exposé dans \$PATH (avec +x). Combiné à un appelant
+script personnalisé exposé dans $PATH (avec +x). Combiné à un appelant
 privilégié, ce mécanisme permet d'injecter un script personnalisé.
 
 ***Syntaxe :***
@@ -1409,7 +1409,7 @@ privilégié, ce mécanisme permet d'injecter un script personnalisé.
 
 ## Labo 5 — Détournement d'utilitaires (PATH hijacking)
 
-**Définition.** En plaçant un répertoire contrôlé en tête de \$PATH, on
+**Définition.** En plaçant un répertoire contrôlé en tête de $PATH, on
 peut intercepter les appels vers des utilitaires système (comme rm) émis
 par un programme appelant. Si celui-ci est privilégié, le faux binaire
 hérite de ses droits.
@@ -1444,19 +1444,19 @@ fuites d'informations.*
 
 **Définition.** À chaque session interactive, Bash exécute
 automatiquement ~/.bashrc. Si ses permissions d'écriture sont
-compromises, y ajouter une commande (via \>\>) garantit son exécution à
+compromises, y ajouter une commande (via >>) garantit son exécution à
 la prochaine connexion de la victime.
 
 ***Syntaxe :***
 
 |                                                       |
 |-------------------------------------------------------|
-| echo "cat /flag" \>\> /home/utilisateur_cible/.bashrc |
+| echo "cat /flag" >> /home/utilisateur_cible/.bashrc |
 
 ## Labo 2 — PATH + .bashrc combinés
 
 **Définition.** Combiner une faille de persistance (.bashrc
-inscriptible) avec un détournement de \$PATH permet d'intercepter des
+inscriptible) avec un détournement de $PATH permet d'intercepter des
 saisies sensibles : un faux binaire, imitant l'invite attendue, capture
 l'entrée de la victime.
 
@@ -1576,7 +1576,7 @@ sature kernel.pid_max en un instant.
 |----------------|
 | :(){ :\|:& };: |
 
-## Labo 2 — Saturation disque (yes \> fichier)
+## Labo 2 — Saturation disque (yes > fichier)
 
 **Définition.** yes produit en boucle une chaîne de caractères sur sa
 sortie standard. Rediriger ce flux infini vers un fichier permet de
@@ -1630,18 +1630,18 @@ mémoire vive : on peut alors s'appuyer sur les commandes internes
 </tbody>
 </table>
 
-## Labo 5 — Lister sans ls (echo \*)
+## Labo 5 — Lister sans ls (echo *)
 
 **Définition.** En l'absence de ls, l'exploration d'un répertoire reste
-possible via le globbing natif du shell : echo \* force le shell à
-substituer \* par la liste ordonnée de toutes les entrées
+possible via le globbing natif du shell : echo * force le shell à
+substituer * par la liste ordonnée de toutes les entrées
 correspondantes.
 
 ***Syntaxe :***
 
 |          |
 |----------|
-| echo /\* |
+| echo /* |
 
 [⬆ Retour au sommaire](#les-16-modules-du-linux-luminarium)
 

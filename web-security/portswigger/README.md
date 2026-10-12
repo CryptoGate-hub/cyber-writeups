@@ -617,7 +617,7 @@ you can control using the website URL.
 To solve this lab, perform a cross-site scripting attack that calls the
 alert function.
 
-**Resolution : "\>\<svg onload=alert(1)\>**
+**Resolution : "><svg onload=alert(1)>**
 
 **Lab: DOM XSS in innerHTML sink using source location.search**
 
@@ -629,13 +629,13 @@ location.search.
 To solve this lab, perform a cross-site scripting attack that calls the
 alert function.
 
-Resolution: \<img src=1 onerror=alert(1)\>
+Resolution: <img src=1 onerror=alert(1)>
 
 **Lab: DOM XSS in jQuery anchor href attribute sink using
 location.search source**
 
 This lab contains a DOM-based cross-site scripting vulnerability in the
-submit feedback page. It uses the jQuery library's \$ selector function
+submit feedback page. It uses the jQuery library's $ selector function
 to find an anchor element, and changes its href attribute using data
 from location.search.
 
@@ -646,7 +646,7 @@ https://0adf00fc0445233780ecdf9b0084001a.web-security-academy.net/feedback?retur
 **Lab: DOM XSS in jQuery selector sink using a hashchange event**
 
 This lab contains a DOM-based cross-site scripting vulnerability on the
-home page. It uses jQuery's \$() selector function to auto-scroll to a
+home page. It uses jQuery's $() selector function to auto-scroll to a
 given post, whose title is passed via the location.hash property.
 
 To solve the lab, deliver an exploit to the victim that calls the

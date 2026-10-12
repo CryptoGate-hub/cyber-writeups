@@ -2,7 +2,18 @@
 
 # Notes CTF — Discord
 
-Writeups de challenges CTF résolus (système Linux, IDOR, manipulation de cookies), avec captures d'écran.
+<p align="center">
+  <img src="https://img.shields.io/badge/Challenges-3-9FEF00?style=flat-square" />
+  <img src="https://img.shields.io/badge/Catégories-System · Web-blue?style=flat-square" />
+</p>
+
+Writeups de challenges CTF résolus sur un serveur Discord communautaire (système Linux, IDOR, manipulation de cookies), rédigés pas à pas avec le détail de chaque commande — pensés pour quelqu'un qui découvre ces techniques.
+
+| Challenge | Catégorie | Technique |
+|---|---|---|
+| [CTF 1 — Flag Linux via SSH](#ctf-1--recherche-de-flag-sur-un-système-linux-ssh) | System | `find` récursif, filtrage du bruit `/proc` · `/sys` |
+| [CTF 2 — IDOR profil employé](#ctf-2--idor-sur-un-profil-employé) | Web / IDOR | Manipulation de paramètre `?id=` |
+| [CTF 3 — Bypass par cookie](#ctf-3--contournement-via-cookie) | Web / Broken Access Control | Modification de cookie côté client |
 
 ## Sommaire
 
@@ -86,9 +97,7 @@ Résultat final
 
 Capture de la page profil
 
-Indice sur la page : *“Profiles are addressed by ?id=. You are employee
-\#1005.”* — cela indique directement comment manipuler l’URL, pas besoin
-de deviner.
+Indice sur la page : *“Profiles are addressed by ?id=. You are employee #1005.”* — cela indique directement comment manipuler l’URL, pas besoin de deviner.
 
 **Étape 1 : Ajouter le paramètre à la main**
 

@@ -1,8 +1,16 @@
 [⬅ Retour à Machines](README.md) · [🏠 Accueil du repo](../../README.md)
 
-# Machine — Reactor
+# Machine 4 — Reactor
 
-**CVE-2025-55182 (React2Shell) + SQLite MD5 crack + Node.js --inspect RCE — Easy Linux**
+**CVE-2025-55182 (React2Shell) + SQLite MD5 crack + Node.js `--inspect` RCE — Medium / Linux**
+
+| | |
+|---|---|
+| **OS** | Linux |
+| **Difficulté** | Medium |
+| **Points** | 30 |
+| **Services** | SSH (22) · Next.js 15.0.3 (3000) |
+| **Vulnérabilité principale** | CVE-2025-55182 (RCE non authentifié) + Node.js `--inspect` privesc |
 
 ## Concept
 
@@ -193,3 +201,18 @@ cat /root/root.txt
 | CVE-2025-55182 | React Server Components — désérialisation non sécurisée du protocole "Flight" → RCE non authentifié |
 | MD5 unsalted | Hashes MD5 sans sel dans SQLite → craquables avec rockyou.txt |
 | Node.js `--inspect` | Débogueur V8 exposé en local sur un service root → RCE via `Runtime.evaluate` WebSocket |
+
+## Points clés
+
+- Une CVE fraîchement publiée sur un framework moderne (Next.js / React Server Components) peut toucher des applications en production avant même que le patch soit largement déployé — surveiller les CVE récentes sur la stack identifiée.
+- Un hash MD5 sans sel, même stocké dans une base SQLite locale non exposée publiquement, reste cassable en quelques secondes avec `hashcat` et une wordlist standard.
+- Un service lancé en root avec le flag de debug `--inspect` (ou `--inspect-brk`) ouvre un port de débogage V8 qui permet l'exécution de JavaScript arbitraire via le protocole Chrome DevTools — un flag de debug oublié en production équivaut à une backdoor.
+- `ss -tnlp` après chaque foothold pour repérer les ports internes (127.0.0.1) qui ne sont pas visibles depuis l'extérieur — souvent la clé de la privesc.
+
+## Leçon retenue
+
+*Les frameworks JavaScript modernes exposent une surface d'attaque qui évolue vite : une CVE sur React Server Components permet un RCE non authentifié, et un flag de debug Node.js oublié sur un service root transforme un accès utilisateur en root complet. Ne jamais déployer un service avec `--inspect` actif en production.*
+
+---
+
+[⬅ Précédent : Nexus](nexus.md) · [⬆ Index Machines](README.md)

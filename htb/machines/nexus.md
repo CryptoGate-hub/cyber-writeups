@@ -1,8 +1,16 @@
 [⬅ Retour à Machines](README.md) · [🏠 Accueil du repo](../../README.md)
 
-# Machine — Nexus
+# Machine 3 — Nexus
 
-**Gitea leak + Krayin CRM RCE (CVE-2026-38526) + Directory Traversal via os.path.join — Easy Linux**
+**Gitea leak + Krayin CRM RCE (CVE-2026-38526) + Directory Traversal via os.path.join — Easy / Linux**
+
+| | |
+|---|---|
+| **OS** | Linux |
+| **Difficulté** | Easy |
+| **Points** | 20 |
+| **Services** | SSH (22) · HTTP/nginx (80) → Gitea + Krayin CRM |
+| **Vulnérabilité principale** | Credential leak (Gitea) + CVE-2026-38526 (RCE) + directory traversal |
 
 ## Concept
 
@@ -219,3 +227,19 @@ cat /root/root.txt
 | Credential leak (Gitea) | Mot de passe exposé dans l'historique des commits |
 | CVE-2026-38526 | Krayin CRM 2.2.0 — upload de fichier PHP arbitraire |
 | Unsanitized `os.path.join()` | Directory traversal via objets git malveillants |
+
+## Points clés
+
+- Un dépôt Gitea marqué privé n'empêche pas forcément l'accès à un sous-domaine `git.*` mal segmenté — toujours fuzzer les vhosts.
+- Les credentials supprimés d'un fichier `.env` restent lisibles dans l'historique git (`git log -p`) tant que l'historique n'est pas réécrit.
+- Une CVE de upload de fichier sur un CRM auto-hébergé (Krayin) peut être déclenchée via une fonctionnalité métier anodine (pièce jointe d'email).
+- `os.path.join()` en Python **ne neutralise pas** les composants `..` : toute valeur provenant d'un objet git (nom de fichier, chemin d'arborescence) doit être validée avant d'être utilisée dans un chemin de destination.
+- Un timer systemd (`systemctl list-timers`) qui synchronise du contenu externe (dépôts "template") est une surface de privesc à ne pas négliger lors de l'énumération post-foothold.
+
+## Leçon retenue
+
+*Une fuite de credentials dans un historique git, combinée à une CVE d'upload sur une application métier et à un service de synchronisation non sanitisé, forme une chaîne complète de la reconnaissance jusqu'à root. Vérifier systématiquement l'historique des commits sur tout dépôt exposé, même privé en apparence.*
+
+---
+
+[⬅ Précédent : Orion](orion.md) · [⬆ Index Machines](README.md) · [Suivant : Reactor ➡](reactor.md)

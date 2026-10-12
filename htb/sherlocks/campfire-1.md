@@ -19,7 +19,7 @@
 |---|---|
 | `SECURITY-DC.evtx` | Journal de sécurité du contrôleur de domaine `DC01.forela.local` |
 | `Powershell-Operational.evtx` | Journal PowerShell de la workstation compromise |
-| `C\Windows\prefetch\*.pf` | Fichiers Prefetch de la workstation (preuves d'exécution) |
+| `C:\Windows\prefetch\*.pf` | Fichiers Prefetch de la workstation (preuves d'exécution) |
 
 > L'archive est protégée par un mot de passe (`hacktheblue`) et chiffrée en AES : il faut **7-Zip** pour l'extraire, `Expand-Archive` ne la gère pas.
 
