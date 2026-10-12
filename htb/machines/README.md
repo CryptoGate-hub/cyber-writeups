@@ -1,48 +1,33 @@
-[🏠 Accueil du repo](../../README.md) · [HTB](../)
+[🏠 Accueil](../../README.md) · [HTB](../README.md)
 
-# Hack The Box — Machines classiques
+# HTB — Machines classiques
 
 Machines Easy/Medium résolues après le Starting Point. Une page par machine, avec diagramme d'attaque, commandes complètes et leçons retenues.
 
-## Résumé des machines
+<p align="center">
+  <img src="https://img.shields.io/badge/Easy-3-9FEF00?style=flat-square" />
+  <img src="https://img.shields.io/badge/Medium-1-FFB347?style=flat-square" />
+</p>
 
-Vue d'ensemble des machines classiques HTB résolues (hors Starting
-Point), avec le service et la vulnérabilité principale exploitée pour
-chacune.
+---
 
-|             |                                             |                    |                                                 |
-|-------------|---------------------------------------------|--------------------|-------------------------------------------------|
-| **Machine** | **Service(s)**                              | **Port(s)**        | **Vulnérabilité principale**                    |
-| [Cap](cap.md)         | FTP + SSH + Web (Flask)                     | 21, 22, 80         | IDOR + capability cap_setuid                    |
-| [Orion](orion.md)       | SSH + HTTP (CraftCMS 5.6.16) + Telnet local | 22, 80 (+23 local) | CVE-2025-32432 (RCE) + CVE-2026-24061 (telnetd) |
-| [Nexus](nexus.md)       | SSH + HTTP (Gitea + Krayin CRM)             | 22, 80             | Credential leak (commit history) + CVE-2026-38526 (file upload RCE) + Directory Traversal via `os.path.join()` |
-| [Reactor](reactor.md)   | SSH + HTTP (Next.js 15 / React 19)          | 22, 3000           | CVE-2025-55182 (React2Shell RCE) + MD5 crack SQLite + Node.js `--inspect` privesc |
+## Machines résolues
 
+| Machine | OS | Difficulté | Services | Vulnérabilité principale |
+|---|---|---|---|---|
+| [Cap](cap.md) | Linux | Easy | FTP · SSH · Web (Flask) | IDOR → PCAP credentials + cap_setuid |
+| [Orion](orion.md) | Linux | Easy | SSH · HTTP (CraftCMS) | CVE-2025-32432 (RCE) + CVE-2026-24061 |
+| [Nexus](nexus.md) | Linux | Easy | SSH · HTTP (Gitea + Krayin CRM) | Credential leak (git history) + File upload RCE |
+| [Reactor](reactor.md) | Linux | Medium | SSH · HTTP (Next.js 15) | CVE-2025-55182 (React2Shell RCE) + Node.js `--inspect` privesc |
 
-## Conclusion générale
+---
 
-### Ce que ces machines enseignent
+## Leçons clés
 
-- Toujours tester les IDOR sur des identifiants numériques incrémentaux
-  exposés dans une URL.
-
-- Analyser systématiquement tout fichier de capture réseau (pcap)
-  récupéré avec Wireshark/tshark, en filtrant sur les protocoles non
-  chiffrés.
-
-- getcap -r / est aussi important que find / -perm -4000 pour
-  l'énumération de privesc Linux moderne.
-
-- Vérifier systématiquement l'historique des commits Git : des
-  credentials supprimés d'un fichier restent accessibles dans l'historique.
-
-- `os.path.join()` ne sanitise pas les séquences `..` — tout script
-  qui construit des chemins à partir de données non-fiables (objets git,
-  input utilisateur) est potentiellement vulnérable au path traversal.
-
-- Le flag `--inspect` de Node.js ouvre un débogueur V8 via WebSocket —
-  si un service root l'expose en local, un tunnel SSH suffit pour exécuter
-  du code arbitraire en tant que root via `Runtime.evaluate`.
-
-- MD5 sans sel dans une base SQLite = crack quasi immédiat avec rockyou.txt.
-  Toujours chercher des fichiers `.db` dans les répertoires d'application.
+- **IDOR** : toujours tester les identifiants numériques incrémentaux dans les URLs
+- **PCAP** : analyser les captures réseau avec Wireshark/tshark, filtrer les protocoles non chiffrés
+- **Linux capabilities** : `getcap -r /` est aussi important que `find / -perm -4000` pour la privesc
+- **Git history** : des credentials supprimés restent accessibles dans l'historique des commits
+- **`os.path.join()`** : ne sanitise pas les séquences `..` — vulnérable au path traversal
+- **Node.js `--inspect`** : ouvre un débogueur V8 — si exposé en local par root, tunnel SSH → RCE
+- **MD5 sans sel** : crack quasi immédiat avec rockyou.txt — chercher les fichiers `.db`

@@ -1,12 +1,25 @@
-[🏠 Accueil du repo](../README.md)
+[🏠 Accueil](../README.md)
 
 # Hack The Box
 
-| Section | Contenu |
-|---|---|
-| [Starting Point](starting-point/README.md) | 13 machines Tier 1 & 2 — une page par machine |
-| [Machines classiques](machines/README.md) | Machines Easy/Medium : [Cap](machines/cap.md), [Orion](machines/orion.md) |
-| [Challenges](challenges/README.md) | Challenges (Reverse Engineering…) : [SpookyPass](challenges/spookypass.md) |
-| [Sherlocks](sherlocks/README.md) | DFIR investigations : [Brutus](sherlocks/brutus.md), [Unit42](sherlocks/unit42.md), [Campfire-1](sherlocks/campfire-1.md) |
+<p align="center">
+  <img src="https://img.shields.io/badge/Starting%20Point-13%2F13-9FEF00?style=flat-square&logo=hackthebox&logoColor=black" />
+  <img src="https://img.shields.io/badge/Machines-4-9FEF00?style=flat-square&logo=hackthebox&logoColor=black" />
+  <img src="https://img.shields.io/badge/Sherlocks-4-9FEF00?style=flat-square&logo=hackthebox&logoColor=black" />
+  <img src="https://img.shields.io/badge/Challenges-8-9FEF00?style=flat-square&logo=hackthebox&logoColor=black" />
+</p>
 
-> Profil HTB : le Starting Point ne compte pas dans le classement HTB (seulement l'XP), d'où l'écart entre le nombre de machines documentées ici et le compteur du profil.
+---
+
+## Sections
+
+| Section | Description | Contenu |
+|---|---|---|
+| [🚀 Starting Point](starting-point/README.md) | Machines guidées Tier 1 & 2 | 13 machines |
+| [💻 Machines classiques](machines/README.md) | Machines Easy/Medium full black-box | Cap · Orion · Nexus · Reactor |
+| [🔍 Sherlocks](sherlocks/README.md) | DFIR — analyse de logs, artefacts forensic | Brutus · Unit42 · Campfire-1 · Campfire-2 |
+| [🏁 Challenges](challenges/README.md) | Challenges thématiques | Reverse · Web · OSINT · Hardware · Misc |
+
+---
+
+> Les machines du Starting Point ne comptent pas dans le classement HTB (XP uniquement), d'où l'écart avec le compteur du profil.
