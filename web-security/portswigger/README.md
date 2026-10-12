@@ -33,6 +33,8 @@ Labs résolus de la Web Security Academy : access control, authentification, SSR
 - [Lab 25 — DOM XSS in jQuery selector sink using a hashchange event](#lab-25--dom-xss-in-jquery-selector-sink-using-a-hashchange-event)
 - [Lab 26 — Reflected XSS into attribute with angle brackets HTML-encoded](#lab-26--reflected-xss-into-attribute-with-angle-brackets-html-encoded)
 - [Lab 27 — Stored XSS into anchor href attribute with double quotes HTML-encoded](#lab-27--stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded)
+- [Lab 28 — DOM XSS in innerHTML sink using source location.search](#lab-28--dom-xss-in-innerhtml-sink-using-source-locationsearch)
+- [Lab 29 — Reflected XSS into a JavaScript string with angle brackets HTML encoded](#lab-29--reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded)
 
 ---
 
@@ -1118,5 +1120,88 @@ Quand un visiteur clique sur le nom de l'auteur du commentaire, `alert(1)` s'ex�
 - Valider que les URLs soumises dans le champ Website commencent par `http://` ou `https://`.
 - Rejeter les pseudo-protocoles `javascript:` et `data:`.
 - Encoder la sortie même dans les attributs `href`.
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 28 — DOM XSS in innerHTML sink using source location.search
+
+**Catégorie :** Cross-Site Scripting (XSS) — DOM-based
+
+**Difficulté :** Apprentice
+
+This lab contains a DOM-based cross-site scripting vulnerability in the search blog functionality. It uses an `innerHTML` assignment, which changes the HTML contents of a div element, using data from `location.search`. To solve this lab, perform a cross-site scripting attack that calls the alert function.
+
+**Contexte :**
+
+Le code vulnérable ressemble à :
+
+    document.getElementById('searchMessage').innerHTML = location.search.slice(1);
+
+`innerHTML` interprète la valeur comme du HTML, mais **pas** les balises `<script>` (elles ne sont pas exécutées via `innerHTML`). Il faut donc utiliser un élément HTML qui déclenche du JavaScript sans `<script>`, comme une balise `<img>` avec un handler `onerror`.
+
+**Résolution :**
+
+Dans le champ de recherche, injecter :
+
+    <img src=1 onerror=alert(1)>
+
+Ce qui produit dans le DOM :
+
+    <div id="searchMessage"><img src=1 onerror=alert(1)></div>
+
+Le navigateur tente de charger l'image depuis `src=1` (qui échoue), ce qui déclenche le handler `onerror` et exécute `alert(1)` → lab résolu ✅
+
+**Remédiation :**
+
+- Ne jamais assigner de données utilisateur à `innerHTML` — utiliser `textContent` à la place.
+- Encoder les sorties HTML avant injection dans le DOM.
+- Mettre en place une `Content-Security-Policy` qui bloque les handlers inline.
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 29 — Reflected XSS into a JavaScript string with angle brackets HTML encoded
+
+**Catégorie :** Cross-Site Scripting (XSS)
+
+**Difficulté :** Apprentice
+
+This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality where angle brackets are HTML encoded. The reflection occurs inside a JavaScript string. To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function.
+
+**Contexte :**
+
+La valeur de recherche est réinjectée à l'intérieur d'une chaîne JavaScript dans un `<script>` de la page, par exemple :
+
+    <script>
+        var searchTerms = 'VALEUR_RECHERCHE';
+        ...
+    </script>
+
+Les `<` et `>` sont encodés en `&lt;`/`&gt;`, donc impossible d'injecter une nouvelle balise. Mais on est **à l'intérieur d'une chaîne JS** — il suffit de la fermer avec un `'`, d'injecter du code, et de commenter la suite.
+
+**Résolution :**
+
+Dans le champ de recherche, injecter :
+
+    '-alert(1)-'
+
+Ce qui produit dans le script :
+
+    var searchTerms = ''-alert(1)-'';
+
+Le parser JS interprète `''` (chaîne vide), puis `-alert(1)-` (expression valide qui appelle `alert`), puis `''` (chaîne vide) → `alert(1)` s'exécute → lab résolu ✅
+
+On peut aussi utiliser :
+
+    ';alert(1)//
+
+Ce qui donne :
+
+    var searchTerms = '';alert(1)//';
+
+**Remédiation :**
+
+- Encoder les apostrophes (`'` → `\'`) dans les chaînes JavaScript.
+- Ne jamais injecter de données utilisateur directement dans un bloc `<script>`.
+- Utiliser `JSON.stringify()` pour passer des valeurs dans le JS côté serveur.
 
 [⬆ Sommaire](#sommaire)
