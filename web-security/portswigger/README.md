@@ -27,6 +27,12 @@ Labs résolus de la Web Security Academy : access control, authentification, SSR
 - [Lab 19 — CSRF vulnerability with no defenses](#lab-19--csrf-vulnerability-with-no-defenses)
 - [Lab 20 — Basic clickjacking with CSRF token protection](#lab-20--basic-clickjacking-with-csrf-token-protection)
 - [Lab 21 — CORS vulnerability with basic origin reflection](#lab-21--cors-vulnerability-with-basic-origin-reflection)
+- [Lab 22 — Stored XSS into HTML context with nothing encoded](#lab-22--stored-xss-into-html-context-with-nothing-encoded)
+- [Lab 23 — DOM XSS in document.write sink using source location.search](#lab-23--dom-xss-in-documentwrite-sink-using-source-locationsearch)
+- [Lab 24 — DOM XSS in jQuery anchor href attribute sink using location.search source](#lab-24--dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source)
+- [Lab 25 — DOM XSS in jQuery selector sink using a hashchange event](#lab-25--dom-xss-in-jquery-selector-sink-using-a-hashchange-event)
+- [Lab 26 — Reflected XSS into attribute with angle brackets HTML-encoded](#lab-26--reflected-xss-into-attribute-with-angle-brackets-html-encoded)
+- [Lab 27 — Stored XSS into anchor href attribute with double quotes HTML-encoded](#lab-27--stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded)
 
 ---
 
@@ -900,5 +906,217 @@ Le navigateur attache automatiquement les cookies de session à la requête `fet
 - Maintenir une liste blanche stricte des origines autorisées.
 - Éviter de combiner `Access-Control-Allow-Credentials: true` avec une politique CORS permissive.
 - Ne jamais autoriser `Access-Control-Allow-Origin: *` avec des credentials.
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 22 — Stored XSS into HTML context with nothing encoded
+
+**Catégorie :** Cross-Site Scripting (XSS)
+
+**Difficulté :** Apprentice
+
+This lab contains a stored cross-site scripting vulnerability in the comment functionality. To solve this lab, submit a comment that calls the alert function when the blog post is viewed.
+
+**Contexte :**
+
+Un XSS stocké (ou persistant) se produit lorsqu'une application enregistre une entrée utilisateur non filtrée dans sa base de données, puis la réaffiche telle quelle dans les pages. Contrairement au XSS réfléchi, la charge malveillante est exécutée automatiquement par tous les visiteurs qui consultent la page infectée — sans qu'ils aient besoin de cliquer sur un lien spécial.
+
+**Résolution :**
+
+On ouvre n'importe quel article de blog et on remplit le formulaire de commentaire. Dans le champ **Comment**, on injecte directement :
+
+    <script>alert()</script>
+
+Les autres champs (Name, Email, Website) peuvent contenir n'importe quelle valeur valide. On soumet le commentaire.
+
+Le site enregistre le commentaire sans aucun encodage ni filtrage. Dès qu'un utilisateur (ou nous-mêmes) consulte la page de l'article, le navigateur interprète la balise `<script>` et exécute `alert()` → lab résolu ✅
+
+**Pourquoi ça marche :**
+
+Le serveur stocke la valeur brute du champ et la réinjecte dans le HTML de la réponse sans l'encoder. Le navigateur interprète donc `<script>alert()</script>` comme du code JavaScript légitime.
+
+**Remédiation :**
+
+- Encoder toutes les sorties HTML (`<` → `&lt;`, `>` → `&gt;`, etc.) avant de les afficher.
+- Valider et filtrer les entrées côté serveur.
+- Mettre en place une `Content-Security-Policy` stricte qui bloque les scripts inline.
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 23 — DOM XSS in document.write sink using source location.search
+
+**Catégorie :** Cross-Site Scripting (XSS) — DOM-based
+
+**Difficulté :** Apprentice
+
+This lab contains a DOM-based cross-site scripting vulnerability in the search query tracking functionality. It uses the JavaScript `document.write` function, which writes data out to the page. The `document.write` function is called with data from `location.search`, which you can control using the website URL.
+
+To solve this lab, perform a cross-site scripting attack that calls the alert function.
+
+**Contexte :**
+
+Un XSS DOM-based se produit entièrement côté client : le JavaScript de la page lit une source contrôlable (`location.search`, `location.hash`, etc.) et l'injecte dans un sink dangereux (`document.write`, `innerHTML`, etc.) sans assainissement. Le serveur ne voit jamais le payload — c'est le navigateur lui-même qui crée la vulnérabilité.
+
+Ici, le code de tracking ressemble à :
+
+    document.write('<img src="/resources/images/tracker.gif?searchTerms=' + location.search + '">');
+
+**Résolution :**
+
+Dans le champ de recherche, on injecte un payload qui ferme l'attribut `src` de la balise `<img>` générée par `document.write`, puis insère une balise SVG avec un handler `onload` :
+
+    "><svg onload=alert(1)>
+
+Ce qui produit dans le DOM :
+
+    <img src="/resources/images/tracker.gif?searchTerms="><svg onload=alert(1)>">
+
+Le navigateur ferme la balise `<img>` au premier `"`, interprète `<svg onload=alert(1)>` comme une balise SVG valide et exécute `alert(1)` → lab résolu ✅
+
+**Remédiation :**
+
+- Ne jamais utiliser `document.write` avec des données contrôlées par l'utilisateur.
+- Encoder les données avant de les injecter dans le DOM.
+- Préférer des méthodes sûres comme `textContent` au lieu de `innerHTML` ou `document.write`.
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 24 — DOM XSS in jQuery anchor href attribute sink using location.search source
+
+**Catégorie :** Cross-Site Scripting (XSS) — DOM-based
+
+**Difficulté :** Apprentice
+
+This lab contains a DOM-based cross-site scripting vulnerability in the submit feedback page. It uses the jQuery library's `$` selector function to find an anchor element, and changes its `href` attribute using data from `location.search`. To solve this lab, make the "back" link alert `document.cookie`.
+
+**Contexte :**
+
+Le code jQuery de la page de feedback ressemble à :
+
+    $(function() {
+        $('#backLink').attr("href", (new URLSearchParams(window.location.search)).get('returnPath'));
+    });
+
+Il prend le paramètre `returnPath` de l'URL et le place directement dans l'attribut `href` du lien "back". Si on passe `javascript:...` comme valeur, le navigateur exécutera ce code quand l'utilisateur cliquera sur le lien.
+
+**Résolution :**
+
+Accéder à la page de feedback avec le paramètre `returnPath` contenant un pseudo-protocole JavaScript :
+
+    /feedback?returnPath=javascript:alert(document.cookie)
+
+Puis cliquer sur le lien **"Back"** de la page. Le navigateur interprète le `href` comme une URL `javascript:` et exécute `alert(document.cookie)` → lab résolu ✅
+
+**Remédiation :**
+
+- Valider que les valeurs injectées dans des attributs `href` commencent par `http://` ou `https://`.
+- Ne jamais autoriser les pseudo-protocoles `javascript:` ou `data:` dans des URLs contrôlées par l'utilisateur.
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 25 — DOM XSS in jQuery selector sink using a hashchange event
+
+**Catégorie :** Cross-Site Scripting (XSS) — DOM-based
+
+**Difficulté :** Apprentice
+
+This lab contains a DOM-based cross-site scripting vulnerability on the home page. It uses jQuery's `$()` selector function to auto-scroll to a given post, whose title is passed via the `location.hash` property. To solve the lab, deliver an exploit to the victim that calls the `print()` function in their browser.
+
+**Contexte :**
+
+Le code vulnérable ressemble à :
+
+    $(window).on('hashchange', function() {
+        var post = $('section.blog-list h2:contains(' + decodeURIComponent(location.hash.slice(1)) + ')');
+        post.get(0).scrollIntoView();
+    });
+
+`$()` avec une chaîne contrôlée par l'utilisateur peut créer des éléments HTML si la chaîne ressemble à du HTML — c'est un sink dangereux dans les anciennes versions de jQuery.
+
+**Résolution :**
+
+On ne peut pas déclencher un `hashchange` depuis la même page (la victime ne va pas modifier l'URL manuellement). Il faut donc utiliser le **serveur d'exploit** pour envoyer un `<iframe>` qui charge la page cible et modifie le hash après chargement via `onload` :
+
+    <iframe src="https://LAB-ID.web-security-academy.net/#" onload="this.src+='<img src=x onerror=print()>'"></iframe>
+
+Quand l'iframe charge, `onload` ajoute `<img src=x onerror=print()>` au hash. jQuery l'interprète comme un sélecteur HTML, crée l'élément `<img>`, tente de charger `src=x` (qui échoue), et déclenche `onerror=print()` → lab résolu ✅
+
+**Deliver to victim** depuis l'exploit server pour valider.
+
+**Remédiation :**
+
+- Mettre à jour jQuery vers une version récente (le comportement de `$()` avec du HTML a été restreint).
+- Ne jamais passer `location.hash` ou `location.search` directement dans le sélecteur `$()`.
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 26 — Reflected XSS into attribute with angle brackets HTML-encoded
+
+**Catégorie :** Cross-Site Scripting (XSS)
+
+**Difficulté :** Apprentice
+
+This lab contains a reflected cross-site scripting vulnerability in the search blog functionality where angle brackets are HTML-encoded. To solve this lab, perform a cross-site scripting attack that injects an attribute and calls the alert function.
+
+**Contexte :**
+
+Le site encode les caractères `<` et `>` en `&lt;` et `&gt;`, ce qui empêche d'injecter des balises HTML. Cependant, la valeur de recherche est réinjectée à l'intérieur d'un attribut HTML existant, par exemple :
+
+    <input type="text" value="VALEUR_RECHERCHE">
+
+On n'a pas besoin de `<>` pour sortir de l'attribut — un simple `"` suffit à fermer la valeur, puis on ajoute un nouvel attribut directement.
+
+**Résolution :**
+
+Dans le champ de recherche, injecter :
+
+    " onmouseover="alert(1)
+
+Ce qui produit dans le HTML :
+
+    <input type="text" value="" onmouseover="alert(1)">
+
+Il suffit de passer la souris sur le champ de recherche pour déclencher `alert(1)` → lab résolu ✅
+
+**Remédiation :**
+
+- Encoder les guillemets (`"` → `&quot;`) dans les valeurs d'attributs HTML.
+- Utiliser des guillemets pour délimiter tous les attributs (pas de valeurs non quotées).
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 27 — Stored XSS into anchor href attribute with double quotes HTML-encoded
+
+**Catégorie :** Cross-Site Scripting (XSS)
+
+**Difficulté :** Apprentice
+
+This lab contains a stored cross-site scripting vulnerability in the comment functionality. To solve this lab, submit a comment that calls the alert function when the comment author name is clicked.
+
+**Contexte :**
+
+Dans le formulaire de commentaire, le champ **Website** est injecté dans l'attribut `href` du lien auteur :
+
+    <a href="VALEUR_WEBSITE">Nom auteur</a>
+
+Les guillemets doubles `"` sont encodés, donc on ne peut pas sortir de l'attribut de cette façon. Mais le navigateur accepte les pseudo-protocoles comme `javascript:` directement dans un `href` — aucun `<>` ni `"` n'est nécessaire.
+
+**Résolution :**
+
+Dans le champ **Website** du formulaire de commentaire, entrer :
+
+    javascript:alert(1)
+
+Le site stocke cette valeur et l'injecte dans le `href` du nom d'auteur :
+
+    <a href="javascript:alert(1)">Nom auteur</a>
+
+Quand un visiteur clique sur le nom de l'auteur du commentaire, `alert(1)` s'exécute → lab résolu ✅
+
+**Remédiation :**
+
+- Valider que les URLs soumises dans le champ Website commencent par `http://` ou `https://`.
+- Rejeter les pseudo-protocoles `javascript:` et `data:`.
+- Encoder la sortie même dans les attributs `href`.
 
 [⬆ Sommaire](#sommaire)
