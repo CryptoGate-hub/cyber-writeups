@@ -25,6 +25,7 @@ Labs résolus de la Web Security Academy : access control, authentification, SSR
 - [Lab 17 — SQL injection attack, querying the database type and version on Oracle](#lab-17--sql-injection-attack-querying-the-database-type-and-version-on-oracle)
 - [Lab 18 — Basic password reset poisoning](#lab-18--basic-password-reset-poisoning)
 - [Lab 19 — CSRF vulnerability with no defenses](#lab-19--csrf-vulnerability-with-no-defenses)
+- [Lab 20 — Basic clickjacking with CSRF token protection](#lab-20--basic-clickjacking-with-csrf-token-protection)
 
 ---
 
@@ -725,5 +726,92 @@ d'une requête forgée par un tiers.
 - Vérification du header `Origin` ou `Referer` en complément, jamais
   comme seule protection (ces headers peuvent être absents ou
   manipulés dans certains contextes).
+
+[⬆ Sommaire](#sommaire)
+
+## Lab 20 — Basic clickjacking with CSRF token protection
+
+**Catégorie :** Clickjacking
+
+**Difficulté :** Apprentice
+
+This lab is a sample Checkout page for an online store, vulnerable to
+clickjacking. There's also a reflected XSS vulnerability. However, you
+need to use a clickjacking attack to exploit this vulnerability.
+
+To solve the lab, construct an HTML page that frames the account page
+and fools the user into deleting their account, via a decoy website
+that they're induced to interact with. The lab is solved when the
+"My account" page deletion endpoint is triggered via the iframe.
+
+**Contexte :**
+
+Le site cible n'envoie pas de header `X-Frame-Options` ni de directive
+`Content-Security-Policy: frame-ancestors`, donc n'importe quelle page
+peut le charger dans un `<iframe>`. L'attaque consiste à superposer un
+élément visible et inoffensif (`<div>Click</div>`) au-dessus de
+l'iframe, positionné exactement sur le bouton à piéger, tout en rendant
+l'iframe transparent (`opacity: 0.1`). La victime croit cliquer sur le
+`<div>`, mais c'est en réalité le clic sur le bouton du site ciblé qui
+est déclenché, avec sa propre session déjà authentifiée.
+
+**Résolution :**
+
+On commence par ouvrir le lab et repérer le bouton à piéger sur la page
+`/my-account` (ici, le bouton de suppression de compte). On inspecte la
+page pour estimer sa position approximative.
+
+Sur le serveur d'exploit (*Go to exploit server*), on crée la page
+suivante :
+
+    <style>
+        iframe {
+            position: relative;
+            width: 700px;
+            height: 600px;
+            opacity: 0.1;
+            z-index: 2;
+        }
+        div {
+            position: absolute;
+            top: 500px;
+            left: 60px;
+            z-index: 1;
+        }
+    </style>
+    <div>Click</div>
+    <iframe src="https://YOUR-LAB-ID.web-security-academy.net/my-account"></iframe>
+
+L'iframe charge la vraie page `/my-account` du lab (avec la session de
+la victime), rendue quasi invisible (`opacity: 0.1`). Le `<div>Click`
+est positionné par-dessus, aux coordonnées exactes du bouton de
+suppression de compte (ajustées par tâtonnement avec `top`/`left`).
+
+On clique **Store**, puis **View exploit** pour ajuster la position du
+`<div>` jusqu'à ce que le clic tombe pile sur le bouton réel (visible en
+augmentant temporairement l'opacité pour calibrer). Une fois la
+superposition correcte, on clique **Deliver exploit to victim** : le
+clic de la victime sur le `<div>` déclenche en réalité la suppression
+de son compte via l'iframe.
+
+**Pourquoi ça marche :**
+
+Le clickjacking détourne un clic légitime de l'utilisateur sans passer
+par une requête forgée : contrairement au CSRF, il n'a pas besoin de
+contourner un token anti-CSRF, puisque c'est le navigateur de la
+victime, avec sa session réelle, qui exécute l'action dans l'iframe. Le
+token CSRF est envoyé normalement, car c'est bien le formulaire
+légitime du site qui est soumis — seule l'interface visuelle est
+trompeuse.
+
+**Remédiation :**
+
+- Header `X-Frame-Options: DENY` ou `SAMEORIGIN` pour empêcher le
+  framing.
+- `Content-Security-Policy: frame-ancestors 'none'` (ou liste blanche
+  des origines autorisées), qui remplace `X-Frame-Options` dans les
+  navigateurs modernes.
+- Scripts de *frame-busting* côté client en défense complémentaire
+  (jamais comme seule protection, car contournables).
 
 [⬆ Sommaire](#sommaire)
