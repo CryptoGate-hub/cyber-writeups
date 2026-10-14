@@ -1,4 +1,4 @@
-﻿site_name: CryptoGate - Cyber Writeups
+site_name: CryptoGate - Cyber Writeups
 site_url: https://cryptogate-hub.github.io/cyber-writeups
 site_description: Writeups HTB - PortSwigger - pwn.college - CTF
 site_author: CryptoGate
@@ -6,7 +6,6 @@ site_author: CryptoGate
 repo_name: CryptoGate-hub/cyber-writeups
 repo_url: https://github.com/CryptoGate-hub/cyber-writeups
 edit_uri: ""
-docs_dir: .
 use_directory_urls: true
 
 theme:
