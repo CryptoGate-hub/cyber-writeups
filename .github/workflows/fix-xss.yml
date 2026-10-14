@@ -1,0 +1,43 @@
+﻿name: Fix XSS in portswigger index
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-xss:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fix payload in lab 18 section
+        run: |
+          python3 << 'PYEOF'
+          import pathlib
+
+          path = pathlib.Path("docs/web-security/portswigger/index.md")
+          content = path.read_text(encoding="utf-8")
+
+          # Encapsuler les payloads XSS bruts dans des blocs de code
+          fixes = [
+              ('**Resolution : "><svg onload=alert(1)>**', '**Résolution :**\n\n```\n"><svg onload=alert(1)>\n```'),
+              ('Resolution: <img src=1 onerror=alert(1)>', '**Résolution :**\n\n```\n<img src=1 onerror=alert(1)>\n```'),
+              ('https://0adf00fc0445233780ecdf9b0084001a.web-security-academy.net/feedback?returnPath=javascript:alert(1)', '```\nhttps://0adf00fc0445233780ecdf9b0084001a.web-security-academy.net/feedback?returnPath=javascript:alert(1)\n```'),
+          ]
+
+          for old, new in fixes:
+              content = content.replace(old, new)
+
+          path.write_text(content, encoding="utf-8")
+          print("Done")
+          PYEOF
+
+      - name: Commit
+        run: |
+          git config user.name "CryptoGate-hub"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "fix: encapsulation payloads XSS bruts lab 18"
+          git push
