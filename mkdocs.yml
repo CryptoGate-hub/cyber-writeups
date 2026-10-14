@@ -1,0 +1,128 @@
+﻿site_name: CryptoGate - Cyber Writeups
+site_url: https://cryptogate-hub.github.io/cyber-writeups
+site_description: Writeups HTB - PortSwigger - pwn.college - CTF
+site_author: CryptoGate
+
+repo_name: CryptoGate-hub/cyber-writeups
+repo_url: https://github.com/CryptoGate-hub/cyber-writeups
+edit_uri: ""
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/shield-lock
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.integrate
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search:
+      lang: fr
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: README.md
+  - Hack The Box:
+    - Vue d ensemble: htb/README.md
+    - Starting Point:
+      - Vue d ensemble: htb/starting-point/README.md
+      - 01 Meow: htb/starting-point/labs/01-meow.md
+      - 02 Fawn: htb/starting-point/labs/02-fawn.md
+      - 03 Dancing: htb/starting-point/labs/03-dancing.md
+      - 04 Redeemer: htb/starting-point/labs/04-redeemer.md
+      - 05 Appointment: htb/starting-point/labs/05-appointment.md
+      - 06 Sequel: htb/starting-point/labs/06-sequel.md
+      - 07 Oasis: htb/starting-point/labs/07-oasis.md
+      - 08 Responder: htb/starting-point/labs/08-responder.md
+      - 09 Three: htb/starting-point/labs/09-three.md
+      - 10 Vaccine: htb/starting-point/labs/10-vaccine.md
+      - 11 Oopsie: htb/starting-point/labs/11-oopsie.md
+      - 12 Archetype: htb/starting-point/labs/12-archetype.md
+      - 13 Unified: htb/starting-point/labs/13-unified.md
+    - Machines:
+      - Vue d ensemble: htb/machines/README.md
+      - Cap: htb/machines/cap.md
+      - Orion: htb/machines/orion.md
+      - Nexus: htb/machines/nexus.md
+      - Reactor: htb/machines/reactor.md
+    - Sherlocks DFIR:
+      - Vue d ensemble: htb/sherlocks/README.md
+      - Brutus: htb/sherlocks/brutus.md
+      - Unit42: htb/sherlocks/unit42.md
+      - Campfire-1: htb/sherlocks/campfire-1.md
+      - Campfire-2: htb/sherlocks/campfire-2.md
+    - Challenges:
+      - Vue d ensemble: htb/challenges/README.md
+      - First Contact: htb/challenges/first-contact.md
+      - Flag Command: htb/challenges/flag-command.md
+      - Low Logic: htb/challenges/low-logic.md
+      - OpenSecret: htb/challenges/opensecret.md
+      - Social Media Investigation: htb/challenges/social-media-investigation-hub.md
+      - SpookyPass: htb/challenges/spookypass.md
+      - The Puppet Master: htb/challenges/the-puppet-master.md
+      - WebVault Time Machine: htb/challenges/webvault-time-machine.md
+  - Web Security:
+    - PortSwigger Labs: web-security/portswigger/README.md
+    - Notes perso: web-security/notes-perso.md
+  - Linux et Systems:
+    - Linux Luminarium: linux-luminarium/README.md
+  - CTF:
+    - Challenges: ctf/README.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/CryptoGate-hub
+    - icon: material/shield-check
+      link: https://profile.hackthebox.com/profile/01a0b5a2-c536-7155-aea6-dbc22da51097
+
+copyright: "CryptoGate - Writeups a but educatif - machines HTB retired uniquement"
