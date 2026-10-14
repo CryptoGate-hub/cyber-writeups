@@ -1,4 +1,4 @@
-site_name: CryptoGate - Cyber Writeups
+﻿site_name: CryptoGate - Cyber Writeups
 site_url: https://cryptogate-hub.github.io/cyber-writeups
 site_description: Writeups HTB - PortSwigger - pwn.college - CTF
 site_author: CryptoGate
@@ -6,7 +6,6 @@ site_author: CryptoGate
 repo_name: CryptoGate-hub/cyber-writeups
 repo_url: https://github.com/CryptoGate-hub/cyber-writeups
 edit_uri: ""
-use_directory_urls: true
 
 theme:
   name: material
@@ -71,53 +70,53 @@ markdown_extensions:
       permalink: true
 
 nav:
-  - Accueil: index/
+  - Accueil: index.md
   - Hack The Box:
-    - Vue d ensemble: htb/index/
+    - Vue d ensemble: htb/index.md
     - Starting Point:
-      - Vue d ensemble: htb/starting-point/index/
-      - 01 Meow: htb/starting-point/labs/01-meow/
-      - 02 Fawn: htb/starting-point/labs/02-fawn/
-      - 03 Dancing: htb/starting-point/labs/03-dancing/
-      - 04 Redeemer: htb/starting-point/labs/04-redeemer/
-      - 05 Appointment: htb/starting-point/labs/05-appointment/
-      - 06 Sequel: htb/starting-point/labs/06-sequel/
-      - 07 Oasis: htb/starting-point/labs/07-oasis/
-      - 08 Responder: htb/starting-point/labs/08-responder/
-      - 09 Three: htb/starting-point/labs/09-three/
-      - 10 Vaccine: htb/starting-point/labs/10-vaccine/
-      - 11 Oopsie: htb/starting-point/labs/11-oopsie/
-      - 12 Archetype: htb/starting-point/labs/12-archetype/
-      - 13 Unified: htb/starting-point/labs/13-unified/
+      - Vue d ensemble: htb/starting-point/index.md
+      - 01 Meow: htb/starting-point/labs/01-meow.md
+      - 02 Fawn: htb/starting-point/labs/02-fawn.md
+      - 03 Dancing: htb/starting-point/labs/03-dancing.md
+      - 04 Redeemer: htb/starting-point/labs/04-redeemer.md
+      - 05 Appointment: htb/starting-point/labs/05-appointment.md
+      - 06 Sequel: htb/starting-point/labs/06-sequel.md
+      - 07 Oasis: htb/starting-point/labs/07-oasis.md
+      - 08 Responder: htb/starting-point/labs/08-responder.md
+      - 09 Three: htb/starting-point/labs/09-three.md
+      - 10 Vaccine: htb/starting-point/labs/10-vaccine.md
+      - 11 Oopsie: htb/starting-point/labs/11-oopsie.md
+      - 12 Archetype: htb/starting-point/labs/12-archetype.md
+      - 13 Unified: htb/starting-point/labs/13-unified.md
     - Machines:
-      - Vue d ensemble: htb/machines/index/
-      - Cap: htb/machines/cap/
-      - Orion: htb/machines/orion/
-      - Nexus: htb/machines/nexus/
-      - Reactor: htb/machines/reactor/
+      - Vue d ensemble: htb/machines/index.md
+      - Cap: htb/machines/cap.md
+      - Orion: htb/machines/orion.md
+      - Nexus: htb/machines/nexus.md
+      - Reactor: htb/machines/reactor.md
     - Sherlocks DFIR:
-      - Vue d ensemble: htb/sherlocks/index/
-      - Brutus: htb/sherlocks/brutus/
-      - Unit42: htb/sherlocks/unit42/
-      - Campfire-1: htb/sherlocks/campfire-1/
-      - Campfire-2: htb/sherlocks/campfire-2/
+      - Vue d ensemble: htb/sherlocks/index.md
+      - Brutus: htb/sherlocks/brutus.md
+      - Unit42: htb/sherlocks/unit42.md
+      - Campfire-1: htb/sherlocks/campfire-1.md
+      - Campfire-2: htb/sherlocks/campfire-2.md
     - Challenges:
-      - Vue d ensemble: htb/challenges/index/
-      - First Contact: htb/challenges/first-contact/
-      - Flag Command: htb/challenges/flag-command/
-      - Low Logic: htb/challenges/low-logic/
-      - OpenSecret: htb/challenges/opensecret/
-      - Social Media Investigation: htb/challenges/social-media-investigation-hub/
-      - SpookyPass: htb/challenges/spookypass/
-      - The Puppet Master: htb/challenges/the-puppet-master/
-      - WebVault Time Machine: htb/challenges/webvault-time-machine/
+      - Vue d ensemble: htb/challenges/index.md
+      - First Contact: htb/challenges/first-contact.md
+      - Flag Command: htb/challenges/flag-command.md
+      - Low Logic: htb/challenges/low-logic.md
+      - OpenSecret: htb/challenges/opensecret.md
+      - Social Media Investigation: htb/challenges/social-media-investigation-hub.md
+      - SpookyPass: htb/challenges/spookypass.md
+      - The Puppet Master: htb/challenges/the-puppet-master.md
+      - WebVault Time Machine: htb/challenges/webvault-time-machine.md
   - Web Security:
-    - PortSwigger Labs: web-security/portswigger/index/
-    - Notes perso: web-security/notes-perso/
+    - PortSwigger Labs: web-security/portswigger/index.md
+    - Notes perso: web-security/notes-perso.md
   - Linux et Systems:
-    - Linux Luminarium: linux-luminarium/index/
+    - Linux Luminarium: linux-luminarium/index.md
   - CTF:
-    - Challenges: ctf/index/
+    - Challenges: ctf/index.md
 
 extra:
   social:
