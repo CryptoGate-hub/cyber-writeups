@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://cryptogate-hub.github.io/cyber-writeups/web-security/notes-perso/">
       
       
+        <link rel="prev" href="../portswigger/">
+      
+      
+        <link rel="next" href="../../linux-luminarium/">
       
       
         
@@ -221,7 +225,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../index/" class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -242,7 +246,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../htb/index/" class="md-tabs__link">
+        <a href="../../htb/" class="md-tabs__link">
           
   
   
@@ -258,11 +262,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../portswigger/index/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../portswigger/" class="md-tabs__link">
           
   
   
@@ -282,7 +288,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../linux-luminarium/index/" class="md-tabs__link">
+        <a href="../../linux-luminarium/" class="md-tabs__link">
           
   
   
@@ -302,7 +308,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../ctf/index/" class="md-tabs__link">
+        <a href="../../ctf/" class="md-tabs__link">
           
   
   
@@ -374,7 +380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../index/" class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -455,7 +461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../htb/index/" class="md-nav__link">
+      <a href="../../htb/" class="md-nav__link">
         
   
   
@@ -537,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../htb/starting-point/index/" class="md-nav__link">
+      <a href="../../htb/starting-point/" class="md-nav__link">
         
   
   
@@ -991,7 +997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../htb/machines/index/" class="md-nav__link">
+      <a href="../../htb/machines/" class="md-nav__link">
         
   
   
@@ -1193,7 +1199,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../htb/sherlocks/index/" class="md-nav__link">
+      <a href="../../htb/sherlocks/" class="md-nav__link">
         
   
   
@@ -1395,7 +1401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../htb/challenges/index/" class="md-nav__link">
+      <a href="../../htb/challenges/" class="md-nav__link">
         
   
   
@@ -1659,28 +1665,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   
@@ -1698,7 +1707,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1716,7 +1725,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../portswigger/index/" class="md-nav__link">
+      <a href="../portswigger/" class="md-nav__link">
         
   
   
@@ -1741,10 +1750,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="./" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes perso
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1760,6 +1796,841 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sommaire" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sommaire
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-path-traversal-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Path Traversal 1
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-path-traversal-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Path Traversal 2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-command-injection-1-cmdi-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Command Injection 1 (CMDi-1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-command-injection-2-cmdi-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Command Injection 2 (CMDi-2)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-command-injection-3-quotes-simples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Command Injection 3 — quotes simples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-command-injection-4-injection-hors-ls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Command Injection 4 — injection hors ls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-command-injection-5-blind-cmdi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Command Injection 5 — Blind CMDi
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-command-injection-6-filtrage-contourne-par-newline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Command Injection 6 — filtrage contourné par newline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-authentication-bypass-1-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Authentication Bypass 1 &amp; 2
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Authentication Bypass 1 &amp; 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bypass-1-parametre-durl-non-verifie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bypass 1 — paramètre d'URL non vérifié
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bypass-2-cookie-non-verifie-cote-serveur" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bypass 2 — cookie non vérifié côté serveur
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-sqli-1-injection-classique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. SQLi 1 — Injection classique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. SQLi 1 — Injection classique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contexte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#piege-injecter-sur-userid-plutot-que-sur-account-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Piège : injecter sur userid plutôt que sur account-password
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#construction-du-payload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Construction du payload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commandes-de-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commandes de résolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-sqli-3-union-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. SQLi 3 — UNION-based
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. SQLi 3 — UNION-based">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contexte_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#principe-de-linjection-union" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principe de l'injection UNION
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#construction-du-payload_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Construction du payload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commande-de-resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commande de résolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-sqli-4-table-name-randomisee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. SQLi 4 — table name randomisée
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. SQLi 4 — table name randomisée">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#etape-1-extraire-le-nom-de-table-randomise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 1 — extraire le nom de table randomisé
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etape-2-extraire-le-flag-depuis-la-table-decouverte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étape 2 — extraire le flag depuis la table découverte
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-sqli-blind-boolean-based" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. SQLi — Blind (Boolean-based)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. SQLi — Blind (Boolean-based)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contexte_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#principe-du-boolean-based-blind-sqli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principe du Boolean-based Blind SQLi
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fonctions-sqlite-utilisees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fonctions SQLite utilisées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#script-dautomatisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Script d'automatisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-xss-stored-injection-de-balises-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. XSS Stored — injection de balises HTML
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="14. XSS Stored — injection de balises HTML">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contexte_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vulnerabilite-du-code-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vulnérabilité du code source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodologie-dexploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodologie d'exploitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commandes-de-resolution_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commandes de résolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-xss-stored-execution-de-javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. XSS Stored — exécution de JavaScript
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="15. XSS Stored — exécution de JavaScript">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contexte_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vulnerabilite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vulnérabilité
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payload-et-exploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payload et exploitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commandes-de-resolution_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commandes de résolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-xss-reflected-parametre-get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. XSS Reflected — paramètre GET
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. XSS Reflected — paramètre GET">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vulnerabilite_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vulnérabilité
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodologie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Méthodologie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commande-de-resolution_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commande de résolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-xss-context-breaking-sortie-de-textarea" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. XSS — Context Breaking (sortie de &lt;textarea&gt;)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="17. XSS — Context Breaking (sortie de &lt;textarea&gt;)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#problematique-du-contexte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problématique du contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vulnerabilite-du-code-source_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vulnérabilité du code source
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technique-dattaque-cassage-de-contexte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technique d'attaque : cassage de contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commande-de-resolution_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commande de résolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-xss-csrf-post-via-fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. XSS → CSRF — POST via fetch()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="18. XSS → CSRF — POST via fetch()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evolution-du-vecteur-dattaque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Évolution du vecteur d'attaque
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-source-vulnerable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code source vulnérable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payload-fetch-post" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payload Fetch POST
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deroulement-complet-de-lattaque" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Déroulement complet de l'attaque
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commandes-de-resolution_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commandes de résolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-xss-stored-exfiltration-de-cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. XSS Stored &amp; Exfiltration de cookie
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="19. XSS Stored &amp; Exfiltration de cookie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analyse-du-payload-gagnant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analyse du payload gagnant
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anatomie-de-lexfiltration-via-netcat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomie de l'exfiltration via Netcat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reconstitution-du-cookie-et-usurpation-didentite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reconstitution du cookie et usurpation d'identité
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-csrf-level-1-navigation-get-forcee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. CSRF Level 1 — navigation GET forcée
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. CSRF Level 1 — navigation GET forcée">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objectif-du-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objectif du challenge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elements-cles-et-vulnerabilites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Éléments clés et vulnérabilités
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etapes-dexploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étapes d'exploitation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-csrf-soumission-de-formulaire-post" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. CSRF — soumission de formulaire POST
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="21. CSRF — soumission de formulaire POST">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analyse-du-payload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analyse du payload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deroulement-du-journal-des-requetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Déroulement du journal des requêtes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-csrf-xss-chaines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. CSRF → XSS chaînés
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1833,7 +2704,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../linux-luminarium/index/" class="md-nav__link">
+      <a href="../../linux-luminarium/" class="md-nav__link">
         
   
   
@@ -1922,7 +2793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ctf/index/" class="md-nav__link">
+      <a href="../../ctf/" class="md-nav__link">
         
   
   
@@ -2631,6 +3502,44 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pied de page" >
+        
+          
+          <a href="../portswigger/" class="md-footer__link md-footer__link--prev" aria-label="Précédent: PortSwigger Labs">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Précédent
+              </span>
+              <div class="md-ellipsis">
+                PortSwigger Labs
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../linux-luminarium/" class="md-footer__link md-footer__link--next" aria-label="Suivant: Linux Luminarium">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Suivant
+              </span>
+              <div class="md-ellipsis">
+                Linux Luminarium
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
