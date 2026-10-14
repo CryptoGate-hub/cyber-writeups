@@ -1,0 +1,27 @@
+﻿name: Fix UTF-8 encoding
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-encoding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Re-encode all markdown files to UTF-8
+        run: |
+          find . -name "*.md" | while read f; do
+            iconv -f windows-1252 -t utf-8 "$f" -o "$f.tmp" 2>/dev/null && mv "$f.tmp" "$f" || rm -f "$f.tmp"
+          done
+
+      - name: Commit fixed files
+        run: |
+          git config user.name "CryptoGate-hub"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "fix: re-encodage UTF-8 de tous les fichiers markdown"
+          git push
