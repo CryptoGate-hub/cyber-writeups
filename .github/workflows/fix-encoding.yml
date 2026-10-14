@@ -12,16 +12,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Re-encode all markdown files to UTF-8
-        run: |
-          find . -name "*.md" | while read f; do
-            iconv -f windows-1252 -t utf-8 "$f" -o "$f.tmp" 2>/dev/null && mv "$f.tmp" "$f" || rm -f "$f.tmp"
-          done
+      - name: Install tools
+        run: sudo apt-get install -y python3
 
-      - name: Commit fixed files
+      - name: Re-encode with Python
+        run: |
+          python3 << 'PYEOF'
+          import os, pathlib
+
+          for path in pathlib.Path(".").rglob("*.md"):
+              raw = path.read_bytes()
+              # Essayer différents encodages
+              for enc in ["utf-8-sig", "cp1252", "latin-1"]:
+                  try:
+                      text = raw.decode(enc)
+                      path.write_text(text, encoding="utf-8")
+                      print(f"OK ({enc}): {path}")
+                      break
+                  except Exception as e:
+                      continue
+          PYEOF
+
+      - name: Commit
         run: |
           git config user.name "CryptoGate-hub"
           git config user.email "actions@github.com"
           git add -A
-          git diff --staged --quiet || git commit -m "fix: re-encodage UTF-8 de tous les fichiers markdown"
+          git diff --staged --quiet || git commit -m "fix: encodage UTF-8 propre via Python"
           git push
