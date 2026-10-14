@@ -6,6 +6,7 @@ site_author: CryptoGate
 repo_name: CryptoGate-hub/cyber-writeups
 repo_url: https://github.com/CryptoGate-hub/cyber-writeups
 edit_uri: ""
+docs_dir: .
 use_directory_urls: true
 
 theme:
