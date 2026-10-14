@@ -6,6 +6,7 @@ site_author: CryptoGate
 repo_name: CryptoGate-hub/cyber-writeups
 repo_url: https://github.com/CryptoGate-hub/cyber-writeups
 edit_uri: ""
+use_directory_urls: true
 
 theme:
   name: material
@@ -72,9 +73,9 @@ markdown_extensions:
 nav:
   - Accueil: index.md
   - Hack The Box:
-    - Vue d ensemble: htb/README.md
+    - Vue d ensemble: htb/index.md
     - Starting Point:
-      - Vue d ensemble: htb/starting-point/README.md
+      - Vue d ensemble: htb/starting-point/index.md
       - 01 Meow: htb/starting-point/labs/01-meow.md
       - 02 Fawn: htb/starting-point/labs/02-fawn.md
       - 03 Dancing: htb/starting-point/labs/03-dancing.md
@@ -89,19 +90,19 @@ nav:
       - 12 Archetype: htb/starting-point/labs/12-archetype.md
       - 13 Unified: htb/starting-point/labs/13-unified.md
     - Machines:
-      - Vue d ensemble: htb/machines/README.md
+      - Vue d ensemble: htb/machines/index.md
       - Cap: htb/machines/cap.md
       - Orion: htb/machines/orion.md
       - Nexus: htb/machines/nexus.md
       - Reactor: htb/machines/reactor.md
     - Sherlocks DFIR:
-      - Vue d ensemble: htb/sherlocks/README.md
+      - Vue d ensemble: htb/sherlocks/index.md
       - Brutus: htb/sherlocks/brutus.md
       - Unit42: htb/sherlocks/unit42.md
       - Campfire-1: htb/sherlocks/campfire-1.md
       - Campfire-2: htb/sherlocks/campfire-2.md
     - Challenges:
-      - Vue d ensemble: htb/challenges/README.md
+      - Vue d ensemble: htb/challenges/index.md
       - First Contact: htb/challenges/first-contact.md
       - Flag Command: htb/challenges/flag-command.md
       - Low Logic: htb/challenges/low-logic.md
@@ -111,12 +112,12 @@ nav:
       - The Puppet Master: htb/challenges/the-puppet-master.md
       - WebVault Time Machine: htb/challenges/webvault-time-machine.md
   - Web Security:
-    - PortSwigger Labs: web-security/portswigger/README.md
+    - PortSwigger Labs: web-security/portswigger/index.md
     - Notes perso: web-security/notes-perso.md
   - Linux et Systems:
-    - Linux Luminarium: linux-luminarium/README.md
+    - Linux Luminarium: linux-luminarium/index.md
   - CTF:
-    - Challenges: ctf/README.md
+    - Challenges: ctf/index.md
 
 extra:
   social:
