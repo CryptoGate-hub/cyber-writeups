@@ -70,7 +70,7 @@ markdown_extensions:
       permalink: true
 
 nav:
-  - Accueil: README.md
+  - Accueil: index.md
   - Hack The Box:
     - Vue d ensemble: htb/README.md
     - Starting Point:
