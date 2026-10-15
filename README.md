@@ -34,23 +34,21 @@ Toutes les machines sont **retired**. Writeups à but strictement éducatif.
 | [🔎 Campfire-1](https://cryptogate-hub.github.io/cyber-writeups/htb/sherlocks/campfire-1/) | DFIR complet — Kerberoasting via EVTX Sysmon/PowerShell |
 | [🚀 Unified](https://cryptogate-hub.github.io/cyber-writeups/htb/starting-point/labs/13-unified/) | Log4Shell de bout en bout, du JNDI à la privesc MongoDB |
 
----
-
 ## 📁 Structure
+
+```
 cyber-writeups/
 ├── docs/
-│ ├── htb/
-│ │ ├── starting-point/ # 13 machines Tier 1 & 2
-│ │ ├── machines/ # Cap · Orion · Nexus · Reactor
-│ │ ├── sherlocks/ # Brutus · Unit42 · Campfire-1/2
-│ │ └── challenges/ # Reverse · Web · OSINT · Hardware
-│ ├── web-security/
-│ │ └── portswigger/ # 29 labs Web Security Academy
-│ └── linux-luminarium/ # pwn.college 128/128
+│   ├── htb/
+│   │   ├── starting-point/     # 13 machines Tier 1 & 2
+│   │   ├── machines/           # Cap · Orion · Nexus · Reactor
+│   │   ├── sherlocks/          # Brutus · Unit42 · Campfire-1/2
+│   │   └── challenges/         # Reverse · Web · OSINT · Hardware
+│   ├── web-security/
+│   │   └── portswigger/        # 29 labs Web Security Academy
+│   └── linux-luminarium/       # pwn.college 128/128
 └── mkdocs.yml
-
-
----
+```
 
 ## 🛠️ Outils utilisés
 
