@@ -70,6 +70,13 @@ markdown_extensions:
   - toc:
       permalink: true
 
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  assets:
+    - assets/banner.png
+
 nav:
   - Accueil: index.md
   - Hack The Box:
