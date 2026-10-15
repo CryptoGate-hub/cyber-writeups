@@ -37,3 +37,21 @@ Toutes les machines sont **retired**. Writeups à but strictement éducatif.
 ---
 
 ## 📁 Structure
+cyber-writeups/
+├── docs/
+│ ├── htb/
+│ │ ├── starting-point/ # 13 machines Tier 1 & 2
+│ │ ├── machines/ # Cap · Orion · Nexus · Reactor
+│ │ ├── sherlocks/ # Brutus · Unit42 · Campfire-1/2
+│ │ └── challenges/ # Reverse · Web · OSINT · Hardware
+│ ├── web-security/
+│ │ └── portswigger/ # 29 labs Web Security Academy
+│ └── linux-luminarium/ # pwn.college 128/128
+└── mkdocs.yml
+
+
+---
+
+## 🛠️ Outils utilisés
+
+`nmap` · `Burp Suite` · `Wireshark` · `Metasploit` · `hashcat` · `sqlmap` · `gobuster` · `impacket` · `evil-winrm` · `Chainsaw` · `Python` · `Bash`
