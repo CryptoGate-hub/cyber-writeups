@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/CryptoGate-hub/cyber-writeups/main/assets/banner.png" alt="cyber-writeups" width="100%">
+  <img src="../assets/banner.png" alt="cyber-writeups" width="100%">
 </p>
 
 <h1 align="center">cyber-writeups</h1>
