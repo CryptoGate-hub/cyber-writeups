@@ -1,5 +1,5 @@
-<p align="center">
-  <img src="assets/banner_v2.png" alt="cyber-writeups" width="100%">
+﻿<p align="center">
+  <img src="assets/banner.png" alt="cyber-writeups" width="100%">
 </p>
 
 <h1 align="center">cyber-writeups</h1>
@@ -118,3 +118,4 @@ Chaque page suit la même structure qu'un writeup officiel HTB : schéma de la c
 ---
 
 <p align="center"><i>Repo alimenté au fil des labs et CTF résolus. Toutes les machines HTB publiées ici sont Retired ou issues d'événements terminés — writeups à but strictement éducatif.</i></p>
+
