@@ -32,6 +32,7 @@ Un aperçu rapide des writeups les plus complets du repo, pour qui n'a que deux 
 | [🟢 Nexus](htb/machines/nexus.md) | Fuite de creds dans l'historique Gitea + RCE CRM + directory traversal fait main (objets git forgés) |
 | [🔎 Campfire-1](htb/sherlocks/campfire-1.md) | Investigation DFIR complète — Kerberoasting détecté via EVTX Sysmon/PowerShell |
 | [🚀 Unified](htb/starting-point/labs/13-unified.md) | Log4Shell de bout en bout, du JNDI à la privesc MongoDB |
+| [🔴 Labo AD — Kerberoasting](labo/ad-kerberoasting.md) | Labo construit de A à Z : AD, Kerberoasting avec Impacket, détection Wazuh SIEM custom |
 
 ---
 
@@ -49,6 +50,8 @@ cyber-writeups/
 │   └── notes-perso.md      # Fiches : SQLi, XSS, CSRF, SSRF, path traversal
 ├── linux-luminarium/       # pwn.college — 128/128 labos
 ├── ctf/                    # Challenges CTF Discord
+├── labo/
+│   └── ad-kerberoasting/   # Labo AD + Kerberoasting + Wazuh
 └── assets/
 ```
 
@@ -83,6 +86,12 @@ cyber-writeups/
 | Section | Contenu | Progression |
 |---|---|---|
 | [CTF Discord](ctf/) | Linux · IDOR · Cookie manipulation | ✅ 3 challenges |
+
+### 🏗️ Labo Personnel
+
+| Section | Contenu | Progression |
+|---------|---------|-------------|
+| [Active Directory](labo/ad-kerberoasting.md) | Kerberoasting · Détection Wazuh · Règle SIEM custom | ✅ 1 projet |
 
 ---
 
