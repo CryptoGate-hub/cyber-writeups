@@ -2395,6 +2395,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#56-comment-sen-proteger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Comment s'en protéger¶
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2703,9 +2714,12 @@
 </code></pre></div>
 <p><strong>Vérification :</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">setspn</span> <span class="n">-l</span> <span class="n">svc-http</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c"># Résultat :</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c"># Noms ServicePrincipalName inscrits pour CN=svc http,OU=Utilisateurs-Labo,DC=labo,DC=local:</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c">#     HTTP/labo.local</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">Concrètement</span><span class="p">,</span> <span class="n">dès</span> <span class="n">qu</span><span class="s1">'un SPN est enregistré sur un compte, Kerberos accepte de délivrer à **n'</span><span class="n">importe</span> <span class="n">quel</span> <span class="n">utilisateur</span> <span class="n">authentifié</span> <span class="n">du</span> <span class="n">domaine</span><span class="p">**</span> <span class="n">un</span> <span class="n">ticket</span> <span class="n">de</span> <span class="n">service</span> <span class="p">(</span><span class="n">TGS</span><span class="p">)</span> <span class="n">pour</span> <span class="n">ce</span> <span class="n">SPN</span> <span class="err">—</span> <span class="n">sans</span> <span class="n">vérifier</span> <span class="n">que</span> <span class="n">le</span> <span class="n">demandeur</span> <span class="n">a</span> <span class="n">le</span> <span class="n">droit</span> <span class="n">d</span><span class="s1">'utiliser ce service. Ce ticket est chiffré avec le hash NTLM du mot de passe du compte de service lui-même. L'</span><span class="n">attaquant</span> <span class="n">n</span><span class="s1">'a donc jamais besoin de toucher au compte `svc-http` : il récupère le ticket, puis le casse offline, tranquillement, sans générer la moindre tentative d'</span><span class="n">authentification</span> <span class="n">ratée</span><span class="p">.</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c"># Résultat :</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c"># Noms ServicePrincipalName inscrits pour CN=svc http,OU=Utilisateurs-Labo,DC=labo,DC=local:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c">#     HTTP/labo.local</span>
 </code></pre></div></p>
 <h3 id="34-sysmon-telemetrie-avancee">3.4 Sysmon — Télémétrie avancée<a class="headerlink" href="#34-sysmon-telemetrie-avancee" title="Permanent link">&para;</a></h3>
 <p>Sysmon est installé sur DC01 et win11 pour enrichir les logs Windows. Sans Sysmon, les événements AD sont peu détaillés.</p>
@@ -2728,6 +2742,18 @@
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>HTTP/labo.local       svc-http            2026-10-24 ...
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>$krb5tgs$23$*svc-http$LABO.LOCAL$labo.local/svc-http*$7240f141...
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Ce format se décompose ainsi :
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>| Segment         | Valeur            | Signification                          |
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>|------------------|--------------------|-----------------------------------------|
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>| `23`            | `23`               | Type de chiffrement (RC4-HMAC)          |
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>| `svc-http`      | `svc-http`         | Compte de service ciblé                 |
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>| `LABO.LOCAL`    | `LABO.LOCAL`       | Royaume Kerberos (le domaine)           |
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>| `labo.local/svc-http` | —            | SPN associé au ticket                   |
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>| `7240f141...`   | (tronqué)          | Le ticket TGS chiffré — c'est cette partie que John va attaquer |
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>Le `23` en début de hash est la signature utilisée par les outils de cracking (John, Hashcat) pour identifier automatiquement le format et le mode d'attaque à appliquer.
 </code></pre></div></p>
 <p>Le hash <code>$krb5tgs$23$</code> est un ticket TGS chiffré en <strong>RC4 (etype 23)</strong> — c'est la signature du Kerberoasting.</p>
 <h3 id="42-etape-2-sauvegarde-du-hash">4.2 Étape 2 — Sauvegarde du hash<a class="headerlink" href="#42-etape-2-sauvegarde-du-hash" title="Permanent link">&para;</a></h3>
@@ -2770,6 +2796,9 @@
 <li><strong>TicketEncryptionType = 0x17</strong> → RC4-HMAC, chiffrement faible et facilement crackable</li>
 <li>Un service légitime utilise normalement <strong>AES256 (0x12)</strong> ou <strong>AES128 (0x11)</strong></li>
 </ul>
+<blockquote>
+<p><strong>Note :</strong> le champ <code>TicketEncryptionType</code> utilisé par la règle (0x17) est le type de chiffrement Kerberos brut, tel que défini dans la RFC. Le champ <code>ticketEncryptionType</code> qui apparaît dans le tableau d'alerte Wazuh (section 5.4, valeur <code>0x40810010</code>) est différent : c'est un champ Windows composite qui encode le type de chiffrement <strong>avec des flags additionnels</strong> (pré-authentification, renouvellement, etc.). La règle filtre sur le champ brut (<code>0x17</code>), pas sur ce champ composite — d'où la différence de valeur entre les deux.</p>
+</blockquote>
 <h3 id="53-regle-de-detection-custom">5.3 Règle de détection custom<a class="headerlink" href="#53-regle-de-detection-custom" title="Permanent link">&para;</a></h3>
 <p>Fichier : <code>/var/ossec/etc/rules/local_rules.xml</code></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">&lt;group</span><span class="w"> </span><span class="na">name=</span><span class="s">"kerberoasting,"</span><span class="nt">&gt;</span>
@@ -2830,11 +2859,21 @@
 - Toute demande de TGS en RC4</p>
 <p><strong>Ne détecte pas :</strong>
 - Kerberoasting AES (attaquant qui force AES256) → nécessite une règle complémentaire
-- Kerberoasting via un compte légitime sur une machine compromise</p>
+- Kerberoasting via un compte légitime sur une machine compromise
+- <strong>Faux positif probable</strong> : un service legacy qui ne supporte que RC4 (vieille application, imprimante réseau, etc.) déclenchera cette règle à chaque demande de ticket, sans qu'il s'agisse d'une attaque. En environnement réel, il faut d'abord établir une liste blanche des comptes de service connus pour fonctionner en RC4, avant de pouvoir traiter chaque alerte comme suspecte.</p>
 <p><strong>Pour aller plus loin :</strong>
 - Ajouter une règle de corrélation (plusieurs 4769 en peu de temps = scan de SPNs)
 - Activer les alertes par email sur level &gt;= 12</p>
 <hr />
+<h3 id="56-comment-sen-proteger">5.6 Comment s'en protéger<a href="#56-comment-sen-proteger">¶</a><a class="headerlink" href="#56-comment-sen-proteger" title="Permanent link">&para;</a></h3>
+<p>La détection ne remplace pas la prévention. Pour réduire la surface d'attaque du Kerberoasting :</p>
+<ul>
+<li><strong>Mots de passe longs et aléatoires</strong> sur les comptes de service (25+ caractères), changés régulièrement — c'est souvent le seul vrai frein, puisque le crackage se fait offline et sans limite de tentatives.</li>
+<li><strong>gMSA (Group Managed Service Accounts)</strong> : Windows gère lui-même un mot de passe de 120 caractères, changé automatiquement tous les 30 jours. Le compte devient pratiquement incrackable.</li>
+<li><strong>Forcer AES</strong> sur les comptes sensibles via l'attribut <code>msDS-SupportedEncryptionTypes</code>, pour désactiver RC4. Attention : certaines applications legacy ne supportent que RC4 et casseraient si on désactive ce chiffrement globalement — il faut tester avant de déployer.</li>
+<li><strong>Limiter les privilèges</strong> des comptes de service au strict nécessaire, pour que même un compte cracké n'ouvre pas la voie à une élévation de privilèges.</li>
+<li><strong>Surveiller en priorité</strong> les comptes à SPN qui sont aussi membres de groupes à privilèges (Domain Admins, Account Operators…) — ce sont les cibles les plus rentables pour un attaquant.</li>
+</ul>
 <h2 id="6-conclusion">6. Conclusion <a name="conclusion"></a><a class="headerlink" href="#6-conclusion" title="Permanent link">&para;</a></h2>
 <p>Ce projet démontre une chaîne d'attaque et de détection complète sur Active Directory :</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Reconnaissance → Exploitation → Crackage → Détection → Alerte
