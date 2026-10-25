@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="cyber-writeups" width="100%">
+  <img src="assets/banner_v2.png" alt="cyber-writeups" width="100%">
 </p>
 
 <h1 align="center">cyber-writeups</h1>

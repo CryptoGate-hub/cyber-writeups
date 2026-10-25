@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" width="100%" alt="CryptoGate cyber-writeups" />
+  <img src="assets/banner_v2.png" width="100%" alt="CryptoGate cyber-writeups" />
 </p>
 
 <p align="center">
