@@ -110,6 +110,9 @@ setspn -a HTTP/labo.local svc-http
 **Vérification :**
 ```powershell
 setspn -l svc-http
+
+Concrètement, dès qu'un SPN est enregistré sur un compte, Kerberos accepte de délivrer à **n'importe quel utilisateur authentifié du domaine** un ticket de service (TGS) pour ce SPN — sans vérifier que le demandeur a le droit d'utiliser ce service. Ce ticket est chiffré avec le hash NTLM du mot de passe du compte de service lui-même. L'attaquant n'a donc jamais besoin de toucher au compte `svc-http` : il récupère le ticket, puis le casse offline, tranquillement, sans générer la moindre tentative d'authentification ratée.
+
 # Résultat :
 # Noms ServicePrincipalName inscrits pour CN=svc http,OU=Utilisateurs-Labo,DC=labo,DC=local:
 #     HTTP/labo.local
@@ -150,6 +153,18 @@ ServicePrincipalName  Name      MemberOf  PasswordLastSet
 HTTP/labo.local       svc-http            2026-10-24 ...
 
 $krb5tgs$23$*svc-http$LABO.LOCAL$labo.local/svc-http*$7240f141...
+
+Ce format se décompose ainsi :
+
+| Segment         | Valeur            | Signification                          |
+|------------------|--------------------|-----------------------------------------|
+| `23`            | `23`               | Type de chiffrement (RC4-HMAC)          |
+| `svc-http`      | `svc-http`         | Compte de service ciblé                 |
+| `LABO.LOCAL`    | `LABO.LOCAL`       | Royaume Kerberos (le domaine)           |
+| `labo.local/svc-http` | —            | SPN associé au ticket                   |
+| `7240f141...`   | (tronqué)          | Le ticket TGS chiffré — c'est cette partie que John va attaquer |
+
+Le `23` en début de hash est la signature utilisée par les outils de cracking (John, Hashcat) pour identifier automatiquement le format et le mode d'attaque à appliquer.
 ```
 
 Le hash `$krb5tgs$23$` est un ticket TGS chiffré en **RC4 (etype 23)** — c'est la signature du Kerberoasting.
@@ -210,6 +225,8 @@ Windows génère un **Event ID 4769** (Kerberos Service Ticket Request) à chaqu
 - **TicketEncryptionType = 0x17** → RC4-HMAC, chiffrement faible et facilement crackable
 - Un service légitime utilise normalement **AES256 (0x12)** ou **AES128 (0x11)**
 
+> **Note :** le champ `TicketEncryptionType` utilisé par la règle (0x17) est le type de chiffrement Kerberos brut, tel que défini dans la RFC. Le champ `ticketEncryptionType` qui apparaît dans le tableau d'alerte Wazuh (section 5.4, valeur `0x40810010`) est différent : c'est un champ Windows composite qui encode le type de chiffrement **avec des flags additionnels** (pré-authentification, renouvellement, etc.). La règle filtre sur le champ brut (`0x17`), pas sur ce champ composite — d'où la différence de valeur entre les deux.
+
 ### 5.3 Règle de détection custom
 
 Fichier : `/var/ossec/etc/rules/local_rules.xml`
@@ -253,12 +270,23 @@ Filtre dans Discover : `rule.id: 100002`
 **Ne détecte pas :**
 - Kerberoasting AES (attaquant qui force AES256) → nécessite une règle complémentaire
 - Kerberoasting via un compte légitime sur une machine compromise
+- **Faux positif probable** : un service legacy qui ne supporte que RC4 (vieille application, imprimante réseau, etc.) déclenchera cette règle à chaque demande de ticket, sans qu'il s'agisse d'une attaque. En environnement réel, il faut d'abord établir une liste blanche des comptes de service connus pour fonctionner en RC4, avant de pouvoir traiter chaque alerte comme suspecte.
 
 **Pour aller plus loin :**
 - Ajouter une règle de corrélation (plusieurs 4769 en peu de temps = scan de SPNs)
 - Activer les alertes par email sur level >= 12
 
 ---
+
+### 5.6 Comment s'en protéger[¶](#56-comment-sen-proteger)
+
+La détection ne remplace pas la prévention. Pour réduire la surface d'attaque du Kerberoasting :
+
+- **Mots de passe longs et aléatoires** sur les comptes de service (25+ caractères), changés régulièrement — c'est souvent le seul vrai frein, puisque le crackage se fait offline et sans limite de tentatives.
+- **gMSA (Group Managed Service Accounts)** : Windows gère lui-même un mot de passe de 120 caractères, changé automatiquement tous les 30 jours. Le compte devient pratiquement incrackable.
+- **Forcer AES** sur les comptes sensibles via l'attribut `msDS-SupportedEncryptionTypes`, pour désactiver RC4. Attention : certaines applications legacy ne supportent que RC4 et casseraient si on désactive ce chiffrement globalement — il faut tester avant de déployer.
+- **Limiter les privilèges** des comptes de service au strict nécessaire, pour que même un compte cracké n'ouvre pas la voie à une élévation de privilèges.
+- **Surveiller en priorité** les comptes à SPN qui sont aussi membres de groupes à privilèges (Domain Admins, Account Operators…) — ce sont les cibles les plus rentables pour un attaquant.
 
 ## 6. Conclusion <a name="conclusion"></a>
 
