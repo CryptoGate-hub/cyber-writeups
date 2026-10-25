@@ -10,6 +10,7 @@ edit_uri: ""
 
 theme:
   name: material
+  custom_dir: overrides
   language: fr
   palette:
     - scheme: slate
@@ -138,3 +139,4 @@ extra:
       link: https://profile.hackthebox.com/profile/01a0b5a2-c536-7155-aea6-dbc22da51097
 
 copyright: "CryptoGate - Writeups a but educatif - machines HTB retired uniquement"
+
