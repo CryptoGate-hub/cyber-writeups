@@ -123,6 +123,10 @@ nav:
     - Notes perso: web-security/notes-perso.md
   - Linux et Systems:
     - Linux Luminarium: linux-luminarium/index.md
+    - Labo Perso:
+    - Vue d ensemble: labo/index.md
+    - Active Directory:
+      - Kerberoasting + Detection Wazuh: labo/ad-kerberoasting.md
   - CTF:
     - Challenges: ctf/index.md
 
