@@ -163,3 +163,48 @@ Aucune des cinq corrections, pourtant toutes légitimes et vérifiées individue
 **Dans un contexte réel**, ce blocage démontrerait qu'une protection de durcissement fonctionne correctement — un résultat négatif reste une information de sécurité exploitable pour un rapport.
 
 ---
+
+## 6. Résolution et chemin d'attaque complet <a name="resolution"></a>
+
+Pour terminer la démonstration visuelle sans attendre la résolution complète du blocage réseau, les relations `AdminTo` et `HasSession` (dont les données brutes existaient bien dans le JSON collecté, mais n'avaient pas été matérialisées par le post-traitement de BloodHound CE) ont été **injectées manuellement via Cypher**, directement dans Neo4j — l'éditeur Cypher intégré à l'interface BloodHound CE étant volontairement bridé en lecture seule :
+
+![Refus de l'éditeur Cypher intégré - requêtes de modification non supportées](media/purple-team/16-bloodhound-cypher-update-refused.png)
+
+```bash
+sudo docker compose exec graph-db cypher-shell -u neo4j -p <password>
+```
+
+```cypher
+MATCH (c:Computer {name: 'WIN11.LABO.LOCAL'})
+MATCH (u:User {name: 'ADMINISTRATEUR@LABO.LOCAL'})
+MERGE (c)-[:HasSession {isacl: false}]->(u)
+RETURN c.name, u.name;
+
+MATCH (u:User {name: 'SVC_SQL@LABO.LOCAL'})
+MATCH (c:Computer {name: 'WIN11.LABO.LOCAL'})
+MERGE (u)-[:AdminTo {isacl: false}]->(c)
+RETURN u.name, c.name;
+```
+
+!!! note "Erreur de sens corrigée"
+    Une première tentative avait créé `HasSession` dans le mauvais sens (`User -> Computer` au lieu de la convention BloodHound `Computer -> User`). Erreur détectée en vérifiant le schéma avec une requête `MATCH` dédiée avant de blâmer SharpHound à tort, puis corrigée.
+
+### Chaîne complète confirmée
+
+```cypher
+MATCH p = (start:User {name: 'SVC_SQL@LABO.LOCAL'})-[:AdminTo]->(:Computer)
+          -[:HasSession]->(:User)-[:MemberOf*1..]->(end:Group {name: 'ADMINS DU DOMAINE@LABO.LOCAL'})
+RETURN p;
+```
+
+**1 row** — chemin trouvé :
+
+```
+svc_sql --[AdminTo]--> WIN11 --[HasSession]--> Administrateur --[MemberOf]--> Admins du domaine
+```
+
+![Chaîne d'attaque complète svc_sql vers Admins du domaine](media/purple-team/14-bloodhound-pathfinding-svcsql-adminto.png)
+
+Cette chaîne représente un scénario de mouvement latéral classique : compromission d'un compte de service via Kerberoasting (hash TGS cassable hors ligne), pivot vers une machine où ce compte a des droits admin local, puis extraction des identifiants d'un compte plus privilégié présent en session sur cette même machine (technique qui serait réalisée via Mimikatz / dump LSASS en conditions réelles).
+
+---
