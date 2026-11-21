@@ -118,3 +118,48 @@ Recherche d'un chemin d'escalade par abus ACL depuis les comptes faibles vers `A
 **Résultat : `path not found`** pour `svc_sql` comme pour `svc_legacy`. Conclusion correcte à ce stade : aucune mauvaise configuration ACL préexistante ne permet une escalade directe — cohérent, puisque seuls le Kerberoasting/AS-REP ont été préparés, pas de faille de permission.
 
 ---
+
+## 4. Construction d'une chaîne d'attaque réaliste <a name="chaine"></a>
+
+Plutôt que d'injecter une faille artificielle, un scénario fréquent en entreprise a été reconstitué : **un compte de service devient admin local sur un poste où un Domain Admin se connecte occasionnellement** (dépannage, support).
+
+```powershell
+# Sur WIN11
+net localgroup Administrateurs LABO\svc_sql /add
+```
+
+Puis connexion du compte `Administrateur` (Domain Admin) sur WIN11 :
+
+![Session Administrateur@labo.local active sur WIN11](media/purple-team/12-win11-session-administrateur.png)
+
+Objectif de la chaîne : `svc_sql` (Kerberoastable) → admin local sur WIN11 → dump LSASS → récupération des creds du Domain Admin en session → Domain Admin complet.
+
+---
+
+## 5. Incident de collecte : NetSessionEnum bloqué <a name="incident"></a>
+
+### Symptôme
+
+Après avoir relancé SharpHound (`-c Session,LocalAdmin`) pour capter la nouvelle session, le champ `Sessions.Results` reste systématiquement vide dans le JSON exporté, malgré une session confirmée active côté Windows natif (`Get-SmbSession`).
+
+![Transfert SMB du zip de session vers Kali](media/purple-team/13-kali-smb-transfer-session-zip.png)
+
+### Diagnostics effectués, dans l'ordre
+
+| # | Hypothèse testée | Action | Résultat |
+|---|---|---|---|
+| 1 | DNS inverse manquant | Création zone `192.168.10.0/24` sur DC01 | Corrigé, sans effet sur le symptôme |
+| 2 | Pare-feu Windows bloque SMB entrant sur WIN11 | Activation des règles "Partage de fichiers et d'imprimantes" | Corrigé, sans effet |
+| 3 | Durcissement NetSessionEnum (**CVE-2019-0686** / "NetCease") | Clé `SrvsvcSessionInfo` trouvée et supprimée, service `LanmanServer` redémarré | Clé confirmée présente et supprimée, sans effet |
+| 4 | Remote Registry désactivé | Service activé et démarré | Sans effet |
+| 5 | Session SMB sans activité réelle (`NumOpens: 0`) | `dir \\WIN11\C$\Windows` pour forcer un accès réel | `NumOpens` passé à 1, sans effet sur la collecte |
+
+![Correction pare-feu et nouveau transfert](media/purple-team/15-kali-smb-firewall-fix-transfer.png)
+
+### Conclusion méthodologique
+
+Aucune des cinq corrections, pourtant toutes légitimes et vérifiées individuellement, n'a permis à SharpHound de capter la session — malgré sa présence confirmée côté Windows (`Get-SmbSession` montrant `NumOpens: 1`, `ClientUserName: LABO\Administrateur`). La cause racine exacte n'a pas été identifiée avec certitude ; probable durcissement supplémentaire propre à la version/build de Windows 11 utilisée, non documenté dans la littérature SharpHound consultée.
+
+**Dans un contexte réel**, ce blocage démontrerait qu'une protection de durcissement fonctionne correctement — un résultat négatif reste une information de sécurité exploitable pour un rapport.
+
+---
