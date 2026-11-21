@@ -66,3 +66,55 @@ setspn -L svc_sql
 ```
 
 ---
+
+## 3. Reconnaissance BloodHound / SharpHound <a name="reconnaissance"></a>
+
+### Installation
+
+BloodHound CE est déployé via Docker Compose (config officielle SpecterOps) sur Kali :
+
+```bash
+mkdir ~/bloodhound-ce && cd ~/bloodhound-ce
+wget https://ghst.ly/getbhce -O docker-compose.yml
+sudo docker compose up -d
+sudo docker compose logs bloodhound | grep -i "password"
+```
+
+![BloodHound CE - écran de connexion](media/purple-team/05-bloodhound-ce-login.png)
+
+### Collecte SharpHound
+
+SharpHound (binaire compilé, pas le code source) est exécuté depuis WIN11 avec les droits domaine, puis transféré vers Kali par partage SMB :
+
+```powershell
+.\SharpHound.exe
+```
+
+Collecte complète : 307 objets (users, computers, groups, GPOs, OUs, trusts, ACLs).
+
+![Listing du binaire SharpHound](media/purple-team/03-sharphound-bin-listing.png)
+
+!!! warning "Windows Defender a bloqué l'exécutable"
+    SharpHound est détecté comme `HackTool` par Windows Defender (comportement attendu — c'est un outil de pentest). Pour le labo, une exclusion de dossier a été ajoutée volontairement, documentée comme telle plutôt que de désactiver la protection globalement.
+
+![Blocage SmartScreen sur SharpHound](media/purple-team/04-defender-smartscreen-block.png)
+
+### Import et premières explorations
+
+Après import du zip dans BloodHound (**Quick Upload**), le nœud domaine `LABO.LOCAL` est exploré, classé automatiquement en **Tier Zero** :
+
+![Nœud domaine LABO.LOCAL avec attributs](media/purple-team/08-bloodhound-domain-node.png)
+
+Relations directes du domaine : groupes `Admins du domaine`, `Administrators`, `Enterprise Domain Controllers` avec leurs droits respectifs (`GenericAll`, `WriteDacl`, `GetChanges`/`GetChangesAll` — ce dernier combo permettant un DCSync si accordé à un compte non-DC) :
+
+![Relations du nœud domaine](media/purple-team/10-bloodhound-domain-relationships.png)
+
+### Premier Pathfinding — aucun chemin trouvé
+
+Recherche d'un chemin d'escalade par abus ACL depuis les comptes faibles vers `Admins du domaine` :
+
+![Pathfinding svc_legacy - toutes les flèches vont vers lui, pas de chemin d'attaque](media/purple-team/11-bloodhound-pathfinding-svclegacy-noattack.png)
+
+**Résultat : `path not found`** pour `svc_sql` comme pour `svc_legacy`. Conclusion correcte à ce stade : aucune mauvaise configuration ACL préexistante ne permet une escalade directe — cohérent, puisque seuls le Kerberoasting/AS-REP ont été préparés, pas de faille de permission.
+
+---
