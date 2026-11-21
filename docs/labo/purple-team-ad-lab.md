@@ -37,3 +37,32 @@ Prolonger le labo Kerberoasting existant avec une reconnaissance **BloodHound/Sh
 Hyperviseur : VMware Workstation, réseau NAT `192.168.10.0/24`.
 
 ---
+
+## 2. Préparation des comptes cibles <a name="preparation"></a>
+
+Deux comptes volontairement faibles ont été créés pour servir de cibles d'attaque réalistes.
+
+### `svc_legacy` — cible AS-REP Roasting
+
+Le mécanisme Kerberos impose normalement une **pré-authentification** : avant de répondre, le KDC exige que le client prouve qu'il connaît déjà le mot de passe (timestamp chiffré). Le flag `DONT_REQ_PREAUTH` (bit `0x400000` de `userAccountControl`) désactive cette vérification — un attaquant peut alors obtenir un blob chiffré avec la clé dérivée du mot de passe, sans rien connaître au préalable, et le casser hors ligne.
+
+```powershell
+Get-ADUser -Identity svc_legacy -Properties userAccountControl | Select-Object Name, userAccountControl
+# -> 4260352 (66048 base + 4194304 DONT_REQ_PREAUTH)
+
+$uac = 4260352
+if ($uac -band 0x400000) { "DONT_REQ_PREAUTH is ON" } else { "DONT_REQ_PREAUTH is OFF" }
+# -> DONT_REQ_PREAUTH is ON
+```
+
+### `svc_sql` — cible Kerberoasting
+
+Un compte avec un **SPN** (Service Principal Name) enregistré est éligible au Kerberoasting : n'importe quel utilisateur authentifié peut demander un ticket de service (`TGS-REQ`) chiffré avec le hash du mot de passe du compte de service, et le casser hors ligne.
+
+```powershell
+setspn -A MSSQLSvc/sqlserver01.labo.local:1433 svc_sql
+setspn -L svc_sql
+# -> MSSQLSvc/sqlserver01.labo.local:1433
+```
+
+---
