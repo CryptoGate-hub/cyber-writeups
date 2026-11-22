@@ -390,3 +390,75 @@ L'objet `krbtgt` a bien été répliqué (GUID, SID, sAMAccountName confirmés),
 - La chaîne d'attaque a été démontrée comme **entièrement fonctionnelle techniquement** jusqu'à l'énumération des privilèges d'un compte Enterprise Admin capturé en clair ; seule l'absence de certificat LDAPS (aucune PKI/AD CS déployée dans ce lab) a empêché l'exploitation finale (création de compte ou DCSync complet).
 - Cette limite est spécifique à l'environnement de lab : la majorité des domaines d'entreprise réels disposent d'AD CS et de LDAPS fonctionnel, rendant cette attaque pleinement exploitable dans ces contextes.
 - Remédiation : forcer le SMB signing sur **tous** les hôtes du domaine (pas seulement ceux testés), désactiver NTLM au profit de Kerberos uniquement quand possible (`Network security: Restrict NTLM`), et surveiller les authentifications NTLM atypiques (ex: comptes à privilèges s'authentifiant vers des hôtes non habituels) via SIEM.
+
+
+## Détection Wazuh mappée MITRE ATT&CK — AS-REP Roasting et Kerberoasting
+
+### Mise en place de l'infrastructure de détection
+
+Un manager Wazuh (v4.9.2, Amazon Linux 2023) a été déployé avec deux agents enrôlés sur `DC01` et `WIN11`. La mise en place a nécessité plusieurs corrections :
+
+- **Réseau** : la VM Wazuh avait été provisionnée sur un sous-réseau NAT différent (`192.168.254.0/24`) de celui du reste du lab (`192.168.10.0/24`). IP statique reconfigurée sur `192.168.10.50` via `/etc/sysconfig/network-scripts/ifcfg-eth0` pour rétablir la connectivité agent↔manager.
+- **Audit Kerberos côté DC** : les sous-catégories d'audit avancé `Service d'authentification Kerberos` et `Opérations de ticket du service Kerberos` ont été activées via `auditpol` (nécessaire pour générer les Event ID 4768/4769 avec le niveau de détail requis par les règles de détection).
+- **Archivage complet** : `<logall>yes</logall>` activé côté manager pour confirmer la réception brute des événements avant de travailler sur les règles de corrélation (`archives.json`).
+
+### Règle 1 — AS-REP Roasting (T1558.004)
+
+Le marqueur distinctif de l'AS-REP Roasting est une demande de TGT (**Event ID 4768**) avec `PreAuthType = 0`, signifiant qu'aucune pré-authentification Kerberos n'a été utilisée — comportement normal uniquement pour les comptes marqués `DoesNotRequirePreAuth`.
+
+```xml
+<rule id="100003" level="10">
+  <if_group>windows</if_group>
+  <field name="win.system.eventID">^4768$</field>
+  <field name="win.eventdata.preAuthType">^0$</field>
+  <description>AS-REP Roasting detecte : TGT demande sans pre-authentification pour le compte $(win.eventdata.targetUserName)</description>
+  <mitre>
+    <id>T1558.004</id>
+  </mitre>
+</rule>
+```
+
+Confirmation dans `archives.json` du champ clé avant d'écrire la règle :
+
+![archives json 4768 preAuthType 0](media/purple-team/26-archives-json-4768-preauthtype0.png)
+
+Après rejeu de l'attaque (`impacket-GetNPUsers`), l'alerte est déclenchée avec succès :
+
+![Wazuh rule 100003 AS-REP detected](media/purple-team/24-wazuh-rule-100003-asrep-detected.png)
+
+```
+Rule: 100003 (level 10) -> 'AS-REP Roasting detecte : TGT demande sans pre-authentification pour le compte svc_legacy'
+```
+
+### Règle 2 — Kerberoasting (T1558.003)
+
+Le marqueur distinctif du Kerberoasting est une demande de ticket de service (**Event ID 4769**) utilisant un chiffrement RC4 (`0x17`), faible et toujours présent par compatibilité sur de nombreux comptes de service, ce qui en fait la cible privilégiée de cette attaque.
+
+```xml
+<rule id="100002" level="12">
+  <if_group>windows</if_group>
+  <field name="win.system.eventID">^4769$</field>
+  <field name="win.eventdata.ticketEncryptionType">^0x17$</field>
+  <description>Kerberoasting detecte</description>
+  <mitre>
+    <id>T1558.003</id>
+  </mitre>
+</rule>
+```
+
+Après rejeu de l'attaque (`impacket-GetUserSPNs ... -request`), l'alerte est déclenchée :
+
+![Wazuh rule 100002 Kerberoasting detected](media/purple-team/25-wazuh-rule-100002-kerberoasting-detected.png)
+
+```
+Rule: 100002 (level 12) -> 'Kerberoasting detecte'
+```
+
+Le ticket demandé ciblait `svc_sql` depuis le compte `svc_legacy`, confirmant la détection sur la cible exacte identifiée précédemment via BloodHound.
+
+### Enseignement
+
+- Les Event ID Windows Kerberos (4768, 4769) sont généralement désactivés ou non journalisés en détail par défaut — une base AD "out of the box" ne permet **aucune** détection de ces techniques sans configuration explicite de la stratégie d'audit avancée.
+- Le champ `PreAuthType` et le type de chiffrement du ticket (`ticketEncryptionType`) sont des indicateurs fiables et peu susceptibles de faux positifs lorsqu'ils sont combinés à l'Event ID correspondant.
+- Remédiation complémentaire à la détection : désactiver RC4 au profit d'AES uniquement (`msDS-SupportedEncryptionTypes`) rendrait le Kerberoasting RC4 inopérant et simplifierait la détection résiduelle (toute présence de RC4 deviendrait anormale par définition).
+- Prochaine étape : mapper la détection du NTLM Relay (T1557.001), qui nécessite une approche différente (corrélation d'authentifications NTLM atypiques plutôt qu'un simple Event ID Kerberos).
