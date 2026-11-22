@@ -2462,6 +2462,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#kerberoasting-cible-svc_sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberoasting ciblé — svc_sql
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kerberoasting ciblé — svc_sql">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requete-kerberoasting-authentifiee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requête Kerberoasting authentifiée
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cassage-du-ticket-tgs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cassage du ticket TGS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enseignement_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enseignement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2856,6 +2906,33 @@
 <li>L'AS-REP Roasting ne nécessite <strong>aucun compte valide</strong> : un attaquant n'a besoin que d'un nom d'utilisateur.</li>
 <li>Le mot de passe <code>Summer2026!</code> suit un motif saisonnier prévisible (mois/année), un classique dans les environnements d'entreprise mal sensibilisés.</li>
 <li>Remédiation : désactiver <code>Do not require Kerberos preauthentication</code> sauf nécessité technique réelle, et appliquer une politique de mots de passe interdisant les motifs saisonniers/temporels.</li>
+</ul>
+<h2 id="kerberoasting-cible-svc_sql">Kerberoasting ciblé — <code>svc_sql</code><a class="headerlink" href="#kerberoasting-cible-svc_sql" title="Permanent link">&para;</a></h2>
+<p>Contrairement à l'AS-REP Roasting, le Kerberoasting nécessite un compte authentifié dans le domaine. Les identifiants de <code>svc_legacy</code> (récupérés à l'étape précédente) ont été utilisés pour cette phase — illustrant une chaîne d'escalade réaliste où un compte faible sert de point d'entrée vers des cibles plus intéressantes.</p>
+<p>Plutôt que de kerberoaster "à l'aveugle" tous les comptes à SPN, la cible <code>svc_sql</code> a été choisie en amont via <strong>BloodHound</strong>, qui avait révélé un chemin <code>AdminTo</code> exploitable vers un contrôleur de domaine (voir section pathfinding précédente).</p>
+<h3 id="requete-kerberoasting-authentifiee">Requête Kerberoasting authentifiée<a class="headerlink" href="#requete-kerberoasting-authentifiee" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>impacket-GetUserSPNs<span class="w"> </span>LABO.LOCAL/svc_legacy:<span class="s1">'Summer2026!'</span><span class="w"> </span>-dc-ip<span class="w"> </span><span class="m">192</span>.168.10.1<span class="w"> </span>-request<span class="w"> </span>-outputfile<span class="w"> </span>kerberoast_hashes.txt
+</code></pre></div>
+<p>La requête a remonté <strong>deux comptes avec SPN</strong> :</p>
+<ul>
+<li><code>svc_sql</code> — cible prévue, confirmée par BloodHound</li>
+<li><code>svc-http</code> (SPN <code>HTTP/labo.local</code>) — découverte non anticipée lors du setup initial, qui élargit la surface d'attaque réelle du domaine au-delà du scénario prévu</li>
+</ul>
+<h3 id="cassage-du-ticket-tgs">Cassage du ticket TGS<a class="headerlink" href="#cassage-du-ticket-tgs" title="Permanent link">&para;</a></h3>
+<p>Première tentative sur <code>rockyou.txt</code> (mode hashcat <code>13100</code>) : <code>Status: Exhausted</code> sur les deux hashs.</p>
+<p><img alt="Kerberoast rockyou exhausted" src="../media/purple-team/20-kerberoast-rockyou-exhausted.png" /></p>
+<p>Avec une wordlist ciblée contenant le mot de passe thématique du lab :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">"Welcome2026!"</span><span class="w"> </span>&gt;<span class="w"> </span>custom_sql.txt
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>hashcat<span class="w"> </span>-m<span class="w"> </span><span class="m">13100</span><span class="w"> </span>kerberoast_hashes.txt<span class="w"> </span>custom_sql.txt
+</code></pre></div>
+<p>Résultat : <code>svc_sql</code> cassé, mot de passe <code>Welcome2026!</code> en clair.</p>
+<p><img alt="Kerberoast svc_sql cracked" src="../media/purple-team/21-kerberoast-svcsql-cracked.png" /></p>
+<h3 id="enseignement_1">Enseignement<a class="headerlink" href="#enseignement_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Le Kerberoasting, contrairement à l'AS-REP, nécessite un compte authentifié — d'où l'intérêt de la chaîne <code>svc_legacy</code> → <code>svc_sql</code> plutôt que de traiter ces techniques isolément.</li>
+<li>Un ciblage via BloodHound (plutôt qu'un kerberoasting massif) évite de faire du bruit inutile sur tous les comptes à SPN et concentre l'effort sur les chemins d'escalade pertinents.</li>
+<li>La découverte de <code>svc-http</code> montre qu'un audit Kerberoasting révèle souvent des comptes oubliés ou non documentés — une bonne raison d'auditer systématiquement <strong>tous</strong> les comptes à SPN en environnement réel, et pas seulement les cibles anticipées.</li>
+<li>Remédiation : mots de passe longs et aléatoires pour les comptes de service (25+ caractères), rotation régulière, et usage de <strong>gMSA (Group Managed Service Accounts)</strong> pour éliminer le risque de mot de passe statique cassable hors-ligne.</li>
 </ul>
 
 
