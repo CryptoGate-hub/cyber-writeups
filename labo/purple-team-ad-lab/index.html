@@ -2634,6 +2634,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#detection-wazuh-ntlm-relay-t1557001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Détection Wazuh — NTLM Relay (T1557.001)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Détection Wazuh — NTLM Relay (T1557.001)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recherche-du-bon-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recherche du bon signal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regle-de-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Règle de détection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limite-de-cette-regle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limite de cette règle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bilan-de-la-couverture-de-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bilan de la couverture de détection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3146,6 +3207,73 @@
 <li>Remédiation complémentaire à la détection : désactiver RC4 au profit d'AES uniquement (<code>msDS-SupportedEncryptionTypes</code>) rendrait le Kerberoasting RC4 inopérant et simplifierait la détection résiduelle (toute présence de RC4 deviendrait anormale par définition).</li>
 <li>Prochaine étape : mapper la détection du NTLM Relay (T1557.001), qui nécessite une approche différente (corrélation d'authentifications NTLM atypiques plutôt qu'un simple Event ID Kerberos).</li>
 </ul>
+<h2 id="detection-wazuh-ntlm-relay-t1557001">Détection Wazuh — NTLM Relay (T1557.001)<a class="headerlink" href="#detection-wazuh-ntlm-relay-t1557001" title="Permanent link">&para;</a></h2>
+<p>Contrairement aux techniques Kerberos précédentes, le NTLM Relay ne génère pas un Event ID unique et spécifique : c'est une authentification NTLM légitime du point de vue du protocole, simplement rejouée (relayée) par un tiers. La détection repose donc sur la <strong>corrélation d'une anomalie comportementale</strong> plutôt que sur un identifiant d'événement dédié.</p>
+<h3 id="recherche-du-bon-signal">Recherche du bon signal<a class="headerlink" href="#recherche-du-bon-signal" title="Permanent link">&para;</a></h3>
+<p>Deux pistes ont été comparées dans <code>archives.json</code> :</p>
+<ul>
+<li><strong>Event 4624</strong> (ouverture de session) : dans ce cas précis, le champ <code>authenticationPackageName</code> remontait <code>Kerberos</code>, pas <code>NTLM</code> — peu exploitable tel quel pour cette attaque.</li>
+</ul>
+<p><img alt="archives 4624 Kerberos logon" src="../media/purple-team/27-archives-4624-kerberos-logon.png" /></p>
+<ul>
+<li><strong>Event 4776</strong> (validation des informations d'identification par le contrôleur de domaine) : bien plus parlant. Il confirme explicitement <code>packageName: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0</code> (NTLM) pour le compte <code>Administrateur</code>, validé directement par <code>DC01</code> avec la station source <code>WIN11</code>.</li>
+</ul>
+<p><img alt="archives 4776 NTLM Administrateur" src="../media/purple-team/28-archives-4776-ntlm-administrateur.png" /></p>
+<p>C'est ce signal qui a été retenu : <strong>un compte à privilège élevé s'authentifiant en NTLM (plutôt qu'en Kerberos, standard pour ce type de compte) et validé directement par le DC</strong> est une anomalie forte, cohérente avec un scénario de relay NTLM→LDAP.</p>
+<h3 id="regle-de-detection">Règle de détection<a class="headerlink" href="#regle-de-detection" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">&lt;rule</span><span class="w"> </span><span class="na">id=</span><span class="s">"100004"</span><span class="w"> </span><span class="na">level=</span><span class="s">"12"</span><span class="nt">&gt;</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">&lt;if_group&gt;</span>windows<span class="nt">&lt;/if_group&gt;</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">"win.system.eventID"</span><span class="nt">&gt;</span>^4776$<span class="nt">&lt;/field&gt;</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">  </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">"win.eventdata.packageName"</span><span class="nt">&gt;</span>MICROSOFT_AUTHENTICATION_PACKAGE_V1_0<span class="nt">&lt;/field&gt;</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">  </span><span class="nt">&lt;field</span><span class="w"> </span><span class="na">name=</span><span class="s">"win.eventdata.targetUserName"</span><span class="nt">&gt;</span>^Administrateur$<span class="nt">&lt;/field&gt;</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">  </span><span class="nt">&lt;description&gt;</span>Authentification<span class="w"> </span>NTLM<span class="w"> </span>suspecte<span class="w"> </span>pour<span class="w"> </span>compte<span class="w"> </span>privilegie<span class="w"> </span>$(win.eventdata.targetUserName)<span class="w"> </span>depuis<span class="w"> </span>$(win.eventdata.workstation)<span class="w"> </span>-<span class="w"> </span>possible<span class="w"> </span>NTLM<span class="w"> </span>Relay<span class="nt">&lt;/description&gt;</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">  </span><span class="nt">&lt;mitre&gt;</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">    </span><span class="nt">&lt;id&gt;</span>T1557.001<span class="nt">&lt;/id&gt;</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">  </span><span class="nt">&lt;/mitre&gt;</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="nt">&lt;/rule&gt;</span>
+</code></pre></div>
+<p>Après rejeu de l'attaque (relay HTTP→LDAP via <code>ntlmrelayx</code>), l'alerte se déclenche :</p>
+<p><img alt="Wazuh rule 100004 NTLM Relay detected" src="../media/purple-team/29-wazuh-rule-100004-ntlmrelay-detected.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Rule: 100004 (level 12) -&gt; 'Authentification NTLM suspecte pour compte privilegie Administrateur depuis WIN11 - possible NTLM relay'
+</code></pre></div>
+<h3 id="limite-de-cette-regle">Limite de cette règle<a class="headerlink" href="#limite-de-cette-regle" title="Permanent link">&para;</a></h3>
+<p>Cette règle cible nommément le compte <code>Administrateur</code> — pertinent dans ce lab mais trop rigide pour un environnement réel. Une version de production devrait plutôt :</p>
+<ul>
+<li>Cibler l'appartenance à des groupes à privilège (Domain Admins, Enterprise Admins) via une liste dynamique plutôt qu'un nom de compte en dur</li>
+<li>Ou, plus robuste encore, détecter NTLM utilisé par <strong>n'importe quel</strong> compte alors que la politique de sécurité impose Kerberos (<code>Network security: Restrict NTLM</code> activé), ce qui rend toute authentification NTLM résiduelle anormale par définition</li>
+</ul>
+<h3 id="bilan-de-la-couverture-de-detection">Bilan de la couverture de détection<a class="headerlink" href="#bilan-de-la-couverture-de-detection" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Event ID exploité</th>
+<th>Règle Wazuh</th>
+<th>MITRE ATT&amp;CK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AS-REP Roasting</td>
+<td>4768 (PreAuthType=0)</td>
+<td>100003</td>
+<td>T1558.004</td>
+</tr>
+<tr>
+<td>Kerberoasting</td>
+<td>4769 (RC4, 0x17)</td>
+<td>100002</td>
+<td>T1558.003</td>
+</tr>
+<tr>
+<td>NTLM Relay</td>
+<td>4776 (NTLM, compte privilégié)</td>
+<td>100004</td>
+<td>T1557.001</td>
+</tr>
+</tbody>
+</table>
+<p>Les trois techniques offensives menées dans ce lab disposent désormais d'une règle de détection dédiée et validée empiriquement par rejeu de l'attaque.</p>
 
 
 
