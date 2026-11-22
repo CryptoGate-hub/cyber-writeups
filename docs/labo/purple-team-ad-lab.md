@@ -521,3 +521,20 @@ Cette règle cible nommément le compte `Administrateur` — pertinent dans ce l
 | NTLM Relay | 4776 (NTLM, compte privilégié) | 100004 | T1557.001 |
 
 Les trois techniques offensives menées dans ce lab disposent désormais d'une règle de détection dédiée et validée empiriquement par rejeu de l'attaque.
+
+
+
+## Rapport de pentest final
+
+L'ensemble des constats, de la chaîne d'attaque et des règles de détection développées dans ce laboratoire a été consolidé dans un rapport de pentest structuré, au format livrable professionnel.
+
+📄 **[Télécharger le rapport complet (Word)](rapports/Rapport_Pentest_PurpleTeam_LABO.docx)**
+
+Le rapport couvre :
+
+- Résumé exécutif
+- Méthodologie et périmètre
+- Chaîne d'attaque globale (AS-REP → Kerberoasting → NTLM Relay → Enterprise Admin)
+- Fiches de constat détaillées (sévérité, MITRE ATT&CK, impact, remédiation) pour chacune des trois vulnérabilités
+- Synthèse de la détection Purple Team (règles Wazuh, Event ID, mapping MITRE)
+- Recommandations priorisées
