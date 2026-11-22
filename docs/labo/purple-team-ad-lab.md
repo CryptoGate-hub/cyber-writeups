@@ -462,3 +462,62 @@ Le ticket demandé ciblait `svc_sql` depuis le compte `svc_legacy`, confirmant l
 - Le champ `PreAuthType` et le type de chiffrement du ticket (`ticketEncryptionType`) sont des indicateurs fiables et peu susceptibles de faux positifs lorsqu'ils sont combinés à l'Event ID correspondant.
 - Remédiation complémentaire à la détection : désactiver RC4 au profit d'AES uniquement (`msDS-SupportedEncryptionTypes`) rendrait le Kerberoasting RC4 inopérant et simplifierait la détection résiduelle (toute présence de RC4 deviendrait anormale par définition).
 - Prochaine étape : mapper la détection du NTLM Relay (T1557.001), qui nécessite une approche différente (corrélation d'authentifications NTLM atypiques plutôt qu'un simple Event ID Kerberos).
+
+
+## Détection Wazuh — NTLM Relay (T1557.001)
+
+Contrairement aux techniques Kerberos précédentes, le NTLM Relay ne génère pas un Event ID unique et spécifique : c'est une authentification NTLM légitime du point de vue du protocole, simplement rejouée (relayée) par un tiers. La détection repose donc sur la **corrélation d'une anomalie comportementale** plutôt que sur un identifiant d'événement dédié.
+
+### Recherche du bon signal
+
+Deux pistes ont été comparées dans `archives.json` :
+
+- **Event 4624** (ouverture de session) : dans ce cas précis, le champ `authenticationPackageName` remontait `Kerberos`, pas `NTLM` — peu exploitable tel quel pour cette attaque.
+
+![archives 4624 Kerberos logon](media/purple-team/27-archives-4624-kerberos-logon.png)
+
+- **Event 4776** (validation des informations d'identification par le contrôleur de domaine) : bien plus parlant. Il confirme explicitement `packageName: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0` (NTLM) pour le compte `Administrateur`, validé directement par `DC01` avec la station source `WIN11`.
+
+![archives 4776 NTLM Administrateur](media/purple-team/28-archives-4776-ntlm-administrateur.png)
+
+C'est ce signal qui a été retenu : **un compte à privilège élevé s'authentifiant en NTLM (plutôt qu'en Kerberos, standard pour ce type de compte) et validé directement par le DC** est une anomalie forte, cohérente avec un scénario de relay NTLM→LDAP.
+
+### Règle de détection
+
+```xml
+<rule id="100004" level="12">
+  <if_group>windows</if_group>
+  <field name="win.system.eventID">^4776$</field>
+  <field name="win.eventdata.packageName">MICROSOFT_AUTHENTICATION_PACKAGE_V1_0</field>
+  <field name="win.eventdata.targetUserName">^Administrateur$</field>
+  <description>Authentification NTLM suspecte pour compte privilegie $(win.eventdata.targetUserName) depuis $(win.eventdata.workstation) - possible NTLM Relay</description>
+  <mitre>
+    <id>T1557.001</id>
+  </mitre>
+</rule>
+```
+
+Après rejeu de l'attaque (relay HTTP→LDAP via `ntlmrelayx`), l'alerte se déclenche :
+
+![Wazuh rule 100004 NTLM Relay detected](media/purple-team/29-wazuh-rule-100004-ntlmrelay-detected.png)
+
+```
+Rule: 100004 (level 12) -> 'Authentification NTLM suspecte pour compte privilegie Administrateur depuis WIN11 - possible NTLM relay'
+```
+
+### Limite de cette règle
+
+Cette règle cible nommément le compte `Administrateur` — pertinent dans ce lab mais trop rigide pour un environnement réel. Une version de production devrait plutôt :
+
+- Cibler l'appartenance à des groupes à privilège (Domain Admins, Enterprise Admins) via une liste dynamique plutôt qu'un nom de compte en dur
+- Ou, plus robuste encore, détecter NTLM utilisé par **n'importe quel** compte alors que la politique de sécurité impose Kerberos (`Network security: Restrict NTLM` activé), ce qui rend toute authentification NTLM résiduelle anormale par définition
+
+### Bilan de la couverture de détection
+
+| Technique | Event ID exploité | Règle Wazuh | MITRE ATT&CK |
+|---|---|---|---|
+| AS-REP Roasting | 4768 (PreAuthType=0) | 100003 | T1558.004 |
+| Kerberoasting | 4769 (RC4, 0x17) | 100002 | T1558.003 |
+| NTLM Relay | 4776 (NTLM, compte privilégié) | 100004 | T1557.001 |
+
+Les trois techniques offensives menées dans ce lab disposent désormais d'une règle de détection dédiée et validée empiriquement par rejeu de l'attaque.
