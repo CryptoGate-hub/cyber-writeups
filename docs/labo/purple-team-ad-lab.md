@@ -208,3 +208,25 @@ svc_sql --[AdminTo]--> WIN11 --[HasSession]--> Administrateur --[MemberOf]--> Ad
 Cette chaîne représente un scénario de mouvement latéral classique : compromission d'un compte de service via Kerberoasting (hash TGS cassable hors ligne), pivot vers une machine où ce compte a des droits admin local, puis extraction des identifiants d'un compte plus privilégié présent en session sur cette même machine (technique qui serait réalisée via Mimikatz / dump LSASS en conditions réelles).
 
 ---
+
+## 7. Conclusion & suite <a name="conclusion"></a>
+
+### Ce que démontre cette partie du labo
+
+| Compétence | Détail |
+|---|---|
+| **Préparation de cibles réalistes** | Comptes AS-REP et Kerberoastable configurés et vérifiés au niveau bit (`userAccountControl`) |
+| **Reconnaissance BloodHound/SharpHound** | Collecte complète + collecte ciblée incrémentale (`Session`, `LocalAdmin`) |
+| **Diagnostic méthodique** | 5 hypothèses réseau/sécurité testées et documentées sur un blocage non résolu |
+| **Neo4j / Cypher** | Interrogation et modification directe du graphe sous-jacent à BloodHound |
+| **Documentation honnête** | Incident non résolu documenté avec la même rigueur qu'un succès |
+
+### Prochaines étapes
+
+- **AS-REP Roasting** sur `svc_legacy` avec `impacket-GetNPUsers` + cassage hashcat
+- **Kerberoasting** approfondi sur `svc_sql` (cible choisie via BloodHound plutôt qu'au hasard)
+- **NTLM Relay** (Responder + ntlmrelayx)
+- **Détection Wazuh** mappée MITRE ATT&CK pour chaque technique
+- **Rapport de pentest final** structuré
+
+Voir [Kerberoasting + Détection Wazuh](ad-kerberoasting.md) pour la première partie de ce labo.
