@@ -280,3 +280,45 @@ Candidates.#01...: Summer2026! -> Summer2026!
 - L'AS-REP Roasting ne nécessite **aucun compte valide** : un attaquant n'a besoin que d'un nom d'utilisateur.
 - Le mot de passe `Summer2026!` suit un motif saisonnier prévisible (mois/année), un classique dans les environnements d'entreprise mal sensibilisés.
 - Remédiation : désactiver `Do not require Kerberos preauthentication` sauf nécessité technique réelle, et appliquer une politique de mots de passe interdisant les motifs saisonniers/temporels.
+
+
+## Kerberoasting ciblé — `svc_sql`
+
+Contrairement à l'AS-REP Roasting, le Kerberoasting nécessite un compte authentifié dans le domaine. Les identifiants de `svc_legacy` (récupérés à l'étape précédente) ont été utilisés pour cette phase — illustrant une chaîne d'escalade réaliste où un compte faible sert de point d'entrée vers des cibles plus intéressantes.
+
+Plutôt que de kerberoaster "à l'aveugle" tous les comptes à SPN, la cible `svc_sql` a été choisie en amont via **BloodHound**, qui avait révélé un chemin `AdminTo` exploitable vers un contrôleur de domaine (voir section pathfinding précédente).
+
+### Requête Kerberoasting authentifiée
+
+```bash
+impacket-GetUserSPNs LABO.LOCAL/svc_legacy:'Summer2026!' -dc-ip 192.168.10.1 -request -outputfile kerberoast_hashes.txt
+```
+
+La requête a remonté **deux comptes avec SPN** :
+
+- `svc_sql` — cible prévue, confirmée par BloodHound
+- `svc-http` (SPN `HTTP/labo.local`) — découverte non anticipée lors du setup initial, qui élargit la surface d'attaque réelle du domaine au-delà du scénario prévu
+
+### Cassage du ticket TGS
+
+Première tentative sur `rockyou.txt` (mode hashcat `13100`) : `Status: Exhausted` sur les deux hashs.
+
+![Kerberoast rockyou exhausted](media/purple-team/20-kerberoast-rockyou-exhausted.png)
+
+Avec une wordlist ciblée contenant le mot de passe thématique du lab :
+
+```bash
+echo "Welcome2026!" > custom_sql.txt
+hashcat -m 13100 kerberoast_hashes.txt custom_sql.txt
+```
+
+Résultat : `svc_sql` cassé, mot de passe `Welcome2026!` en clair.
+
+![Kerberoast svc_sql cracked](media/purple-team/21-kerberoast-svcsql-cracked.png)
+
+### Enseignement
+
+- Le Kerberoasting, contrairement à l'AS-REP, nécessite un compte authentifié — d'où l'intérêt de la chaîne `svc_legacy` → `svc_sql` plutôt que de traiter ces techniques isolément.
+- Un ciblage via BloodHound (plutôt qu'un kerberoasting massif) évite de faire du bruit inutile sur tous les comptes à SPN et concentre l'effort sur les chemins d'escalade pertinents.
+- La découverte de `svc-http` montre qu'un audit Kerberoasting révèle souvent des comptes oubliés ou non documentés — une bonne raison d'auditer systématiquement **tous** les comptes à SPN en environnement réel, et pas seulement les cibles anticipées.
+- Remédiation : mots de passe longs et aléatoires pour les comptes de service (25+ caractères), rotation régulière, et usage de **gMSA (Group Managed Service Accounts)** pour éliminer le risque de mot de passe statique cassable hors-ligne.
