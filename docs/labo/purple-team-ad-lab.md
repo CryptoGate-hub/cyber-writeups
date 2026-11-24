@@ -528,12 +528,12 @@ Les trois techniques offensives menées dans ce lab disposent désormais d'une r
 
 L'ensemble des constats, de la chaîne d'attaque et des règles de détection développées dans ce laboratoire a été consolidé dans un rapport de pentest structuré, au format livrable professionnel.
 
-<iframe src="rapports/Rapport_Pentest_PurpleTeam_LABO.pdf" width="100%" height="800px" style="border: 1px solid #ccc; border-radius: 4px;">
+<iframe src="../rapports/Rapport_Pentest_PurpleTeam_LABO.pdf" width="100%" height="800px" style="border: 1px solid #ccc; border-radius: 4px;">
   Votre navigateur ne supporte pas l'affichage intégré des PDF.
-  <a href="rapports/Rapport_Pentest_PurpleTeam_LABO.pdf">Cliquez ici pour télécharger le rapport.</a>
+  <a href="../rapports/Rapport_Pentest_PurpleTeam_LABO.pdf">Cliquez ici pour télécharger le rapport.</a>
 </iframe>
 
-[Télécharger la version Word (.docx)](rapports/Rapport_Pentest_PurpleTeam_LABO.docx)
+[Télécharger la version Word (.docx)](../rapports/Rapport_Pentest_PurpleTeam_LABO.docx)
 
 Le rapport couvre :
 
